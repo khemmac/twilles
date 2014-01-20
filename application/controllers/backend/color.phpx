@@ -1,0 +1,37 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+include_once('dao.php');
+class Color extends dao {//CI_Controller {
+
+	public function index()
+	{
+		echo 'color controller';
+	}
+
+	public function _Filter(){
+
+	}
+/*
+	public function SetStatus(){
+		$ids = X::Request('ids');
+		$is_active = X::Request('is_active');
+		$is_active = ($is_active=='1')?1:0;
+
+		if(!empty($ids)){
+			$this->load->model('color_model','color');
+			$this->color->update_many(explode(',', $ids), array(
+				'is_active'=>$is_active
+			));
+		}
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$ids
+		));
+	}
+*/
+	/*public function LoadList(){
+		$this->load->model('color_model','color');
+		$cList = $this->color->get_all();
+		print_r($cList);
+	}*/
+
+}
