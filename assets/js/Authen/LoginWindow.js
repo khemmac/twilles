@@ -66,6 +66,12 @@ Ext.define('TCMS.Authen.LoginWindow', {
 			_this.submitAct.execute();
 		});
 
+		this.on('show', function(win){
+			setTimeout(function(){
+				_this.form.getForm().findField('username').focus();
+			}, 200);
+		});
+
 		return this.callParent(arguments);
 	}
 });

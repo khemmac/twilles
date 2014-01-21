@@ -69,31 +69,12 @@ Ext.define('TCMS.Authen.LoginForm', {
             formBasic.submit({
 				clientValidation: true,
 				waitMsg: 'Loging in...',
-				url: __site_url+'admin/do_login',
+				url: __site_url+'backend/auth/login',
 				success: function(formBasic, action) {
 					_this.fireEvent('login_success', action.result.msg);
 					//progress.hide();
 				},
-				failure: function(formBasic, action) {
-					var showError = function(title, msg){
-						Ext.Msg.show({
-							title: title,
-							msg: msg,
-							buttons: Ext.Msg.OK,
-							icon: Ext.MessageBox.ERROR
-						});
-					};
-					switch (action.failureType) {
-						case Ext.form.action.Action.CLIENT_INVALID:
-							showError('Failure', 'Form fields may not be submitted with invalid values');
-							break;
-						case Ext.form.action.Action.CONNECT_FAILURE:
-							showError('Failure', 'Ajax communication failed');
-							break;
-						case Ext.form.action.Action.SERVER_INVALID:
-							showError('Failure', action.result.msg);
-					}
-				}
+				failure: _this.failureAlert
             });
         }
 	},
