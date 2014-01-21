@@ -15,11 +15,16 @@ class auth extends CI_Controller {
 
 	public function index()
 	{
-		echo 'auth controller';
+		redirect('backend/auth/login');
+	}
+
+	public function login(){
+		$this->phxview->RenderView('cms/login');
+        $this->phxview->RenderLayout('ext_empty');
 	}
 
 	//log the user in
-	function login()
+	function do_login()
 	{
 		$this->data['title'] = "Login";
 
@@ -80,16 +85,12 @@ class auth extends CI_Controller {
 	}
 
 	//log the user out
-	function logout()
+	function do_logout()
 	{
-		$this->data['title'] = "Logout";
-
 		//log the user out
 		$logout = $this->ion_auth->logout();
 
-		//redirect them to the login page
-		$this->session->set_flashdata('message', $this->ion_auth->messages());
-		redirect('auth/login', 'refresh');
+		redirect('cms/login', 'refresh');
 	}
 
 }

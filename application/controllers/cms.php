@@ -1,14 +1,25 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class cms extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+
+		$this->load->library('ion_auth');
+
+		// check logged in
+		if (!$this->ion_auth->logged_in()){
+			redirect('backend/auth/login', 'refresh');
+		}
+	}
+
 	public function index()
 	{
-		redirect('/cms/login');
+		redirect('backend/auth/login', 'refresh');
 	}
 
 	public function login()
 	{
-		$this->phxview->RenderView('cms/login');
-        $this->phxview->RenderLayout('ext_empty');
+		redirect('backend/auth/login', 'refresh');
 	}
 
 	public function color()

@@ -69,7 +69,7 @@ Ext.define('TCMS.Authen.LoginForm', {
             formBasic.submit({
 				clientValidation: true,
 				waitMsg: 'Loging in...',
-				url: __site_url+'backend/auth/login',
+				url: __site_url+'backend/auth/do_login',
 				success: function(formBasic, action) {
 					_this.fireEvent('login_success', action.result.msg);
 					//progress.hide();
