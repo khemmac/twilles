@@ -4,8 +4,6 @@ class cms extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 
-		$this->load->library('ion_auth');
-
 		// check logged in
 		if (!$this->ion_auth->logged_in()){
 			redirect('backend/auth/login', 'refresh');

@@ -9,14 +9,18 @@ class Base_model extends MY_Model
     protected function timestamps_create($o)
     {
         $o['create_date'] = date('Y-m-d H:i:s');
-        $o['create_by'] = 'admin';
+
+		$user = $this->ion_auth->user()->row();
+        $o['create_by'] = $user->username;
         return $o;
     }
 
     protected function timestamps_update($o)
     {
         $o['update_date'] = date('Y-m-d H:i:s');
-        $o['update_by'] = 'admin';
+
+		$user = $this->ion_auth->user()->row();
+        $o['update_by'] = $user->username;
         return $o;
     }
 
