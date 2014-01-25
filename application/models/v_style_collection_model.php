@@ -1,6 +1,8 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-Class V_style_collection_model extends Base_model
+include_once('style_collection_model' . EXT);
+
+Class V_style_collection_model extends Style_collection_model
 {
 	public $_table = 'v_style_collection';
 

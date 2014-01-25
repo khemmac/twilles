@@ -14,6 +14,11 @@ function endsWith($haystack, $needle)
 	<meta charset="utf-8">
 	<title>TWILLES Administrator</title>
 
+	<script type="text/javascript">
+		var __base_url = '<?= base_url() ?>',
+			__site_url = '<?= endsWith(site_url(), '/')?site_url().'' : site_url().'/' ?>';
+	</script>
+
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/ext/resources/css/ext-all.css') ?>" />
 	<script type="text/javascript" src="<?= base_url('assets/ext/ext-all.js') ?>"></script>
 	<script type="text/javascript" src="<?= base_url('assets/ext/ux/NumericField.js') ?>"></script>
@@ -24,8 +29,6 @@ function endsWith($haystack, $needle)
 	<?php endif; ?>
 
 	<script type="text/javascript">
-		var __base_url = '<?= base_url() ?>',
-			__site_url = '<?= endsWith(site_url(), '/')?site_url().'' : site_url().'/' ?>';
 
 		<?php if(ENVIRONMENT=='development'): ?>
 		Ext.Loader.setConfig({

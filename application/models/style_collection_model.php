@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 Class Style_collection_model extends Base_model
 {
@@ -41,5 +41,10 @@ Class Style_collection_model extends Base_model
 			'rules'		=> 'trim|required|callback_check_key'
 		)
 	);
+
+	protected function _Filter($o){
+		if(!empty($o->style_type))
+			$this->_database->where('style_type', $o->style_type);
+	}
 
 }

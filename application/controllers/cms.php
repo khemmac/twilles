@@ -74,6 +74,12 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function trend_style_collection()
+	{
+		$this->phxview->RenderView('cms/trend_style_collection');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 	public function style_group()
 	{
 		$this->phxview->RenderView('cms/style_group');

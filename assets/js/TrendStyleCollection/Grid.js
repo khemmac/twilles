@@ -1,4 +1,4 @@
-Ext.define('TCMS.StyleCollection.Grid', {
+Ext.define('TCMS.TrendStyleCollection.Grid', {
 	extend	: 'BASE.Grid',
 	constructor:function(config) {
 
@@ -22,7 +22,7 @@ Ext.define('TCMS.StyleCollection.Grid', {
 				extraParams: {
 					type: 'v_style_collection',
 					filter: Ext.encode({
-						style_type: '1'
+						style_type: '2'
 					})
 				}
 			},

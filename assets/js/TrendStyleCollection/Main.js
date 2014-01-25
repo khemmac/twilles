@@ -1,4 +1,4 @@
-Ext.define('TCMS.StyleCollection.Main', {
+Ext.define('TCMS.TrendStyleCollection.Main', {
 	extend	: 'Ext.panel.Panel',
 
 	constructor:function(config) {
@@ -35,9 +35,9 @@ Ext.define('TCMS.StyleCollection.Main', {
 			items: [addAct, editAct, '-', activeAct, inActiveAct]
 		});
 
-		var window = Ext.create('TCMS.StyleCollection.Window');
+		var window = Ext.create('TCMS.TrendStyleCollection.Window');
 
-		var grid = Ext.create('TCMS.StyleCollection.Grid', {
+		var grid = Ext.create('TCMS.TrendStyleCollection.Grid', {
 			region: 'center',
 			border: false,
 			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
@@ -47,17 +47,17 @@ Ext.define('TCMS.StyleCollection.Main', {
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add style collection', 'add', grid, {
+			window.openDialog('Add trend style collection', 'add', grid, {
 				type: 'style_collection',
-				style_type: '1'
+				style_type: '2'
 			});
 		});
 
 		editAct.setHandler(function(){
-			window.openDialog('Edit style collection', 'edit', grid, {
+			window.openDialog('Edit trend style collection', 'edit', grid, {
 				id: grid.getSelectedId(),
 				type: 'style_collection',
-				style_type: '1'
+				style_type: '2'
 			});
 		});
 

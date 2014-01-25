@@ -1,4 +1,4 @@
-Ext.define('TCMS.StyleCollection.Form', {
+Ext.define('TCMS.TrendStyleCollection.Form', {
 	extend	: 'BASE.Form',
 	requires : ['BASE.Form'],
 	constructor:function(config) {
