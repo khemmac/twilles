@@ -210,6 +210,39 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 		});
 		// ** END PLACKET **
 
+		// ** FABRIC **
+		this.comboFabricCollarInner = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Inner collar',
+			name : 'fabric_collar_inner_id',
+			allowBlank: true
+		});
+		this.comboFabricCollarOuter = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Outer collar',
+			name : 'fabric_collar_outer_id',
+			allowBlank: true
+		});
+		this.comboFabricBody = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Body',
+			name : 'fabric_body_id',
+			allowBlank: true
+		});
+		this.comboFabricPlacket = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Placket',
+			name : 'fabric_placket_id',
+			allowBlank: true
+		});
+		this.comboFabricCuffInner = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Inner Cuff',
+			name : 'fabric_cuff_inner_id',
+			allowBlank: true
+		});
+		this.comboFabricCuffOuter = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Outer cuff',
+			name : 'fabric_cuff_outer_id',
+			allowBlank: true
+		});
+		// ** END FABRIC **
+
 
 		this.items = [{
 			// column layout with 2 columns
@@ -217,7 +250,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 			border:false,
 			// defaults for columns
 			defaults:{
-				columnWidth:0.5,
+				columnWidth:0.3,
 				layout:'form',
 				border:false,
 				xtype:'panel',
@@ -226,6 +259,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 			items:[{
 				// left column
 				// defaults for fields
+				columnWidth:0.34,
 				defaults:_fieldDefaults,
 				items:[{
 					name: 'code',
@@ -252,8 +286,9 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
 				}]
 			},{
-				// right column
+				// center column
 				// defaults for fields
+				columnWidth:0.33,
 				defaults:_fieldDefaults,
 				items:[{
 					name: 'description',
@@ -280,6 +315,23 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					xtype: 'textarea',
 					fieldLabel: 'Remark',
 					rows: 3
+				}]
+			},{
+				// right column
+				// defaults for fields
+				columnWidth:0.33,
+				defaults:_fieldDefaults,
+				items:[{
+					xtype: 'fieldset',
+					title: 'Fabric',
+					defaults: _fieldDefaults,
+					items: [
+						this.comboFabricCollarInner,
+						this.comboFabricCollarOuter,
+						this.comboFabricPlacket,
+						this.comboFabricCuffInner,
+						this.comboFabricCuffOuter
+					]
 				}, {
 					name: 'is_active',
 					xtype: 'checkboxfield',

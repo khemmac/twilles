@@ -57,8 +57,9 @@ Ext.define('TCMS.MainViewport', {
 				}]
 			},{
 				xtype: 'buttongroup',
-				columns: 2,
-				title: 'Master data',
+				columns: 3,
+				title: 'Style data',
+				padding:'6 0 5 0',
 				items: [{
 					text: 'Style collection',
 					scale: 'large',
@@ -66,17 +67,21 @@ Ext.define('TCMS.MainViewport', {
 					iconAlign: 'top',
 					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
-					href: __site_url+'cms/style_collection',
+					href: __site_url+'cms/style_collection'
 				},{
-					text: 'Trend style collection', iconCls: 'menu-t-shirt_yellow',
+					text: 'Trend style collection',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-large-t-shirt_yellow',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
 					href: __site_url+'cms/trend_style_collection'
 				},{
-					text: 'Part style', iconCls: 'menu-large-part_style',
+					text: 'Part style', iconCls: 'menu-small-zip',
 					hrefTarget: '_self',
 					href: __site_url+'cms/part_style'
 				},{
-					text: 'Style group', iconCls: 'menu-large-t-shirt',
+					text: 'Style group', iconCls: 'menu-small-t_shirt_print',
 					hrefTarget: '_self',
 					href: __site_url+'cms/style_group'
 				}]

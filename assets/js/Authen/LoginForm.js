@@ -19,6 +19,7 @@ Ext.define('TCMS.Authen.LoginForm', {
 
 		this.items = [{
 			xtype: 'textfield',
+			width: 300,
 			fieldLabel : 'Username',
 			name : "username",
 			emptyText: '',
@@ -32,6 +33,7 @@ Ext.define('TCMS.Authen.LoginForm', {
 			}
 		},{
 			xtype: 'textfield',
+			width: 300,
 			inputType: 'password',
 			fieldLabel : 'Password',
 			name : "password",
