@@ -38,6 +38,10 @@
 |
 */
 
+$route['customize'] = "frontend/customize/index";
+$route['customize/detail'] = "frontend/customize/detail";
+$route['customize/overview'] = "frontend/customize/overview";
+
 $route['default_controller'] = "cms";
 $route['404_override'] = '';
 
