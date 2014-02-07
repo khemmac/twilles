@@ -5,7 +5,7 @@ class cms extends CI_Controller {
 		parent::__construct();
 
 		// check logged in
-		if (!$this->ion_auth->logged_in()){
+		if (!$this->ion_auth->logged_in() && $this->ion_auth->is_admin()){
 			redirect('backend/auth/login', 'refresh');
 		}
 	}
@@ -89,6 +89,12 @@ class cms extends CI_Controller {
 	public function size()
 	{
 		$this->phxview->RenderView('cms/size');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
+	public function user()
+	{
+		$this->phxview->RenderView('cms/user');
         $this->phxview->RenderLayout('ext_default');
 	}
 

@@ -272,10 +272,9 @@
 
 				<!-- Kradoom -->
 				<ul class="kradoom">
-					<li><a href="" class="panel1">white</a></li>
-					<li><a href="" class="panel2">dark grey</a></li>
-					<li><a href="" class="panel3">metal</a></li>
-					<li><a href="" class="panel4">wood</a></li>
+					<?php foreach($buttons AS $b): ?>
+					<li><a href="" class="panel1"><?= $b->name ?></a></li>
+					<?php endforeach; ?>
 				</ul>
 
 				<div class="kradoom-dot"></div>

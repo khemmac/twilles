@@ -8,6 +8,7 @@ class customize extends CI_Controller {
 		$this->load->model('texture_model','texture');
 		$this->load->model('pattern_model','pattern');
 		$this->load->model('fabric_model','fabric');
+		$this->load->model('inventory_model','inventory');
 
 	}
 
@@ -25,12 +26,17 @@ class customize extends CI_Controller {
 		// load fabric
 		$fabrics = $this->fabric->get_many_by();
 
+		// load inventory type button
+		$this->inventory->excecute_filter('{"inventory_type":1}');
+		$buttons = $this->inventory->get_many_by();
+
 
 		$this->phxview->RenderView('front/customize', array(
 			'colors'=>$colors,
 			'textures'=>$textures,
 			'patterns'=>$patterns,
-			'fabrics'=>$fabrics
+			'fabrics'=>$fabrics,
+			'buttons'=>$buttons
 		));
         $this->phxview->RenderLayout('front_default');
 	}

@@ -85,7 +85,7 @@ Ext.define('TCMS.MainViewport', {
 					hrefTarget: '_self',
 					href: __site_url+'cms/style_group'
 				}]
-			},{
+			}/*,{
 				xtype: 'buttongroup',
 				columns: 3,
 				title: 'Style data',
@@ -128,7 +128,7 @@ Ext.define('TCMS.MainViewport', {
 						hrefTarget: '_self',
 						href: __site_url+'cms/style_group'
 					}]
-			}]
+			}*/]
 		});
 
 		this.items.push(northPanel);
