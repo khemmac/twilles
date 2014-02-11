@@ -1,5 +1,6 @@
 Ext.define('BASE.Form', {
 	extend	: 'Ext.form.Panel',
+	monitorValid : true,
 	constructor:function(config) {
 
 		Ext.apply(this, {

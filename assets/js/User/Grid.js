@@ -25,11 +25,16 @@ Ext.define('TCMS.User.Grid', {
 			},
 			fields: [
 				{ name:'id', type:'string' },
-				{ name:'part_type', type:'string' },
-				'name',
-				{ name:'conflict_type', type:'string' },
-				{ name:'remark', type:'string' },
-				{ name:'is_active', type:'boolean' },
+				{ name:'username', type:'string' },
+				{ name:'email', type:'string' },
+				'ip_address',
+				{ name:'last_login', type:'date', dateFormat: 'Y-m-d H:i:s' },
+
+				{ name:'first_name', type:'string' },
+				{ name:'last_name', type:'string' },
+				{ name:'phone', type:'string' },
+				{ name:'active', type:'boolean' },
+
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
 				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
