@@ -1,4 +1,4 @@
-Ext.define('TCMS.User.Main', {
+Ext.define('TCMS.Member.Main', {
 	extend	: 'Ext.panel.Panel',
 
 	constructor:function(config) {
@@ -35,9 +35,9 @@ Ext.define('TCMS.User.Main', {
 			items: [addAct, editAct, '-', activeAct, inActiveAct]
 		});
 
-		var window = Ext.create('TCMS.User.Window');
+		var window = Ext.create('TCMS.Member.Window');
 
-		var grid = Ext.create('TCMS.User.Grid', {
+		var grid = Ext.create('TCMS.Member.Grid', {
 			region: 'center',
 			border: false,
 			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
@@ -47,13 +47,13 @@ Ext.define('TCMS.User.Main', {
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add user', 'add', grid, {
+			window.openDialog('Add member', 'add', grid, {
 				type: 'part_style'
 			});
 		});
 
 		editAct.setHandler(function(){
-			window.openDialog('Edit user', 'edit', grid, {
+			window.openDialog('Edit member', 'edit', grid, {
 				id: grid.getSelectedId(),
 				type: 'part_style'
 			});

@@ -1,4 +1,4 @@
-Ext.define('TCMS.User.Window', {
+Ext.define('TCMS.Member.Window', {
 	extend	: 'BASE.Window',
 	requires : ['BASE.Window'],
 	constructor:function(config) {

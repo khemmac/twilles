@@ -92,9 +92,9 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
-	public function user()
+	public function member()
 	{
-		$this->phxview->RenderView('cms/user');
+		$this->phxview->RenderView('cms/member');
         $this->phxview->RenderLayout('ext_default');
 	}
 

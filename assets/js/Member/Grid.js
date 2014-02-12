@@ -1,4 +1,4 @@
-Ext.define('TCMS.User.Grid', {
+Ext.define('TCMS.Member.Grid', {
 	extend	: 'BASE.Grid',
 	constructor:function(config) {
 

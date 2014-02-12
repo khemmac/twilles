@@ -33,5 +33,5 @@ Ext.define('BASE.ux.FormStatus', {
 				});
 			}
 		});
-	},
+	}
 });
