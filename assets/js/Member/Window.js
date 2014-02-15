@@ -23,28 +23,13 @@ Ext.define('TCMS.Member.Window', {
 			moduleType: 'inventory'
 		});
 
-		this.comboPartType = Ext.create('BASE.ComboStatic', {
-			fieldLabel:'Part type',
-			name : 'part_type',
+		this.comboRole = Ext.create('BASE.ComboStatic', {
+			fieldLabel:'User type',
+			name : 'group',
 			store:[
-				['COLLAR', 'Collar'],
-				['CUFF', 'Cuff'],
-				['PLACKET', 'Placket'],
-				['POCKET', 'Pocket'],
-				['BOTTOM', 'Bottom'],
-				['YOKE', 'Yoke'],
-				['PLEAT', 'Pleat']
+				[1, 'Admin'],
+				[2, 'Member']
 			]
-		});
-
-		this.comboConflictType = Ext.create('BASE.ComboAjax', {
-			fieldLabel: 'Conflict color',
-			name : 'conflict_type',
-			proxyUrl: __site_url+'backend/enum/LoadListCombo_ConflictType',
-			proxyFields:[ 'value', 'text' ],
-			proxyIdProperty: 'value',
-			displayField: 'text',
-			valueField: 'value'
 		});
 
 		this.form = Ext.create('BASE.Form', {
@@ -54,44 +39,73 @@ Ext.define('TCMS.Member.Window', {
 				labelAlign: 'right',
 				width: 300
 			},
-			items: [{
-				name: 'id',
+			items: [this.comboRole,{
+				name: 'username',
 				xtype: 'textfield',
-				fieldLabel: 'Code',
-				allowBlank: false
-			},
-			this.comboPartType,
-			this.comboConflictType,
-			{
-				name: 'name',
-				xtype: 'textfield',
-				fieldLabel: 'Name',
+				fieldLabel: 'Username',
 				allowBlank: false
 			}, {
-				name: 'remark',
-				xtype: 'textarea',
-				fieldLabel: 'Remark'
+				name: 'password',
+				xtype: 'textfield',
+				fieldLabel: 'Password',
+				allowBlank: true
 			}, {
-				name: 'is_active',
+				name: 'email',
+				xtype: 'textfield',
+				fieldLabel: 'Email',
+				allowBlank: false
+			}, {
+				name: 'first_name',
+				xtype: 'textfield',
+				fieldLabel: 'First name',
+				allowBlank: false
+			}, {
+				name: 'last_name',
+				xtype: 'textfield',
+				fieldLabel: 'Last name',
+				allowBlank: false
+			}, {
+				name: 'phone',
+				xtype: 'textfield',
+				fieldLabel: 'Phone',
+				allowBlank: true
+			}, {
+				name: 'last_login',
+				xtype: 'displayfield',
+				fieldLabel: 'Last login',
+				renderer: function(v){
+					if(v){
+						var d = new Date(v*1000);
+						return Ext.Date.format(d, 'j M Y H:i:s');
+					}else
+						return '-';
+				}
+			}, {
+				name: 'active',
 				xtype: 'checkboxfield',
 				fieldLabel: 'Active',
 				checked: !0
 			}],
 			plugins: [uxFormStatus],
 			mapping: function(o){
-				o.is_active = (o.is_active && o.is_active=='on')?1:0;
+				o.active = (o.active && o.active=='on')?1:0;
 				return o;
 			},
 			getSaveParams : function() {
 				return Ext.apply({
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/icode/'+((_this.dialogAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend/member/'+((_this.dialogAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
 				}, this.formParams);
 			},
-			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
+			getLoadUrl: function(){ return __site_url+'backend/member/load'; },
+			reset: function(){
+				_this.comboRole.setDisabled(false);
+
+				this.form.reset();
+			}
 		});
 
 		this.submitAct = Ext.create('BASE.Action', {
@@ -112,8 +126,22 @@ Ext.define('TCMS.Member.Window', {
 		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
-			_this.form.saveData();
-			//_this.fireEvent('login_success');
+			// check password
+			var passField = _this.form.form.findField('password'),
+				passValue = passField.getValue();
+			if(_this.dialogAction=='edit' && !Ext.isEmpty(passValue)){
+				Ext.Msg.show({
+					title : 'Password changed.',
+					msg : 'Are you sure you want to change password for this user?',
+					icon : Ext.Msg.WARNING,
+					buttons : Ext.Msg.OKCANCEL,
+					fn: function(buttonId){
+						if(buttonId=='ok')
+							_this.form.saveData();
+					}
+				});
+			}else
+				_this.form.saveData();
 		});
 
 		this.cancelAct.setHandler(function(){
@@ -132,30 +160,30 @@ Ext.define('TCMS.Member.Window', {
 		});
 
 
-		// event
-		this.comboConflictType.store.on("beforeload", function (store, opts) {
-			opts.params = opts.params || {};
-			if(opts.params){
-				var partType = _this.comboPartType.getValue();
-				Ext.apply(opts.params, {
-					part_type: partType
-				});
-			}
-	    });
-
+/*
 	    this.comboPartType.on('change', function(){
 	    	_this.comboConflictType.reset();
 	    	_this.comboConflictType.store.load();
 	    });
+*/
+		this.form.on('afterLoad', function(form, act){
+			var data = act.result.data;
+
+			_this.comboRole.setDisabled(false);
+
+			if(data.id==1){
+				_this.comboRole.setDisabled(true);
+			}
+		});
 
 		return this.callParent(arguments);
 	},
 	actions : {
 		"add" : function() {
-			this.form.form.reset();
+			this.form.reset();
 		},
 		"edit" : function() {
-			this.form.form.reset();
+			this.form.reset();
 			this.form.loadData();
 		},
 		"delete" : function() {

@@ -11,7 +11,7 @@ Ext.define('TCMS.Member.Grid', {
 		this.store = new Ext.data.JsonStore({
 			proxy: {
 				type: 'ajax',
-				url: __site_url+"backend/dao/loadlist",
+				url: __site_url+"backend/member/loadlist",
 				reader: {
 					type: 'json',
 					root: 'rows',
@@ -20,15 +20,41 @@ Ext.define('TCMS.Member.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'part_style'
+					type: 'user'
 				}
 			},
 			fields: [
-				{ name:'id', type:'string' },
+/*
+id,
+ip_address,
+username,
+password,
+salt,
+email,
+activation_code,
+forgotten_password_code,
+forgotten_password_time,
+remember_code,
+created_on,
+last_login,
+active,
+first_name,
+last_name,
+company,
+phone,
+fid,
+account_status,
+last_login_date,
+create_date,
+create_by,
+update_date,
+update_by
+ */
+				{ name:'id', type:'int' },
 				{ name:'username', type:'string' },
 				{ name:'email', type:'string' },
 				'ip_address',
-				{ name:'last_login', type:'date', dateFormat: 'Y-m-d H:i:s' },
+				{ name:'last_login', type:'date', convert: function(v,r){ return v?new Date(v*1000):null; } },
 
 				{ name:'first_name', type:'string' },
 				{ name:'last_name', type:'string' },
@@ -47,23 +73,25 @@ Ext.define('TCMS.Member.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:110, dataIndex:'id', sortable:true, align:'left'},
-			{text: "Type", width:70, dataIndex:'part_type', sortable:true, align:'left',
-				renderer: function(v){
-					var types = {
-						COLLAR	:'Collar',
-						CUFF	:'Cuff',
-						PLACKET	:'Placket',
-						POCKET	:'Pocket',
-						BOTTOM	:'Bottom',
-						YOKE	:'Yoke',
-						PLEAT	:'Pleat'
-					};
-					return types[v];
+			{text: "Username", width:90, dataIndex:'username', sortable:true, align:'left' },
+			{text: "Email", width:150, dataIndex:'email', sortable:true, align:'left'},
+			{text: "Phone", width:90, dataIndex:'phone', sortable:true, align:'left'},
+			{text: "Active", width:50, dataIndex:'active', sortable:true, align:'center',
+				renderer: function(v,p,r){
+					var icns = (v)?'tick':'cross';
+					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
 				}
 			},
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Conflict type", width:160, dataIndex:'conflict_type', sortable:true, align:'left'},
+			{text: "IP Address", width:90, dataIndex:'ip_address', sortable:true, align:'left'},
+			{text: "Name", width:110, dataIndex:'ip_address', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					return r.data['first_name']+' '+r.data['last_name'];
+				}
+			},
+
+			{text: "Last login", width:120, dataIndex:'last_login', sortable:true, align:'left',
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
+			},
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			},

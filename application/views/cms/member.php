@@ -1,9 +1,9 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		var main = Ext.create('TCMS.User.Main', {
+		var main = Ext.create('TCMS.Member.Main', {
 			region: 'center',
-			title: 'User'
+			title: 'Member'
 		});
 
 		////////////////////////////////////////////

@@ -5,7 +5,7 @@ class cms extends CI_Controller {
 		parent::__construct();
 
 		// check logged in
-		if (!$this->ion_auth->logged_in() && $this->ion_auth->is_admin()){
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			redirect('backend/auth/login', 'refresh');
 		}
 	}
