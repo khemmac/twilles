@@ -41,6 +41,7 @@ Ext.define('BASE.ComboAjax', {
 				fields: this.proxyFields||[ 'id', 'name' ],
 				remoteSort: true,
 				sorters: this.proxySorters||[{property: 'id', direction: 'ASC'}],
+				pageSize: 1000
 			});
 
 		return this.callParent(arguments);

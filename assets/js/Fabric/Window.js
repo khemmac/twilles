@@ -72,14 +72,12 @@ Ext.define('TCMS.Fabric.Window', {
 			allowBlank: true
 		});
 
-		this.comboTrueColor = Ext.create('BASE.ComboAjax', {
+		this.comboTrueColor = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'True color',
-			name : 'true_color_id',
-			proxyExtraParams: {
-				type:'color'
-			},
-			proxySorters: [{property: 'name', direction: 'ASC'}],
-			allowBlank: true
+			name : 'true_color',
+			maxLength: 100,
+			allowBlank: true,
+			labelAlign: 'right'
 		});
 
 		this.comboPattern = Ext.create('BASE.ComboAjax', {

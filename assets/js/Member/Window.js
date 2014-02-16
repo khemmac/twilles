@@ -43,7 +43,8 @@ Ext.define('TCMS.Member.Window', {
 				name: 'username',
 				xtype: 'textfield',
 				fieldLabel: 'Username',
-				allowBlank: false
+				allowBlank: false,
+				maxLength: 100
 			}, {
 				name: 'password',
 				xtype: 'textfield',
@@ -68,7 +69,8 @@ Ext.define('TCMS.Member.Window', {
 				name: 'phone',
 				xtype: 'textfield',
 				fieldLabel: 'Phone',
-				allowBlank: true
+				allowBlank: true,
+				maxLength: 20
 			}, {
 				name: 'last_login',
 				xtype: 'displayfield',
