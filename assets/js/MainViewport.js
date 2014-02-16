@@ -85,6 +85,20 @@ Ext.define('TCMS.MainViewport', {
 					hrefTarget: '_self',
 					href: __site_url+'cms/style_group'
 				}]
+			},{
+				xtype: 'buttongroup',
+				columns: 1,
+				title: 'Member',
+				padding:'6 0 5 0',
+				items: [{
+					text: 'Member',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-large-userconfig',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/member'
+				}]
 			}/*,{
 				xtype: 'buttongroup',
 				columns: 3,
