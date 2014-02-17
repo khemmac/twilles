@@ -108,6 +108,12 @@ id Varchar(20) NOT NULL COMMENT 'code ผ้า',
 			{text: "Length(yard)", width:80, dataIndex:'length_yards', sortable:true, align:'left'},
 			{text: "Price", width:60, dataIndex:'price', sortable:true, align:'left'},
 			{text: "cost", width:60, dataIndex:'cost', sortable:true, align:'left'},
+			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
+				renderer: function(v,p,r){
+					var icns = (v)?'tick':'cross';
+					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
+				}
+			},
 
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }

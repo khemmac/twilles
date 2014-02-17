@@ -119,6 +119,12 @@ Ext.define('TCMS.StyleCollection.Grid', {
 					return s.join('<br />');
 				}
 			},
+			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
+				renderer: function(v,p,r){
+					var icns = (v)?'tick':'cross';
+					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
+				}
+			},
 
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
