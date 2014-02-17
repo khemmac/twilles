@@ -12,6 +12,23 @@ class auth extends CI_Controller {
 		$this->load->helper('language');
 	}
 
+	public function test(){
+		$this->load->library('bcrypt');
+
+		$password = 'test';
+		$salt = substr(md5(uniqid(rand(), true)), 0, 10);
+		$hash =  $salt . substr(sha1($salt . $password), 0, - 10);
+		echo $hash.'<br />';
+
+
+		$salt = substr($hash, 0, 10);
+		$db_password =  $salt . substr(sha1($salt . $password), 0, -10);
+
+		echo $hash.':'.$db_password;
+		echo '<br />';
+
+	}
+
 	public function index()
 	{
 		redirect('backend/auth/login');
