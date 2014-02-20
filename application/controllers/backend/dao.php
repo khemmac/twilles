@@ -207,6 +207,30 @@ class dao extends CI_Controller {
 			));
 	}
 
+	public function Delete()
+	{
+		$type = X::Request('type');
+		$this->load->model($type.'_model',$type);
+
+		$ids = X::Request('ids');
+		$delete_result = FALSE;
+		if(!empty($ids)){
+			$delete_result = $this->{$type}->delete_many(preg_split('/,/', $ids));
+		}
+
+		if($delete_result){
+			X::renderJSON(array(
+				'success'=>true,
+				'data'=>$delete_result
+			));
+		}else{
+			X::renderJSON(array(
+				'success'=>true,
+				'message'=>'Could not delete'
+			));
+		}
+	}
+
 	public function trigger($event, $data = FALSE, $last = TRUE)
     {
         if (isset($this->$event) && is_array($this->$event))

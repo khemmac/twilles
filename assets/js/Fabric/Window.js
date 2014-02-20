@@ -4,13 +4,13 @@ Ext.define('TCMS.Fabric.Window', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			title: 'Login',
-			height: 480,
-			width: 400,
+			height: 440,
+			width: 600,
 			resizable: false,
 			modal: true,
 			layout:'border',
-			buttonAlign : 'center'
+			buttonAlign : 'center',
+			border: false
 		});
 
 		return this.callParent(arguments);
@@ -19,14 +19,24 @@ Ext.define('TCMS.Fabric.Window', {
 	initComponent : function() {
 		var _this=this;
 
-		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'color'
+		// transaction
+		this.transactionPanel = Ext.create('TCMS.Fabric.Transaction.Main', {
+			region:'east',
+			width: 240,
+			split: true
 		});
 
-		this.comboFabricType = Ext.create('BASE.ComboStatic', {
-			fieldLabel:'Fabric type',
-			name : 'fabric_type',
-			store:[['1', 'ผ้าธรรมดา'], ['2', 'ผ้าแพง']]
+		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
+			moduleType: 'fabric'
+		});
+
+		this.comboFabricType = Ext.create('BASE.ComboAjax', {
+			fieldLabel: 'Fabric type',
+			name : 'fabric_type_id',
+			proxyExtraParams: {
+				type:'fabric_type'
+			},
+			proxySorters: [{property: 'id', direction: 'ASC'}]
 		});
 
 		this.comboSupplier = Ext.create('BASE.ComboAjax', {
@@ -37,7 +47,7 @@ Ext.define('TCMS.Fabric.Window', {
 			}
 		});
 
-		this.comboFabricType = Ext.create('BASE.ComboStatic', {
+		this.comboStockType = Ext.create('BASE.ComboStatic', {
 			fieldLabel:'Stock type',
 			name : 'stock_type',
 			store:[['1', 'Running'], ['2', 'Finite']],
@@ -110,6 +120,7 @@ Ext.define('TCMS.Fabric.Window', {
 
 		this.form = Ext.create('BASE.Form', {
 			region: 'center',
+			border: true,
 			defaults: {
 				labelWidth: 100,
 				labelAlign: 'right',
@@ -135,16 +146,8 @@ Ext.define('TCMS.Fabric.Window', {
 			this.comboThreadCount,
 			{
 				name: 'length_yards',
-				xtype: 'numberfield',
+				xtype: 'displayfield',
 				fieldLabel: 'Length (yards)'
-			},{
-				name: 'price',
-				xtype: 'numberfield',
-				fieldLabel: 'Price'
-			},{
-				name: 'cost',
-				xtype: 'numberfield',
-				fieldLabel: 'Cost'
 			},{
 				name: 'is_active',
 				xtype: 'checkboxfield',
@@ -198,9 +201,7 @@ Ext.define('TCMS.Fabric.Window', {
 			new Ext.button.Button(this.cancelAct)
 		];
 
-		//this.progress.show();
-
-		this.items = [this.form];
+		this.items = [this.form, this.transactionPanel];
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
@@ -216,10 +217,33 @@ Ext.define('TCMS.Fabric.Window', {
 		});
 
 		this.on("show", function() {
+			var _action = _this.dialogAction;
+
 			_this.form.getEl().scrollTo('top',0,false);
 			_this.form.formParams = _this.dialogParams;
-			_this.form.formAction = _this.dialogAction;
+			_this.form.formAction = _action;
 			_this.actions[_this.dialogAction].call(_this);
+		});
+
+		// transaction section
+		this.transactionPanel.addAct.setHandler(function(){
+			_this.transactionPanel.window.openDialog('Add Fabric log', 'add', _this.transactionPanel.grid, {
+				type: 'fabric_transaction',
+				fabric_id: _this.dialogParams.id
+			});
+		});
+
+		this.transactionPanel.window.form.on('afterSave', function(form, act) {
+			_this.transactionPanel.window.hide();
+			_this.transactionPanel.grid.load({
+				filter: Ext.encode({fabric_id: _this.dialogParams.id})
+			});
+		});
+
+		this.transactionPanel.window.form.on('afterDelete', function(form, act) {
+			_this.transactionPanel.grid.load({
+				filter: Ext.encode({fabric_id: _this.dialogParams.id})
+			});
 		});
 
 		return this.callParent(arguments);
@@ -227,10 +251,22 @@ Ext.define('TCMS.Fabric.Window', {
 	actions : {
 		"add" : function() {
 			this.form.form.reset();
+
+			this.transactionPanel.setDisabled(true);
+			this.transactionPanel.grid.load({
+				fabric_id: -1
+			});
 		},
 		"edit" : function() {
+			var _this=this;
+
 			this.form.form.reset();
 			this.form.loadData();
+
+			this.transactionPanel.setDisabled(false);
+			this.transactionPanel.grid.load({
+				filter: Ext.encode({fabric_id: _this.dialogParams.id})
+			});
 		},
 		"delete" : function() {
 			var _this = this;

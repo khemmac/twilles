@@ -62,6 +62,12 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function fabric_type()
+	{
+		$this->phxview->RenderView('cms/fabric_type');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 	public function part_style()
 	{
 		$this->phxview->RenderView('cms/part_style');

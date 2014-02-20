@@ -23,6 +23,9 @@
 .b-application_edit {
 	background-image: url('../images/icons/application_edit.gif') !important;
 }
+.b-application_delete {
+	background-image: url('../images/icons/application_delete.gif') !important;
+}
 
 /* ** MENU */
 .menu-large-fabric { background-image: url('../images/menu/polish_cloth.png') !important; }
