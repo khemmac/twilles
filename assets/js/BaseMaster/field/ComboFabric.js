@@ -4,7 +4,7 @@ Ext.define('TCMS.BaseMaster.field.ComboFabric', {
 	proxyUrl: __site_url+'backend/dao/LoadList',
 	proxyFields:[ 'id', 'name' ],
 	proxyIdProperty: 'id',
-	displayField: 'name',
+	displayField: 'id',
 	valueField: 'id',
 
 	// utility params

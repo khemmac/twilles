@@ -31,6 +31,10 @@ Ext.define('TCMS.MainViewport', {
 					hrefTarget: '_self',
 					href: __site_url+'cms/fabric'
 				},{
+					text: 'Fabric type', iconCls: 'menu-small-fabric_type',
+					hrefTarget: '_self',
+					href: __site_url+'cms/fabric_type'
+				},{
 					text: 'Color', iconCls: 'menu-small-color',
 					hrefTarget: '_self',
 					href: __site_url+'cms/color'
@@ -50,16 +54,12 @@ Ext.define('TCMS.MainViewport', {
 					text: 'Thread count', iconCls: 'menu-small-thread_count',
 					hrefTarget: '_self',
 					href: __site_url+'cms/thread_count'
-				},{
-					text: 'Inventory', iconCls: 'menu-small-inventory',
-					hrefTarget: '_self',
-					href: __site_url+'cms/inventory'
 				}]
 			},{
 				xtype: 'buttongroup',
 				columns: 3,
 				title: 'Style data',
-				padding:'6 0 5 0',
+				//padding:'6 0 5 0',
 				items: [{
 					text: 'Style collection',
 					scale: 'large',
@@ -84,6 +84,10 @@ Ext.define('TCMS.MainViewport', {
 					text: 'Style group', iconCls: 'menu-small-t_shirt_print',
 					hrefTarget: '_self',
 					href: __site_url+'cms/style_group'
+				},{
+					text: 'Inventory', iconCls: 'menu-small-inventory',
+					hrefTarget: '_self',
+					href: __site_url+'cms/inventory'
 				}]
 			},{
 				xtype: 'buttongroup',

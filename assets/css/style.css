@@ -29,6 +29,7 @@
 
 /* ** MENU */
 .menu-large-fabric { background-image: url('../images/menu/polish_cloth.png') !important; }
+.menu-small-fabric_type { background-image: url('../images/menu/price_tag_usd.png') !important; }
 .menu-small-color { background-image: url('../images/menu/color-swatch.png') !important; }
 .menu-small-pattern { background-image: url('../images/menu/stamp-pattern.png') !important; }
 .menu-small-texture { background-image: url('../images/menu/texture.png') !important; }

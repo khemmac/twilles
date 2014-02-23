@@ -104,4 +104,10 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function order()
+	{
+		$this->phxview->RenderView('cms/order');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 }

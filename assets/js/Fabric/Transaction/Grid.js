@@ -43,11 +43,27 @@ Ext.define('TCMS.Fabric.Transaction.Grid', {
 			pageSize: 99999
 		});
 
+		this.features = [{
+            ftype: 'summary'
+        }];
+
 		this.columns = [
 			{text: "Date", width:70, dataIndex:'transaction_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y'):'-'; }
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y'):'-'; },
+				summaryRenderer: function (v, p, r) {
+					p.style='text-align:right; font-weight:bold;';
+					return 'Sum : ';
+	            }
 			},
-			{text: "Amount", width:80, dataIndex:'amount', sortable:true, align:'left'}
+			{text: "Amount", width:80, dataIndex:'amount', sortable:true, align:'left',
+				summaryType: 'sum',
+				summaryRenderer: function (v, p, r) {
+					_this.fireEvent('calculatedSummaryAmount', v);
+
+					p.style='font-weight:bold;';
+					return Ext.String.format('<strong>{0}</strong>', v);
+	            }
+			}
 		];
 
 		return this.callParent(arguments);

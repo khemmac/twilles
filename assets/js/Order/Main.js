@@ -1,11 +1,10 @@
-Ext.define('TCMS.FabricType.Main', {
+Ext.define('TCMS.Order.Main', {
 	extend	: 'Ext.panel.Panel',
 
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			layout: 'border',
-			border: true
+			layout: 'border'
 		});
 
 		return this.callParent(arguments);
@@ -17,8 +16,8 @@ Ext.define('TCMS.FabricType.Main', {
 			iconCls: 'b-application_add'
 		});
 
-		var editAct = Ext.create('BASE.ActionSingle', {
-			text: 'Edit',
+		var viewAct = Ext.create('BASE.ActionSingle', {
+			text: 'View',
 			iconCls: 'b-application_edit'
 		});
 
@@ -33,30 +32,30 @@ Ext.define('TCMS.FabricType.Main', {
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, viewAct, '-', activeAct, inActiveAct]
 		});
 
-		var window = Ext.create('TCMS.FabricType.Window');
+		var window = Ext.create('TCMS.Order.Window');
 
-		var grid = Ext.create('TCMS.FabricType.Grid', {
-			border: false,
+		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			border: false,
+			tbar: [addAct, viewAct, '-', activeAct, inActiveAct],
+			validateActions : [addAct, viewAct, activeAct, inActiveAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add Fabric type', 'add', grid, {
-				type: 'fabric_type'
+			window.openDialog('Add order', 'add', grid, {
+				type: 'order'
 			});
 		});
 
-		editAct.setHandler(function(){
-			window.openDialog('Edit Fabric type', 'edit', grid, {
+		viewAct.setHandler(function(){
+			window.openDialog('View order', 'edit', grid, {
 				id: grid.getSelectedId(),
-				type: 'fabric_type'
+				type: 'order'
 			});
 		});
 
@@ -75,8 +74,8 @@ Ext.define('TCMS.FabricType.Main', {
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
-			if(!editAct.isDisabled())
-				editAct.execute();
+			if(!viewAct.isDisabled())
+				viewAct.execute();
 		});
 
 		grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {

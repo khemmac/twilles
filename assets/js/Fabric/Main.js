@@ -5,7 +5,7 @@ Ext.define('TCMS.Fabric.Main', {
 
 		Ext.apply(this, {
 			layout: 'border',
-			border: false
+			border: true
 		});
 
 		return this.callParent(arguments);
@@ -40,6 +40,7 @@ Ext.define('TCMS.Fabric.Main', {
 
 		var grid = Ext.create('TCMS.Fabric.Grid', {
 			region: 'center',
+			border: false,
 			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
 			validateActions : [addAct, editAct, activeAct, inActiveAct]
 		});
@@ -92,6 +93,11 @@ Ext.define('TCMS.Fabric.Main', {
 
 		window.form.on('afterSetStatus', function() {
 			window.hide();
+			grid.load();
+		});
+
+		window.transactionPanel.grid.on('calculatedSummaryAmount', function(v){
+			window.form.form.findField('length_yards').setValue(v);
 			grid.load();
 		});
 
