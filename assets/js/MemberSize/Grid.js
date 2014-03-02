@@ -1,4 +1,4 @@
-Ext.define('TCMS.Order.Grid', {
+Ext.define('TCMS.MemberSize.Grid', {
 	extend	: 'BASE.Grid',
 	constructor:function(config) {
 
@@ -20,43 +20,65 @@ Ext.define('TCMS.Order.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'order'
+					type: 'v_member_size'
 				}
 			},
 			fields: [
 
 /*
-`tbl_order`.`delivery_name`,
-`tbl_order`.`delivery_address1`,
-`tbl_order`.`delivery_address2`,
-`tbl_order`.`delivery_province`,
-`tbl_order`.`delivery_district`,
-`tbl_order`.`delivery_zipcode`,
-`tbl_order`.`delivery_country_id`,
-`tbl_order`.`inventory_packaging_id`,
-`tbl_order`.`delivery_code`,
-`tbl_order`.`delievery_method`,
-`tbl_order`.`PMGWRESP`,
-`tbl_order`.`remark`,
-`tbl_order`.`create_date`,
-`tbl_order`.`create_by`,
-`tbl_order`.`update_date`,
-`tbl_order`.`update_by`
+id,
+member_id,
+member_username,
+member_fullname,
+member_email,
+size_type,
+size_type_name,
+name,
+collar,
+shoulder,
+shoulder_center,
+shoulder_side,
+shoulder_shape,
+shoulder_level,
+shoulder_slope,
+chest,
+chest_buffer,
+chest_front,
+chest_back,
+chest_height,
+chest_distance,
+chest_frontpiece,
+chest_backpiece,
+waist,
+waist_buffer,
+waist_frontpiece,
+waist_backpiece,
+hips,
+hips_buffer,
+hips_frontpiece,
+hips_backpiece,
+length_in_front,
+length_in_back,
+length_out_front,
+length_out_back,
+sleeve_left,
+sleeve_right,
+biceps,
+biceps_buffer,
+elbow,
+elbow_buffer,
+wrist,
+armhole,
+armhole_buffer,
+is_active
  */
 				{ name:'id', type:'string' },
-				{ name:'member_id', type:'int' },
-				{ name:'order_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				{ name:'order_completed_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				{ name:'net', type:'float' },
-				{ name:'vat', type:'float' },
-				{ name:'delivery_cost', type:'float' },
-				{ name:'total', type:'float' },
-				{ name:'promotion_code', type:'string' },
-				{ name:'promotion_event_id', type:'int' },
+				{ name:'member_email', type:'string' },
+				{ name:'size_type', type: 'int' },
+				{ name:'size_type_name', type: 'string' },
+				{ name:'name', type: 'string' },
 
-				{ name:'payment_method', type:'int' },
-				{ name:'payment_ref', type:'string' },
-				{ name:'status', type:'int' },
+				{ name:'is_active', type:'int' },
 
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
@@ -70,15 +92,11 @@ Ext.define('TCMS.Order.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Order date", width:90, dataIndex:'order_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
-			},
-			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left' },
-			{text: "Vat", width:90, dataIndex:'vat', sortable:true, align:'left' },
-			{text: "Delivery cost", width:90, dataIndex:'delivery_cost', sortable:true, align:'left' },
-			{text: "Total", width:90, dataIndex:'total', sortable:true, align:'left' },
-
-			{text: "Status", width:80, dataIndex:'status', sortable:true, align:'center' },
+			{text: "Member", width:140, dataIndex:'member_email', sortable:true, align:'left' },
+			{text: "Size type", width:130, dataIndex:'size_type', sortable:true, align:'left', renderer:function(v,p,r){
+				return r.data.size_type_name;
+			} },
+			{text: "Size name", width:150, dataIndex:'name', sortable:true, align:'left' },
 
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }

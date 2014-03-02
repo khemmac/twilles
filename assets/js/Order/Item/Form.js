@@ -1,17 +1,12 @@
-Ext.define('TCMS.Order.Form', {
+Ext.define('TCMS.Order.Item.Form', {
 	extend	: 'BASE.Form',
 	requires : ['BASE.Form'],
 	constructor:function(config) {
 		var _this=this;
 
-		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'inventory'
-		});
-
 		Ext.apply(this, {
 			bodyStyle : 'padding:5px 0px 0px 0px;',
 			autoScroll: true,
-			plugins: [uxFormStatus],
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){

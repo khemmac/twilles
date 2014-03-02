@@ -1,4 +1,4 @@
-Ext.define('TCMS.Order.Window', {
+Ext.define('TCMS.Order.Item.Window', {
 	extend	: 'BASE.Window',
 	requires : ['BASE.Window'],
 	constructor:function(config) {
@@ -28,33 +28,24 @@ Ext.define('TCMS.Order.Window', {
 			text: 'Cancel'
 		});
 
-		this.form = Ext.create('TCMS.Order.Form', {
-			region: 'north',
-			height: 170,
-			border: true,
-			split: true
+		this.form = Ext.create('TCMS.Order.Item.Form', {
+			region: 'center',
+			border: true
 		});
-
-		this.itemPanel = Ext.create('TCMS.Order.Item.Main', { region: 'center' });
 
 		this.buttons = [
 			new Ext.button.Button(this.submitAct),
 			new Ext.button.Button(this.cancelAct)
 		];
 
-		this.items = [this.form, this.itemPanel];
+		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
-			//_this.fireEvent('login_success');
 		});
 
 		this.cancelAct.setHandler(function(){
 			_this.hide();
-		});
-
-		this.form.on('form_key_enter', function(){
-			_this.submitAct.execute();
 		});
 
 		this.on("show", function() {
@@ -78,12 +69,6 @@ Ext.define('TCMS.Order.Window', {
 			var _this = this;
 			this.hide(null, function() {
 				_this.form.deleteData();
-			});
-		},
-		"setStatus" : function() {
-			var _this = this;
-			this.hide(null, function() {
-				_this.form.setStatus();
 			});
 		}
 	}

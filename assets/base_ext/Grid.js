@@ -85,7 +85,7 @@ Ext.define('BASE.Grid', {
 	},
 	getSelectedObject : function() {
 		var sm = this.selModel;
-		var rs = sm.getSelections();
+		var rs = this.getSelectionsObject();
 		var ids = [];
 		Ext.each(rs, function(o, i, a) {
 			ids.push(o);

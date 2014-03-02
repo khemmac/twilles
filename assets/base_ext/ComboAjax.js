@@ -2,6 +2,7 @@ Ext.define('BASE.ComboAjax', {
 	extend	: 'Ext.form.field.ComboBox',
 
 	editable: false,
+	//forceSelection: true,
 	allowBlank : false,
 	triggerAction : 'all',
 	emptyText: '-- Select --',

@@ -104,6 +104,12 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function member_size()
+	{
+		$this->phxview->RenderView('cms/member_size');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 	public function order()
 	{
 		$this->phxview->RenderView('cms/order');

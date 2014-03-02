@@ -91,7 +91,7 @@ Ext.define('TCMS.MainViewport', {
 				}]
 			},{
 				xtype: 'buttongroup',
-				columns: 1,
+				columns: 2,
 				title: 'Member',
 				padding:'6 0 5 0',
 				items: [{
@@ -102,6 +102,28 @@ Ext.define('TCMS.MainViewport', {
 					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
 					href: __site_url+'cms/member'
+				}, {
+					text: 'Member size',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-large-package_utilities',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/member_size'
+				}]
+			},{
+				xtype: 'buttongroup',
+				columns: 1,
+				title: 'Order',
+				padding:'6 0 5 0',
+				items: [{
+					text: 'Order',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-large-order-history',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/order'
 				}]
 			}/*,{
 				xtype: 'buttongroup',

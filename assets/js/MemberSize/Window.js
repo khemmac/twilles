@@ -1,4 +1,4 @@
-Ext.define('TCMS.Order.Window', {
+Ext.define('TCMS.MemberSize.Window', {
 	extend	: 'BASE.Window',
 	requires : ['BASE.Window'],
 	constructor:function(config) {
@@ -28,21 +28,18 @@ Ext.define('TCMS.Order.Window', {
 			text: 'Cancel'
 		});
 
-		this.form = Ext.create('TCMS.Order.Form', {
-			region: 'north',
-			height: 170,
+		this.form = Ext.create('TCMS.MemberSize.Form', {
+			region: 'center',
 			border: true,
 			split: true
 		});
-
-		this.itemPanel = Ext.create('TCMS.Order.Item.Main', { region: 'center' });
 
 		this.buttons = [
 			new Ext.button.Button(this.submitAct),
 			new Ext.button.Button(this.cancelAct)
 		];
 
-		this.items = [this.form, this.itemPanel];
+		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
