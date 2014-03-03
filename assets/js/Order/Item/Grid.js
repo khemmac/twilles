@@ -136,43 +136,10 @@ Ext.define('TCMS.Order.Item.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:80, dataIndex:'id', sortable:true, align:'left'},
-			{text: "Style group", width:90, dataIndex:'style_group_name', sortable:true, align:'left' },
-			{text: "Collar", width:100, dataIndex:'part_collar_id', sortable:true, align:'left'},
-			{text: "Cuff", width:100, dataIndex:'part_cuff_id', sortable:true, align:'left'},
-			{text: "Placket", width:100, dataIndex:'part_placket_id', sortable:true, align:'left'},
-			{text: "Pocket", width:100, dataIndex:'part_pocket_id', sortable:true, align:'left'},
-			{text: "Yoke", width:100, dataIndex:'part_yoke_id', sortable:true, align:'left'},
-			{text: "Pleat", width:100, dataIndex:'part_pleat_id', sortable:true, align:'left'},
-			{text: "Bottom", width:100, dataIndex:'part_bottom_id', sortable:true, align:'left'},
-			{text: "Stitching", width:90, dataIndex:'stitching_type_name', sortable:true, align:'left'},
-			{text: "Inventory", width:100, dataIndex:'inventory_button_id', sortable:true, align:'left',
-				renderer: function(v,p,r){
-					var s = [];
-					if(!Ext.isEmpty(r.get('inventory_button_name')))
-						s.push(r.get('inventory_button_name'));
-					if(!Ext.isEmpty(r.get('inventory_label_name')))
-						s.push(r.get('inventory_label_name'));
-					if(!Ext.isEmpty(r.get('inventory_packaging_name')))
-						s.push(r.get('inventory_packaging_name'));
-					return s.join('<br />');
-				}
-			},
-			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
-				renderer: function(v,p,r){
-					var icns = (v)?'tick':'cross';
-					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
-				}
-			},
-
-			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
-			},
-			{text: "Create by", width:100, dataIndex:'create_by', sortable:true, align:'left'},
-			{text: "Update date", width:120, dataIndex:'update_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
-			},
-			{text: "Update by", width:100, dataIndex:'update_by', sortable:true, align:'left'}
+			{text: "Body fabric", width:100, dataIndex:'part_body_name', sortable:true, align:'left'},
+			{text: "Amount", width:90, dataIndex:'item_amount', sortable:true, align:'left' },
+			{text: "Value", width:90, dataIndex:'part_body_value', sortable:true, align:'left'},
+			{text: "Total", width:90, dataIndex:'Amount', sortable:true, align:'left'}
 		];
 
 		// event

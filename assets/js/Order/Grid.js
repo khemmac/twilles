@@ -20,7 +20,7 @@ Ext.define('TCMS.Order.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'order'
+					type: 'v_order'
 				}
 			},
 			fields: [
@@ -45,6 +45,7 @@ Ext.define('TCMS.Order.Grid', {
  */
 				{ name:'id', type:'string' },
 				{ name:'member_id', type:'int' },
+				{ name:'order_code', type:'string' },
 				{ name:'order_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'order_completed_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'net', type:'float' },
@@ -57,6 +58,7 @@ Ext.define('TCMS.Order.Grid', {
 				{ name:'payment_method', type:'int' },
 				{ name:'payment_ref', type:'string' },
 				{ name:'status', type:'int' },
+				{ name:'status_name', type:'string' },
 
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
@@ -70,15 +72,26 @@ Ext.define('TCMS.Order.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Order date", width:90, dataIndex:'order_date', sortable:true, align:'left',
+			{text: "Order code", width:120, dataIndex:'order_code', sortable:true, align:'left' },
+			{text: "Order date", width:120, dataIndex:'order_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			},
-			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left' },
-			{text: "Vat", width:90, dataIndex:'vat', sortable:true, align:'left' },
-			{text: "Delivery cost", width:90, dataIndex:'delivery_cost', sortable:true, align:'left' },
-			{text: "Total", width:90, dataIndex:'total', sortable:true, align:'left' },
+			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Vat", width:60, dataIndex:'vat', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Delivery cost", width:90, dataIndex:'delivery_cost', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Total", width:90, dataIndex:'total', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
 
-			{text: "Status", width:80, dataIndex:'status', sortable:true, align:'center' },
+			{text: "Status", width:120, dataIndex:'status', sortable:true, align:'left',
+				renderer: function(v,p,r){ return r.data.status_name; }
+			},
 
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }

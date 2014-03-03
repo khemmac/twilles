@@ -42,13 +42,13 @@ Ext.define('TCMS.Order.Item.Main', {
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add order', 'add', grid, {
+			window.openDialog('Add item', 'add', grid, {
 				type: 'order'
 			});
 		});
 
 		editAct.setHandler(function(){
-			window.openDialog('View order', 'edit', grid, {
+			window.openDialog('Edit item', 'edit', grid, {
 				id: grid.getSelectedId(),
 				type: 'order'
 			});

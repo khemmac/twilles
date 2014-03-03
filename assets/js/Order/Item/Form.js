@@ -59,21 +59,26 @@ Ext.define('TCMS.Order.Item.Form', {
 			]
 		});
 */
-		this.comboCountry = Ext.create('BASE.ComboAjax', Ext.apply({
-			fieldLabel: 'Country',
-			name : 'delivery_country_id',
-			proxyExtraParams: {
-				type:'country'
-			},
-			proxySorters: [{property: 'name', direction: 'ASC'}],
-			allowBlank: false
-		}, _fieldDefaults));
 
-		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
-			fieldLabel: 'Package',
-			name : 'inventory_packaging_id',
-			inventoryType: '4',
-			allowBlank: true
+		this.comboSizeType = _createField('BASE.ComboStatic', {
+			fieldLabel:'Size type',
+			name : 'size_type',
+			store:[
+				['1', 'Style Consultant'],
+				['2', 'Measure Yourself'],
+				['3', 'Measure Your Shirt'],
+				['4', 'Send Us Your Shirt'],
+				['5', 'Standard Size']
+			]
+		});
+
+		this.triggerMember = _createField('Ext.form.field.Trigger', {
+			fieldLabel:'Member',
+			name : 'member_fullname',
+			editable: false,
+			triggerCls: 'x-form-search-trigger',
+			allowBlank: false,
+			submitValue: false
 		});
 
 		this.items = [{
@@ -90,103 +95,151 @@ Ext.define('TCMS.Order.Item.Form', {
 			items:[{
 				// left column
 				// defaults for fields
-				columnWidth:0.3,
+				columnWidth:0.34,
 				defaults:_fieldDefaults,
 				items:[{
-					name: 'code',
+					name: 'name',
+					xtype: 'textfield',
+					fieldLabel: 'Name',
+					allowBlank: false
+				},
+				this.triggerMember, {
+					name: 'member_id',
+					xtype: 'hiddenfield'
+				},/*{
+					name: 'member_fullname',
 					xtype: 'displayfield',
-					fieldLabel: 'Code',
-					value: 'xxxxxxxxxxxxxxxx'
-				}, {
-					name: 'order_date',
-					xtype: 'datefield',
-					fieldLabel: 'Order date',
-					allowBlank: false,
-					value: new Date(),
-					format:'d/m/Y',
-					altFormats:'Y-m-d|Y-m-d H:i:s|d/m/Y',
-					submitFormat:'Y-m-d',
-					editable: false,
-					listeners: {
-						select: function(o, val){
-							_this.form.findField('order_complete_date').setValue(Ext.Date.add(val, Ext.Date.DAY, 7));
-						}
-					}
-				}, {
-					name: 'order_complete_date',
-					xtype: 'datefield',
-					fieldLabel: 'Complete date',
-					allowBlank: false,
-					value: new Date(),
-					format:'d/m/Y',
-					altFormats:'Y-m-d|Y-m-d H:i:s|d/m/Y',
-					submitFormat:'Y-m-d',
-					editable: false,
-					value: Ext.Date.add(new Date(), Ext.Date.DAY, 7)
-				},/* {
-					name: 'create_date',
-					xtype: 'displayfield',
-					fieldLabel: 'Order date',
-					value: Ext.Date.format(new Date(), 'Y-m-d H:i:s'),
-					renderer: function(v, field){
-						return (v)?Ext.Date.format(Ext.Date.parse(v, 'Y-m-d H:i:s'), 'd/m/Y'):'-';
-					}
+					fieldLabel: 'Member'
 				},*/
+				this.comboSizeType,
+				_createField('BASE.field.NumericField', { fieldLabel:'Collar', name : 'collar' }),
+				{
+					xtype: 'fieldset',
+					title: 'Shoulder',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Shoulder', name : 'shoulder' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Side', name : 'shoulder_side' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Shape', name : 'shoulder_shape' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Level', name : 'shoulder_level' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Slope', name : 'shoulder_slope' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Waist',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Waist', name : 'waist' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'waist_buffer' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Front piece', name : 'waist_frontpiece' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Back piece', name : 'waist_backpiece' })
+					]
+				}
 				]
 			},{
 				// column 2
 				// defaults for fields
-				columnWidth:0.7,
+				columnWidth:0.33,
 				defaults:_fieldDefaults,
 				items:[{
 					xtype: 'fieldset',
-					title: 'Delivery info',
+					title: 'Chest',
 					defaults: _fieldDefaults,
-					items: [{
-						layout:'column',
-						border:false,
-						defaults:{
-							layout:'form',
-							border:false,
-							xtype:'panel',
-							bodyStyle:'padding:0 22px 0 0'
-						},
-						items:[{
-							// delivery left column
-							columnWidth:0.5,
-							defaults:_fieldDefaults,
-							items:[{
-								name: 'delivery_name',
-								xtype: 'textfield',
-								fieldLabel: 'Name'
-							}, {
-								name: 'delivery_zipcode',
-								xtype: 'textfield',
-								fieldLabel: 'Zip code',
-								maxLength: 5
-							},
-							this.comboCountry,
-							this.comboInventoryPackage]
-						},{
-							// delivery left column
-							columnWidth:0.5,
-							defaults:_fieldDefaults,
-							items:[{
-								name: 'delivery_address1',
-								xtype: 'textarea',
-								fieldLabel: 'Address 1',
-								rows: 2
-							}, {
-								name: 'delivery_address2',
-								xtype: 'textarea',
-								fieldLabel: 'Address 2',
-								rows: 2
-							}]
-						}]
-					}]
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Chest', name : 'chest' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'chest_buffer' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Front', name : 'chest_front' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Back', name : 'chest_back' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Distance', name : 'chest_distance' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Front piece', name : 'chest_frontpiece' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Back piece', name : 'chest_backpiece' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Hips',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Hips', name : 'hips' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'hips_buffer' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Front piece', name : 'hips_frontpiece' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Back piece', name : 'hips_backpiece' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Sleeve',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Left', name : 'sleeve_left' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Right', name : 'sleeve_right' })
+					]
 				}]
+			},{
+				// column 3
+				// defaults for fields
+				columnWidth:0.33,
+				defaults:_fieldDefaults,
+				items:[{
+					xtype: 'fieldset',
+					title: 'Length',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'In front', name : 'length_in_front' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'In back', name : 'length_in_back' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Out front', name : 'length_out_front' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Out back', name : 'length_out_back' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Biceps',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Biceps', name : 'biceps' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'biceps_buffer' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Elbow',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Elbow', name : 'elbow' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'elbow_buffer' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Armhole',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Armhole', name : 'armhole' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'armhole_buffer' })
+					]
+				},
+				_createField('BASE.field.NumericField', { fieldLabel:'Wrist', name : 'wrist' })]
 			}]
 		}];
+
+		this.memberDialog = Ext.create('TCMS.MemberSize.Member.Window');
+
+		// event
+		this.triggerMember.onTriggerClick = function(){
+			// show member dialog
+			_this.memberDialog.openDialog('Select member', 'search');
+		};
+
+		// member event
+		this.memberDialog.submitAct.setHandler(function(){
+			var record = _this.memberDialog.grid.getSelectedObject();
+			if(record){
+				var memberObj = record.data;
+				_this.form.findField('member_fullname').setValue(memberObj.first_name+' '+memberObj.last_name);
+				_this.form.findField('member_id').setValue(memberObj.id);
+				_this.memberDialog.hide();
+			}
+		});
+
+		this.memberDialog.grid.on('celldblclick', function(g, td, cellIndex, r) {
+			if(!_this.memberDialog.submitAct.isDisabled())
+				_this.memberDialog.submitAct.execute();
+		});
 
 		return this.callParent(arguments);
 	}

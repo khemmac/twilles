@@ -21,56 +21,30 @@ Ext.define('TCMS.Order.Main', {
 			iconCls: 'b-application_edit'
 		});
 
-		var activeAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Active',
-			iconCls: 'b-flag-green'
-		});
-
-		var inActiveAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Inactive',
-			iconCls: 'b-flag-red'
-		});
-
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, viewAct, '-', activeAct, inActiveAct]
+			items: [addAct, viewAct]
 		});
 
-		var window = Ext.create('TCMS.Order.Window');
+		var dialog = Ext.create('TCMS.Order.Window');
 
 		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, viewAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, viewAct, activeAct, inActiveAct]
+			tbar: [addAct, viewAct],
+			validateActions : [addAct, viewAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add order', 'add', grid, {
+			dialog.openDialog('Add order', 'add', grid, {
 				type: 'order'
 			});
 		});
 
 		viewAct.setHandler(function(){
-			window.openDialog('View order', 'edit', grid, {
-				id: grid.getSelectedId(),
-				type: 'order'
-			});
-		});
+			window.open(__site_url+'backend/order_report/report/'+grid.getSelectedId());
 
-		activeAct.setHandler(function(){
-			window.openDialog('Active', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:1
-			});
-		});
-
-		inActiveAct.setHandler(function(){
-			window.openDialog('Inactive', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:0
-			});
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
@@ -83,13 +57,13 @@ Ext.define('TCMS.Order.Main', {
 			contextMenu.showAt(e.xy);
 		});
 
-		window.form.on('afterSave', function() {
-			window.hide();
+		dialog.form.on('afterSave', function() {
+			dialog.hide();
 			grid.load();
 		});
 
-		window.form.on('afterSetStatus', function() {
-			window.hide();
+		dialog.form.on('afterSetStatus', function() {
+			dialog.hide();
 			grid.load();
 		});
 
