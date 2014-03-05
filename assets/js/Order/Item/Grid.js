@@ -24,7 +24,7 @@ Ext.define('TCMS.Order.Item.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'order_item'
+					type: 'v_order_item'
 				}
 			},
 			fields: [

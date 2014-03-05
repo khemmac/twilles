@@ -49,16 +49,6 @@ Ext.define('TCMS.Order.Item.Form', {
 		var _createField = function(ns, config){
 			return Ext.create(ns, Ext.apply(config, _fieldDefaults));
 		};
-/*
-		this.comboStyleType = _createField('BASE.ComboStatic', {
-			fieldLabel:'Style type',
-			name : 'style_type',
-			store:[
-				['1', 'Base style'],
-				['2', 'Trend style']
-			]
-		});
-*/
 
 		this.comboSizeType = _createField('BASE.ComboStatic', {
 			fieldLabel:'Size type',

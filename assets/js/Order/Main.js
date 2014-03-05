@@ -16,13 +16,18 @@ Ext.define('TCMS.Order.Main', {
 			iconCls: 'b-application_add'
 		});
 
-		var viewAct = Ext.create('BASE.ActionSingle', {
-			text: 'View',
+		var editAct = Ext.create('BASE.ActionSingle', {
+			text: 'Edit',
 			iconCls: 'b-application_edit'
 		});
 
+		var viewAct = Ext.create('BASE.ActionSingle', {
+			text: 'View',
+			iconCls: 'b-small-magnifier'
+		});
+
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, viewAct]
+			items: [addAct, editAct, viewAct]
 		});
 
 		var dialog = Ext.create('TCMS.Order.Window');
@@ -30,15 +35,19 @@ Ext.define('TCMS.Order.Main', {
 		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, viewAct],
-			validateActions : [addAct, viewAct]
+			tbar: [addAct, editAct, viewAct],
+			validateActions : [addAct, editAct, viewAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			dialog.openDialog('Add order', 'add', grid, {
-				type: 'order'
+			dialog.openDialog('Add order', 'add', grid, {});
+		});
+
+		editAct.setHandler(function(){
+			dialog.openDialog('Edit order', 'edit', grid, {
+				id: grid.getSelectedId()
 			});
 		});
 
@@ -48,8 +57,8 @@ Ext.define('TCMS.Order.Main', {
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
-			if(!viewAct.isDisabled())
-				viewAct.execute();
+			if(!editAct.isDisabled())
+				editAct.execute();
 		});
 
 		grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
@@ -57,9 +66,16 @@ Ext.define('TCMS.Order.Main', {
 			contextMenu.showAt(e.xy);
 		});
 
-		dialog.form.on('afterSave', function() {
+		dialog.form.on('afterSave', function(form, act) {
 			dialog.hide();
-			grid.load();
+
+			var id = act.result.data.id;
+			if(id>0){
+				grid.store.getById(id);
+				dialog.openDialog('Edit order', 'edit', grid, {
+					id: id
+				});
+			}
 		});
 
 		dialog.form.on('afterSetStatus', function() {

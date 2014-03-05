@@ -32,49 +32,47 @@ Ext.define('TCMS.Order.Item.Main', {
 
 		var window = Ext.create('TCMS.Order.Item.Window');
 
-		var grid = Ext.create('TCMS.Order.Item.Grid', {
+		this.grid = Ext.create('TCMS.Order.Item.Grid', {
 			region: 'center',
 			border: false,
 			tbar: [addAct, editAct, deleteAct],
 			validateActions : [addAct, editAct, deleteAct]
 		});
 
-		this.items = [grid];
+		this.items = [this.grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add item', 'add', grid, {
+			window.openDialog('Add item', 'add', this.grid, {
 				type: 'order'
 			});
 		});
 
 		editAct.setHandler(function(){
-			window.openDialog('Edit item', 'edit', grid, {
-				id: grid.getSelectedId(),
+			window.openDialog('Edit item', 'edit', this.grid, {
+				id: this.grid.getSelectedId(),
 				type: 'order'
 			});
 		});
 
-		grid.on('celldblclick', function(g, td, cellIndex, r) {
+		this.grid.on('celldblclick', function(g, td, cellIndex, r) {
 			if(!editAct.isDisabled())
 				editAct.execute();
 		});
 
-		grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
+		this.grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
 			e.preventDefault();
 			contextMenu.showAt(e.xy);
 		});
 
 		window.form.on('afterSave', function() {
 			window.hide();
-			grid.load();
+			this.grid.load();
 		});
 
 		window.form.on('afterSetStatus', function() {
 			window.hide();
-			grid.load();
+			this.grid.load();
 		});
-
-		grid.load();
 
 		return this.callParent(arguments);
 	}

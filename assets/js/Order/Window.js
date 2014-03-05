@@ -29,20 +29,17 @@ Ext.define('TCMS.Order.Window', {
 		});
 
 		this.form = Ext.create('TCMS.Order.Form', {
-			region: 'north',
-			height: 170,
-			border: true,
-			split: true
+			region: 'center'
 		});
 
-		this.itemPanel = Ext.create('TCMS.Order.Item.Main', { region: 'center' });
+		this.itemPanel = this.form.itemPanel;
 
 		this.buttons = [
 			new Ext.button.Button(this.submitAct),
 			new Ext.button.Button(this.cancelAct)
 		];
 
-		this.items = [this.form, this.itemPanel];
+		this.items = [this.form/*, this.itemPanel*/];
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
@@ -69,10 +66,22 @@ Ext.define('TCMS.Order.Window', {
 	actions : {
 		"add" : function() {
 			this.form.form.reset();
+
+			this.itemPanel.setDisabled(true);
+			// load item grid
+			this.itemPanel.grid.load({
+				filter: Ext.encode({order_id:-1})
+			});
 		},
 		"edit" : function() {
 			this.form.form.reset();
 			this.form.loadData();
+
+			this.itemPanel.setDisabled(false);
+			// load item grid
+			this.itemPanel.grid.load({
+				filter: Ext.encode({order_id:this.dialogParams.id})
+			});
 		},
 		"delete" : function() {
 			var _this = this;

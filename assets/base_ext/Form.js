@@ -1,10 +1,10 @@
 Ext.define('BASE.Form', {
 	extend	: 'Ext.form.Panel',
 	monitorValid : true,
+	bodyPadding: '10 0 0 5',
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			bodyPadding: '10 0 0 5',
 			border: false,
 			defaults:{
 				labelAlign: 'right'

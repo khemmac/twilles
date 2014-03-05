@@ -4,14 +4,10 @@ Ext.define('TCMS.Order.Form', {
 	constructor:function(config) {
 		var _this=this;
 
-		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'inventory'
-		});
-
 		Ext.apply(this, {
-			bodyStyle : 'padding:5px 0px 0px 0px;',
+			bodyPadding : false,
+			layout: 'border',
 			autoScroll: true,
-			plugins: [uxFormStatus],
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
@@ -25,16 +21,17 @@ Ext.define('TCMS.Order.Form', {
 					});
 				};
 
-				o.is_active = (o.is_active && o.is_active=='on')?1:0;
 				return o;
 			},
 			getSaveParams : function() {
 				return Ext.apply({
+					type: 'order'
 				}, this.formParams);
 			},
 			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.formAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
+					type: 'v_order'
 				}, this.formParams);
 			},
 			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
@@ -44,6 +41,20 @@ Ext.define('TCMS.Order.Form', {
 	},
 	initComponent : function() {
 		var _this=this;
+
+		this.itemPanel = Ext.create('TCMS.Order.Item.Main', {
+			region: 'center',
+			title: 'Order item'
+		});
+/*
+		this.itemPanel = Ext.create('TCMS.Order.Item.Main', {
+			region: 'center',
+			border: true//,
+			//tbar: [addAct, editAct, deleteAct],
+			//validateActions : [addAct, editAct, deleteAct]
+		});
+*/
+		// *** FIELDS ***
 
 		var _fieldDefaults = {
 			labelAlign: 'right',
@@ -71,7 +82,7 @@ Ext.define('TCMS.Order.Form', {
 				type:'country'
 			},
 			proxySorters: [{property: 'name', direction: 'ASC'}],
-			allowBlank: false
+			allowBlank: true
 		}, _fieldDefaults));
 
 		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
@@ -81,10 +92,22 @@ Ext.define('TCMS.Order.Form', {
 			allowBlank: true
 		});
 
-		this.items = [{
+		this.triggerMember = _createField('Ext.form.field.Trigger', {
+			fieldLabel:'Member',
+			name : 'member_fullname',
+			editable: false,
+			triggerCls: 'x-form-search-trigger',
+			allowBlank: false,
+			submitValue: false
+		});
+
+		var formMain = Ext.create('Ext.panel.Panel', {
+			region: 'north',
+			split: true,
+			border: true,
+			height: 160,
 			// column layout with 2 columns
 			layout:'column',
-			border:false,
 			// defaults for columns
 			defaults:{
 				layout:'form',
@@ -98,7 +121,7 @@ Ext.define('TCMS.Order.Form', {
 				columnWidth:0.3,
 				defaults:_fieldDefaults,
 				items:[{
-					name: 'code',
+					name: 'order_code',
 					xtype: 'displayfield',
 					fieldLabel: 'Code',
 					value: 'xxxxxxxxxxxxxxxx'
@@ -114,11 +137,11 @@ Ext.define('TCMS.Order.Form', {
 					editable: false,
 					listeners: {
 						select: function(o, val){
-							_this.form.findField('order_complete_date').setValue(Ext.Date.add(val, Ext.Date.DAY, 7));
+							_this.form.findField('order_completed_date').setValue(Ext.Date.add(val, Ext.Date.DAY, 7));
 						}
 					}
 				}, {
-					name: 'order_complete_date',
+					name: 'order_completed_date',
 					xtype: 'datefield',
 					fieldLabel: 'Complete date',
 					allowBlank: false,
@@ -128,16 +151,11 @@ Ext.define('TCMS.Order.Form', {
 					submitFormat:'Y-m-d',
 					editable: false,
 					value: Ext.Date.add(new Date(), Ext.Date.DAY, 7)
-				},/* {
-					name: 'create_date',
-					xtype: 'displayfield',
-					fieldLabel: 'Order date',
-					value: Ext.Date.format(new Date(), 'Y-m-d H:i:s'),
-					renderer: function(v, field){
-						return (v)?Ext.Date.format(Ext.Date.parse(v, 'Y-m-d H:i:s'), 'd/m/Y'):'-';
-					}
-				},*/
-				]
+				},
+				this.triggerMember, {
+					name: 'member_id',
+					xtype: 'hiddenfield'
+				}]
 			},{
 				// column 2
 				// defaults for fields
@@ -191,7 +209,33 @@ Ext.define('TCMS.Order.Form', {
 					}]
 				}]
 			}]
-		}];
+		});
+
+		this.items = [formMain, this.itemPanel];
+
+		this.memberDialog = Ext.create('TCMS.MemberSize.Member.Window');
+
+		// event
+		this.triggerMember.onTriggerClick = function(){
+			// show member dialog
+			_this.memberDialog.openDialog('Select member', 'search');
+		};
+
+		// member event
+		this.memberDialog.submitAct.setHandler(function(){
+			var record = _this.memberDialog.grid.getSelectedObject();
+			if(record){
+				var memberObj = record.data;
+				_this.form.findField('member_fullname').setValue(memberObj.first_name+' '+memberObj.last_name);
+				_this.form.findField('member_id').setValue(memberObj.id);
+				_this.memberDialog.hide();
+			}
+		});
+
+		this.memberDialog.grid.on('celldblclick', function(g, td, cellIndex, r) {
+			if(!_this.memberDialog.submitAct.isDisabled())
+				_this.memberDialog.submitAct.execute();
+		});
 
 		return this.callParent(arguments);
 	}
