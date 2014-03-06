@@ -119,6 +119,7 @@ Ext.define('TCMS.MemberSize.Form', {
 				},*/
 				this.comboSizeType,
 				_createField('BASE.field.NumericField', { fieldLabel:'Collar', name : 'collar' }),
+				_createField('BASE.field.NumericField', { fieldLabel:'Wrist', name : 'wrist' }),
 				{
 					xtype: 'fieldset',
 					title: 'Shoulder',
@@ -218,8 +219,7 @@ Ext.define('TCMS.MemberSize.Form', {
 						_createField('BASE.field.NumericField', { fieldLabel:'Armhole', name : 'armhole' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'armhole_buffer' })
 					]
-				},
-				_createField('BASE.field.NumericField', { fieldLabel:'Wrist', name : 'wrist' })]
+				}]
 			}]
 		}];
 

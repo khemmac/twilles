@@ -12,13 +12,15 @@ Ext.define('TCMS.Order.Form', {
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
 					var child = children[i];
-					child.query('.field').forEach(function(c){
-						if(c.xtype=='combobox' && Ext.isEmpty(o[c.name])){
+					if(child && child.query){
+						child.query('.field').forEach(function(c){
+							if(c.xtype=='combobox' && Ext.isEmpty(o[c.name])){
 
-							delete o[c.name];
-							return false;
-						}
-					});
+								delete o[c.name];
+								return false;
+							}
+						});
+					}
 				};
 
 				return o;
@@ -46,16 +48,8 @@ Ext.define('TCMS.Order.Form', {
 			region: 'center',
 			title: 'Order item'
 		});
-/*
-		this.itemPanel = Ext.create('TCMS.Order.Item.Main', {
-			region: 'center',
-			border: true//,
-			//tbar: [addAct, editAct, deleteAct],
-			//validateActions : [addAct, editAct, deleteAct]
-		});
-*/
-		// *** FIELDS ***
 
+		// *** FIELDS ***
 		var _fieldDefaults = {
 			labelAlign: 'right',
 			anchor:'100%',
@@ -235,6 +229,21 @@ Ext.define('TCMS.Order.Form', {
 		this.memberDialog.grid.on('celldblclick', function(g, td, cellIndex, r) {
 			if(!_this.memberDialog.submitAct.isDisabled())
 				_this.memberDialog.submitAct.execute();
+		});
+
+		// *** ORDER ITEM
+
+		this.itemPanel.addAct.setHandler(function(){
+			_this.itemPanel.window.openDialog('Add item', 'add', _this.itemPanel.grid, {
+				order_id: _this.formParams.id
+			});
+		});
+
+		this.itemPanel.editAct.setHandler(function(){
+			_this.itemPanel.window.openDialog('Edit item', 'edit', _this.itemPanel.grid, {
+				id: _this.itemPanel.grid.getSelectedId(),
+				order_id: _this.formParams.id
+			});
 		});
 
 		return this.callParent(arguments);

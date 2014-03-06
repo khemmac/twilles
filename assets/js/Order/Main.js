@@ -76,6 +76,7 @@ Ext.define('TCMS.Order.Main', {
 					id: id
 				});
 			}
+			grid.load();
 		});
 
 		dialog.form.on('afterSetStatus', function() {

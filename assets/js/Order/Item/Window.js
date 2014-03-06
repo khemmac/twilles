@@ -5,8 +5,8 @@ Ext.define('TCMS.Order.Item.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 540,
-			width: 900,
+			height: 570,
+			width: 910,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -29,8 +29,7 @@ Ext.define('TCMS.Order.Item.Window', {
 		});
 
 		this.form = Ext.create('TCMS.Order.Item.Form', {
-			region: 'center',
-			border: true
+			region: 'center'
 		});
 
 		this.buttons = [

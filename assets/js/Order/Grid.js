@@ -73,8 +73,8 @@ Ext.define('TCMS.Order.Grid', {
 		this.columns = [
 			new Ext.grid.RowNumberer(),
 			{text: "Order code", width:120, dataIndex:'order_code', sortable:true, align:'left' },
-			{text: "Order date", width:120, dataIndex:'order_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
+			{text: "Order date", width:80, dataIndex:'order_date', sortable:true, align:'left',
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y'):'-'; }
 			},
 			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')

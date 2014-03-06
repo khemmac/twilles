@@ -10,53 +10,41 @@ Ext.define('TCMS.Order.Item.Main', {
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
-		var addAct = Ext.create('BASE.Action', {
+		this.addAct = Ext.create('BASE.Action', {
 			text: 'Add',
 			iconCls: 'b-application_add'
 		});
 
-		var editAct = Ext.create('BASE.ActionSingle', {
+		this.editAct = Ext.create('BASE.ActionSingle', {
 			text: 'Edit',
 			iconCls: 'b-application_edit'
 		});
 
-		var deleteAct = Ext.create('BASE.ActionMultiple', {
+		this.deleteAct = Ext.create('BASE.ActionMultiple', {
 			text: 'Delete',
 			iconCls: 'b-application_delete'
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, deleteAct]
+			items: [this.addAct, this.editAct, this.deleteAct]
 		});
 
-		var window = Ext.create('TCMS.Order.Item.Window');
+		this.window = Ext.create('TCMS.Order.Item.Window');
 
 		this.grid = Ext.create('TCMS.Order.Item.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, deleteAct],
-			validateActions : [addAct, editAct, deleteAct]
+			tbar: [this.addAct, this.editAct, this.deleteAct],
+			validateActions : [this.addAct, this.editAct, this.deleteAct]
 		});
 
 		this.items = [this.grid];
 
-		addAct.setHandler(function(){
-			window.openDialog('Add item', 'add', this.grid, {
-				type: 'order'
-			});
-		});
-
-		editAct.setHandler(function(){
-			window.openDialog('Edit item', 'edit', this.grid, {
-				id: this.grid.getSelectedId(),
-				type: 'order'
-			});
-		});
-
 		this.grid.on('celldblclick', function(g, td, cellIndex, r) {
-			if(!editAct.isDisabled())
-				editAct.execute();
+			if(!_this.editAct.isDisabled())
+				_this.editAct.execute();
 		});
 
 		this.grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
@@ -64,14 +52,14 @@ Ext.define('TCMS.Order.Item.Main', {
 			contextMenu.showAt(e.xy);
 		});
 
-		window.form.on('afterSave', function() {
-			window.hide();
-			this.grid.load();
+		this.window.form.on('afterSave', function() {
+			_this.window.hide();
+			_this.grid.load();
 		});
 
-		window.form.on('afterSetStatus', function() {
-			window.hide();
-			this.grid.load();
+		this.window.form.on('afterSetStatus', function() {
+			_this.window.hide();
+			_this.grid.load();
 		});
 
 		return this.callParent(arguments);

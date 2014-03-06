@@ -109,7 +109,6 @@ Ext.define('TCMS.Order.Item.Grid', {
 				{ name:'inventory_label_id', type:'string' },
 				{ name:'inventory_label_name', type:'string' },
 
-				'remark',
 				{ name:'fabric_collar_inner_id', type:'string' },
 				{ name:'fabric_collar_inner_name', type:'string' },
 				{ name:'fabric_collar_outer_id', type:'string' },
@@ -123,7 +122,11 @@ Ext.define('TCMS.Order.Item.Grid', {
 				{ name:'fabric_cuff_outer_id', type:'string' },
 				{ name:'fabric_cuff_outer_name', type:'string' },
 
-				{ name:'is_active', type:'boolean' },
+				{ name:'fabric_type_id', type:'int' },
+				{ name:'fabric_type_name', type:'string' },
+				{ name:'fabric_type_cost', type:'float' },
+				{ name:'fabric_type_price', type:'float' },
+
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
 				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -136,10 +139,16 @@ Ext.define('TCMS.Order.Item.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Body fabric", width:100, dataIndex:'part_body_name', sortable:true, align:'left'},
+			{text: "Body fabric", width:100, dataIndex:'fabric_body_id', sortable:true, align:'left'},
+			{text: "Fabric type", width:150, dataIndex:'fabric_type_name', sortable:true, align:'left'},
 			{text: "Amount", width:90, dataIndex:'item_amount', sortable:true, align:'left' },
-			{text: "Value", width:90, dataIndex:'part_body_value', sortable:true, align:'left'},
-			{text: "Total", width:90, dataIndex:'Amount', sortable:true, align:'left'}
+			{text: "Fabric price", width:90, dataIndex:'fabric_type_price', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Total", width:90, dataIndex:'Amount', sortable:false, align:'left', renderer: function(v,p,r){
+				var total = r.data.item_amount * r.data.fabric_type_price;
+				return Ext.util.Format.number(total, '0,000.##');
+			}}
 		];
 
 		// event
