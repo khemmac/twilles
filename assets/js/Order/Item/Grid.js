@@ -29,6 +29,7 @@ Ext.define('TCMS.Order.Item.Grid', {
 			},
 			fields: [
 				{ name:'id', type:'int' },
+				{ name:'item_price', type:'float' },
 				{ name:'item_amount', type:'int' },
 
 				// size
@@ -140,13 +141,15 @@ Ext.define('TCMS.Order.Item.Grid', {
 		this.columns = [
 			new Ext.grid.RowNumberer(),
 			{text: "Body fabric", width:100, dataIndex:'fabric_body_id', sortable:true, align:'left'},
-			{text: "Fabric type", width:150, dataIndex:'fabric_type_name', sortable:true, align:'left'},
-			{text: "Amount", width:90, dataIndex:'item_amount', sortable:true, align:'left' },
-			{text: "Fabric price", width:90, dataIndex:'fabric_type_price', sortable:true, align:'left',
+			{text: "Fabric type", width:130, dataIndex:'fabric_type_name', sortable:true, align:'left',
+				renderer: function(v){ return (!Ext.isEmpty(v))?v:'-'; }
+			},
+			{text: "Amount", width:60, dataIndex:'item_amount', sortable:true, align:'left' },
+			{text: "Fabric price", width:90, dataIndex:'item_price', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
 			},
 			{text: "Total", width:90, dataIndex:'Amount', sortable:false, align:'left', renderer: function(v,p,r){
-				var total = r.data.item_amount * r.data.fabric_type_price;
+				var total = r.data.item_amount * r.data.item_price;
 				return Ext.util.Format.number(total, '0,000.##');
 			}}
 		];

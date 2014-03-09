@@ -87,6 +87,13 @@ Ext.define('TCMS.Order.Main', {
 
 		grid.load();
 
+		// when item saved do reload main grid
+		dialog.form.gridPanel.window.form.on('afterSave', function() {
+			grid.load();
+
+			// reload money data
+		});
+
 		return this.callParent(arguments);
 	}
 });

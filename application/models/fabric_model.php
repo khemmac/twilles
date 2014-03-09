@@ -30,6 +30,7 @@ Class Fabric_model extends Base_model
 	}
 
 	public function before_update_check_Key($o){
+		$o['id'] = $o['code'];
 		unset($o['code']);
 		return $o;
 	}

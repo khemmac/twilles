@@ -44,11 +44,6 @@ Ext.define('TCMS.Order.Form', {
 	initComponent : function() {
 		var _this=this;
 
-		this.itemPanel = Ext.create('TCMS.Order.Item.Main', {
-			region: 'center',
-			title: 'Order item'
-		});
-
 		// *** FIELDS ***
 		var _fieldDefaults = {
 			labelAlign: 'right',
@@ -205,7 +200,89 @@ Ext.define('TCMS.Order.Form', {
 			}]
 		});
 
-		this.items = [formMain, this.itemPanel];
+		// **** ITEM AREA
+
+		this.gridPanel = Ext.create('TCMS.Order.Item.Main', {
+			region: 'center',
+			title: 'Order item'
+		});
+
+		var calculateTotal = function(){
+			var bForm = _this.getForm(),
+				txtNet = bForm.findField('net'),
+				txtVat = bForm.findField('vat'),
+				txtDeliveryCost = bForm.findField('delivery_cost'),
+				txtTotal = bForm.findField('total');
+			var net = parseFloat(txtNet.getValue()),
+				vat = txtVat.getValue(),
+				deliveryCost = txtDeliveryCost.getValue(),
+				total = net + vat + deliveryCost;
+			txtTotal.setValue(total);
+		};
+
+		var formTotal = Ext.create('Ext.panel.Panel', {
+			region: 'south',
+			split: true,
+			border: true,
+			height: 120,
+			bodyPadding: '5 0 0 0',
+			defaults:{
+				layout:'form',
+				border:false,
+				xtype:'panel',
+				bodyStyle:'padding:0 22px 0 0'
+			},
+			items:[
+				_createField('Ext.form.field.Display', {
+					fieldLabel:'Net',
+					name : 'net',
+					renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
+				}),
+				_createField('BASE.field.NumericField', {
+					fieldLabel:'Vat',
+					name : 'vat',
+					allowBlank: true,
+					value: 0,
+					fieldStyle: 'text-align: left;',
+					enableKeyEvents: true,
+					listeners: {
+						keyup: calculateTotal
+					}
+				}),
+				_createField('BASE.field.NumericField', {
+					fieldLabel:'Delivery cost',
+					name : 'delivery_cost',
+					allowBlank: true,
+					value: 0,
+					fieldStyle: 'text-align: left;',
+					enableKeyEvents: true,
+					listeners: {
+						keyup: calculateTotal
+					}
+				}),
+				_createField('Ext.form.field.Display', {
+					fieldLabel:'Total',
+					name : 'total',
+					style: { fontWeight: 'bold' },
+					renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
+				})
+			]
+		});
+
+		this.itemPanel = Ext.create('Ext.panel.Panel', {
+			layout: 'border',
+			region: 'center',
+			border: false,
+			items: [
+				this.gridPanel,
+				formTotal
+			]
+		});
+
+		this.items = [
+			formMain,
+			this.itemPanel
+		];
 
 		this.memberDialog = Ext.create('TCMS.MemberSize.Member.Window');
 
@@ -233,15 +310,15 @@ Ext.define('TCMS.Order.Form', {
 
 		// *** ORDER ITEM
 
-		this.itemPanel.addAct.setHandler(function(){
-			_this.itemPanel.window.openDialog('Add item', 'add', _this.itemPanel.grid, {
+		this.gridPanel.addAct.setHandler(function(){
+			_this.gridPanel.window.openDialog('Add item', 'add', _this.gridPanel.grid, {
 				order_id: _this.formParams.id
 			});
 		});
 
-		this.itemPanel.editAct.setHandler(function(){
-			_this.itemPanel.window.openDialog('Edit item', 'edit', _this.itemPanel.grid, {
-				id: _this.itemPanel.grid.getSelectedId(),
+		this.gridPanel.editAct.setHandler(function(){
+			_this.gridPanel.window.openDialog('Edit item', 'edit', _this.gridPanel.grid, {
+				id: _this.gridPanel.grid.getSelectedId(),
 				order_id: _this.formParams.id
 			});
 		});

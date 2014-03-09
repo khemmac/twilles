@@ -20,7 +20,7 @@ function endsWith($haystack, $needle)
 	</script>
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/ext/resources/css/ext-all.css') ?>" />
-	<script type="text/javascript" src="<?= base_url('assets/ext/ext-all.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/ext/ext-all-debug.js') ?>"></script>
 	<script type="text/javascript" src="<?= base_url('assets/ext/ux/NumericField.js') ?>"></script>
 
 	<?php if(ENVIRONMENT=='production' || ENVIRONMENT=='testing'): ?>

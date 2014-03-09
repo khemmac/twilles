@@ -11,6 +11,9 @@ Class Order_model extends Base_model
         parent::__construct();
 
 		array_push($this->before_create, 'before_create_generate_code');
+
+		array_push($this->before_create, 'before_save_calculate_total');
+		array_push($this->before_update, 'before_save_calculate_total');
     }
 
 	public function before_create_generate_code($o){
@@ -35,6 +38,21 @@ CONCAT(
 
 		$o['order_code'] = $r->order_code;
 
+		return $o;
+	}
+
+	public function before_save_calculate_total($o){
+		if(!empty($o['id'])){
+			// load total from db
+			$this->load->model('order_model','order');
+			$order_result = $this->order->get($o['id']);
+
+			$net = $order_result->net;
+			$vat = floatval($o['vat']);
+			$delivery_cost = floatval($o['delivery_cost']);
+
+			$o['total'] = $net + $vat + $delivery_cost;
+		}
 		return $o;
 	}
 

@@ -33,6 +33,7 @@ Ext.define('TCMS.Order.Window', {
 		});
 
 		this.itemPanel = this.form.itemPanel;
+		this.gridPanel = this.form.gridPanel;
 
 		this.buttons = [
 			new Ext.button.Button(this.submitAct),
@@ -43,7 +44,6 @@ Ext.define('TCMS.Order.Window', {
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
-			//_this.fireEvent('login_success');
 		});
 
 		this.cancelAct.setHandler(function(){
@@ -61,6 +61,14 @@ Ext.define('TCMS.Order.Window', {
 			_this.actions[_this.dialogAction].call(_this);
 		});
 
+		// item event
+		this.gridPanel.window.form.on('afterSave', function() {
+			_this.gridPanel.window.hide();
+			_this.gridPanel.grid.load({
+				filter: Ext.encode({order_id:_this.dialogParams.id})
+			});
+		});
+
 		return this.callParent(arguments);
 	},
 	actions : {
@@ -69,7 +77,7 @@ Ext.define('TCMS.Order.Window', {
 
 			this.itemPanel.setDisabled(true);
 			// load item grid
-			this.itemPanel.grid.load({
+			this.gridPanel.grid.load({
 				filter: Ext.encode({order_id:-1})
 			});
 		},
@@ -79,7 +87,7 @@ Ext.define('TCMS.Order.Window', {
 
 			this.itemPanel.setDisabled(false);
 			// load item grid
-			this.itemPanel.grid.load({
+			this.gridPanel.grid.load({
 				filter: Ext.encode({order_id:this.dialogParams.id})
 			});
 		},

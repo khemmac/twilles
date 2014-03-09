@@ -384,7 +384,11 @@ Ext.define('TCMS.Order.Item.Form', {
 				defaults:_fieldDefaults,
 				items:[
 				_createField('BASE.field.NumericField', {
-					fieldLabel:'Amount', name : 'item_amount', allowBlank: false
+					fieldLabel:'Amount',
+					name : 'item_amount',
+					allowBlank: false,
+					value: 1,
+					minValue: 1
 				}),{
 					xtype: 'fieldset',
 					title: 'Fabric',

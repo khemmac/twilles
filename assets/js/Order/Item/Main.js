@@ -52,16 +52,6 @@ Ext.define('TCMS.Order.Item.Main', {
 			contextMenu.showAt(e.xy);
 		});
 
-		this.window.form.on('afterSave', function() {
-			_this.window.hide();
-			_this.grid.load();
-		});
-
-		this.window.form.on('afterSetStatus', function() {
-			_this.window.hide();
-			_this.grid.load();
-		});
-
 		return this.callParent(arguments);
 	}
 });

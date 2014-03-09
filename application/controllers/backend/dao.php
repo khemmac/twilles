@@ -173,13 +173,15 @@ class dao extends CI_Controller {
 		$vs = $this->input->post(NULL, TRUE);
 		$id = $vs[$pk];
 		unset($vs['type']);
-		unset($vs[$pk]);
+		//unset($vs[$pk]);
 
 		// invoke before functions
 		$data = $this->trigger('before_update', $vs);
 
 		// do update
 		$update_result = $this->{$type}->update($id, $data);
+
+		//echo $this->{$type}->_database->last_query();
 
 		// assign primary key value to $data
 		$data[$this->{$type}->primary_key] = $id;
