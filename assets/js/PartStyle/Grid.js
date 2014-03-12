@@ -26,8 +26,7 @@ Ext.define('TCMS.PartStyle.Grid', {
 			fields: [
 				{ name:'id', type:'string' },
 				{ name:'part_type', type:'string' },
-				'name',
-				{ name:'conflict_type', type:'string' },
+				{ name:'code', type:'string' },
 				{ name:'remark', type:'string' },
 				{ name:'is_active', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -42,7 +41,7 @@ Ext.define('TCMS.PartStyle.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:110, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Code", width:120, dataIndex:'code', sortable:true, align:'left'},
 			{text: "Type", width:70, dataIndex:'part_type', sortable:true, align:'left',
 				renderer: function(v){
 					var types = {
@@ -57,8 +56,6 @@ Ext.define('TCMS.PartStyle.Grid', {
 					return types[v];
 				}
 			},
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Conflict type", width:160, dataIndex:'conflict_type', sortable:true, align:'left'},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){
 					var icns = (v)?'tick':'cross';

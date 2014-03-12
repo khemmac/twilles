@@ -5,7 +5,7 @@ Ext.define('TCMS.PartStyle.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 320,
+			height: 290,
 			width: 400,
 			resizable: false,
 			modal: true,
@@ -20,7 +20,7 @@ Ext.define('TCMS.PartStyle.Window', {
 		var _this=this;
 
 		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'inventory'
+			moduleType: 'part_style'
 		});
 
 		this.comboPartType = Ext.create('BASE.ComboStatic', {
@@ -36,7 +36,7 @@ Ext.define('TCMS.PartStyle.Window', {
 				['PLEAT', 'Pleat']
 			]
 		});
-
+/*
 		this.comboConflictType = Ext.create('BASE.ComboAjax', {
 			fieldLabel: 'Conflict color',
 			name : 'conflict_type',
@@ -46,7 +46,7 @@ Ext.define('TCMS.PartStyle.Window', {
 			displayField: 'text',
 			valueField: 'value'
 		});
-
+*/
 		this.form = Ext.create('BASE.Form', {
 			region: 'center',
 			defaults: {
@@ -55,19 +55,12 @@ Ext.define('TCMS.PartStyle.Window', {
 				width: 300
 			},
 			items: [{
-				name: 'id',
+				name: 'code',
 				xtype: 'textfield',
 				fieldLabel: 'Code',
 				allowBlank: false
 			},
-			this.comboPartType,
-			this.comboConflictType,
-			{
-				name: 'name',
-				xtype: 'textfield',
-				fieldLabel: 'Name',
-				allowBlank: false
-			}, {
+			this.comboPartType, {
 				name: 'remark',
 				xtype: 'textarea',
 				fieldLabel: 'Remark'
@@ -133,6 +126,7 @@ Ext.define('TCMS.PartStyle.Window', {
 
 
 		// event
+/*
 		this.comboConflictType.store.on("beforeload", function (store, opts) {
 			opts.params = opts.params || {};
 			if(opts.params){
@@ -147,7 +141,7 @@ Ext.define('TCMS.PartStyle.Window', {
 	    	_this.comboConflictType.reset();
 	    	_this.comboConflictType.store.load();
 	    });
-
+*/
 		return this.callParent(arguments);
 	},
 	actions : {
