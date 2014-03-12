@@ -66,6 +66,28 @@ Ext.define('TCMS.Order.Item.Form', {
 			]
 		});
 
+		var comboShoulderLevel = _createField('BASE.ComboStatic', {
+			fieldLabel:'Level',
+			name : 'shoulder_level',
+			store:[
+				['1', 'เท่ากัน'],
+				['2', 'ซ้ายต่ำ'],
+				['3', 'ขวาต่ำ']
+			],
+			allowBlank: true
+		});
+
+		var comboShoulderShape = _createField('BASE.ComboStatic', {
+			fieldLabel:'Shape',
+			name : 'shoulder_shape',
+			store:[
+				['1', 'ไหล่ตั้ง'],
+				['2', 'ไหล่เท'],
+				['3', 'ไหล่ปกติ']
+			],
+			allowBlank: true
+		});
+
 		var tabSize = [{
 			// column layout with 2 columns
 			layout:'column',
@@ -93,8 +115,8 @@ Ext.define('TCMS.Order.Item.Form', {
 					items: [
 						_createField('BASE.field.NumericField', { fieldLabel:'Shoulder', name : 'shoulder' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Side', name : 'shoulder_side' }),
-						_createField('BASE.field.NumericField', { fieldLabel:'Shape', name : 'shoulder_shape' }),
-						_createField('BASE.field.NumericField', { fieldLabel:'Level', name : 'shoulder_level' }),
+						comboShoulderShape,
+						comboShoulderLevel,
 						_createField('BASE.field.NumericField', { fieldLabel:'Slope', name : 'shoulder_slope' })
 					]
 				}, {
@@ -319,12 +341,6 @@ Ext.define('TCMS.Order.Item.Form', {
 			inventoryType: '2',
 			allowBlank: true
 		});
-		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
-			fieldLabel: 'Package',
-			name : 'inventory_packaging_id',
-			inventoryType: '4',
-			allowBlank: true
-		});
 		// ** END PLACKET **
 
 		// ** FABRIC **
@@ -401,7 +417,8 @@ Ext.define('TCMS.Order.Item.Form', {
 						this.comboFabricCuffInner,
 						this.comboFabricCuffOuter
 					]
-				}]
+				},
+				this.comboStitchingType]
 			},{
 				// center column
 				// defaults for fields
@@ -411,18 +428,21 @@ Ext.define('TCMS.Order.Item.Form', {
 					xtype: 'fieldset',
 					title: 'Collar',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCollar, this.comboPartCuffType, this.numberCollarWidth, this.comboPartCollarStay]
+					items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, {
+						xtype:'textfield',
+						name: 'part_collar_thickness',
+						fieldLabel: 'Thickness'
+					}, this.comboPartCollarStay]
 				}, {
 					xtype: 'fieldset',
 					title: 'Placket',
 					defaults: _fieldDefaults,
 					items: [this.comboPartPlacket, this.numberPlacketWidth]
-				},
-				this.comboStitchingType, {
+				}, {
 					xtype: 'fieldset',
 					title: 'Inventory',
 					defaults: _fieldDefaults,
-					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
+					items: [this.comboInventoryButton, this.comboInventoryLabel]
 				}]
 			},{
 				// right column
@@ -433,7 +453,11 @@ Ext.define('TCMS.Order.Item.Form', {
 					xtype: 'fieldset',
 					title: 'Cuff',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCuff, this.comboPartCollarType, this.numberCuffWidth, this.numberCuffThickness]
+					items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, {
+						xtype:'textfield',
+						name: 'part_cuff_thickness',
+						fieldLabel: 'Thickness'
+					}]
 				}, {
 					xtype: 'fieldset',
 					title: 'Other parts',

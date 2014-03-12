@@ -131,11 +131,6 @@ Ext.define('TCMS.StyleCollection.Form', {
 			minValue: 0,
 			value: 0
 		});
-		this.numberCuffThickness = _createField('TCMS.BaseMaster.field.Numeric', {
-			fieldLabel: 'Thickness',
-			name: 'part_cuff_thickness',
-			allowBlank: true
-		});
 		// ** END CUFF **
 
 		// ** PLACKET **
@@ -238,7 +233,11 @@ Ext.define('TCMS.StyleCollection.Form', {
 					xtype: 'fieldset',
 					title: 'Collar',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCollar, this.comboPartCuffType, this.numberCollarWidth, this.comboPartCollarStay]
+					items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, {
+						xtype:'textfield',
+						name: 'part_collar_thickness',
+						fieldLabel: 'Thickness'
+					}, this.comboPartCollarStay]
 				}, {
 					xtype: 'fieldset',
 					title: 'Placket',
@@ -264,7 +263,11 @@ Ext.define('TCMS.StyleCollection.Form', {
 					xtype: 'fieldset',
 					title: 'Cuff',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCuff, this.comboPartCollarType, this.numberCuffWidth, this.numberCuffThickness]
+					items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, {
+						xtype:'textfield',
+						name: 'part_cuff_thickness',
+						fieldLabel: 'Thickness'
+					}]
 				}, {
 					xtype: 'fieldset',
 					title: 'Other parts',
