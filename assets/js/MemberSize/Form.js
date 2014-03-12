@@ -78,6 +78,28 @@ Ext.define('TCMS.MemberSize.Form', {
 			]
 		});
 
+		this.comboShoulderLevel = _createField('BASE.ComboStatic', {
+			fieldLabel:'Level',
+			name : 'shoulder_level',
+			store:[
+				['1', 'เท่ากัน'],
+				['2', 'ซ้ายต่ำ'],
+				['3', 'ขวาต่ำ']
+			],
+			allowBlank: true
+		});
+
+		this.comboShoulderShape = _createField('BASE.ComboStatic', {
+			fieldLabel:'Shape',
+			name : 'shoulder_shape',
+			store:[
+				['1', 'ไหล่ตั้ง'],
+				['2', 'ไหล่เท'],
+				['3', 'ไหล่ปกติ']
+			],
+			allowBlank: true
+		});
+
 		this.triggerMember = _createField('Ext.form.field.Trigger', {
 			fieldLabel:'Member',
 			name : 'member_fullname',
@@ -127,8 +149,8 @@ Ext.define('TCMS.MemberSize.Form', {
 					items: [
 						_createField('BASE.field.NumericField', { fieldLabel:'Shoulder', name : 'shoulder' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Side', name : 'shoulder_side' }),
-						_createField('BASE.field.NumericField', { fieldLabel:'Shape', name : 'shoulder_shape' }),
-						_createField('BASE.field.NumericField', { fieldLabel:'Level', name : 'shoulder_level' }),
+						this.comboShoulderShape,
+						this.comboShoulderLevel,
 						_createField('BASE.field.NumericField', { fieldLabel:'Slope', name : 'shoulder_slope' })
 					]
 				}, {
