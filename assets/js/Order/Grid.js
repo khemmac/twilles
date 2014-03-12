@@ -66,7 +66,7 @@ Ext.define('TCMS.Order.Grid', {
 				'update_by'
 			],
 			remoteSort: true,
-			sorters: [{property: 'id', direction: 'ASC'}],
+			sorters: [{property: 'id', direction: 'DESC'}],
 			pageSize: 25
 		});
 
