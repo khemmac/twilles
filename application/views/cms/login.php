@@ -5,7 +5,7 @@
 		loginDialog.show();
 
 		loginDialog.form.on('login_success', function(){
-			self.location.href=__site_url+'cms/color';
+			self.location.href=__site_url+'cms/order';
 		});
 	});
 </script>
