@@ -2,9 +2,9 @@ Ext.define('TCMS.BaseMaster.field.ComboPart', {
 	extend	: 'BASE.ComboAjax',
 
 	proxyUrl: __site_url+'backend/dao/LoadList',
-	proxyFields:[ 'id', 'name' ],
+	proxyFields:[ 'id', 'code' ],
 	proxyIdProperty: 'id',
-	displayField: 'name',
+	displayField: 'code',
 	valueField: 'id',
 
 	// utility params
