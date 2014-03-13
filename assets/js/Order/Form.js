@@ -210,13 +210,12 @@ Ext.define('TCMS.Order.Form', {
 		var calculateTotal = function(){
 			var bForm = _this.getForm(),
 				txtNet = bForm.findField('net'),
-				txtVat = bForm.findField('vat'),
 				txtDeliveryCost = bForm.findField('delivery_cost'),
 				txtTotal = bForm.findField('total');
 			var net = parseFloat(txtNet.getValue()),
 				vat = txtVat.getValue(),
 				deliveryCost = txtDeliveryCost.getValue(),
-				total = net + vat + deliveryCost;
+				total = net + deliveryCost;
 			txtTotal.setValue(total);
 		};
 
@@ -237,17 +236,6 @@ Ext.define('TCMS.Order.Form', {
 					fieldLabel:'Net',
 					name : 'net',
 					renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
-				}),
-				_createField('BASE.field.NumericField', {
-					fieldLabel:'Vat',
-					name : 'vat',
-					allowBlank: true,
-					value: 0,
-					fieldStyle: 'text-align: left;',
-					enableKeyEvents: true,
-					listeners: {
-						keyup: calculateTotal
-					}
 				}),
 				_createField('BASE.field.NumericField', {
 					fieldLabel:'Delivery cost',

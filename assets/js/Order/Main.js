@@ -94,6 +94,12 @@ Ext.define('TCMS.Order.Main', {
 			// reload money data
 		});
 
+		dialog.form.gridPanel.window.form.on('afterDelete', function(form, act) {
+			grid.load();
+
+			// reload money data
+		});
+
 		return this.callParent(arguments);
 	}
 });

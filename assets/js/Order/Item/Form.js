@@ -34,7 +34,13 @@ Ext.define('TCMS.Order.Item.Form', {
 					type: 'v_order_item'
 				}, this.formParams);
 			},
-			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
+			getLoadUrl: function(){ return __site_url+'backend/dao/load'; },
+			getDeleteUrl: function(){ return __site_url+'backend/dao/delete'; },
+			getDeleteParams : function() {
+				return Ext.apply({
+					type: 'order_item'
+				}, this.formParams);
+			}
 		});
 
 		return this.callParent(arguments);

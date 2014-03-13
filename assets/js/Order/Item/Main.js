@@ -42,6 +42,12 @@ Ext.define('TCMS.Order.Item.Main', {
 
 		this.items = [this.grid];
 
+		this.deleteAct.setHandler(function(){
+			_this.window.openDialog(null, 'delete', _this.grid, {
+				ids: _this.grid.getSelectionsId().join(',')
+			});
+		});
+
 		this.grid.on('celldblclick', function(g, td, cellIndex, r) {
 			if(!_this.editAct.isDisabled())
 				_this.editAct.execute();

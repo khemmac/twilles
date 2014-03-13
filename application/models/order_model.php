@@ -48,10 +48,9 @@ CONCAT(
 			$order_result = $this->order->get($o['id']);
 
 			$net = $order_result->net;
-			$vat = floatval($o['vat']);
 			$delivery_cost = floatval($o['delivery_cost']);
 
-			$o['total'] = $net + $vat + $delivery_cost;
+			$o['total'] = $net + $delivery_cost;
 		}
 		return $o;
 	}

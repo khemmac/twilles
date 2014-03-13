@@ -49,7 +49,7 @@ Ext.define('TCMS.Order.Grid', {
 				{ name:'order_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'order_completed_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'net', type:'float' },
-				{ name:'vat', type:'float' },
+				//{ name:'vat', type:'float' },
 				{ name:'delivery_cost', type:'float' },
 				{ name:'total', type:'float' },
 				{ name:'promotion_code', type:'string' },
@@ -79,14 +79,17 @@ Ext.define('TCMS.Order.Grid', {
 			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
 			},
-			{text: "Vat", width:60, dataIndex:'vat', sortable:true, align:'left',
+			/*{text: "Vat", width:60, dataIndex:'vat', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
-			},
+			},*/
 			{text: "Delivery cost", width:90, dataIndex:'delivery_cost', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
 			},
 			{text: "Total", width:90, dataIndex:'total', sortable:true, align:'left',
-				renderer: Ext.util.Format.numberRenderer('0,000.##')
+				renderer: function(v,p,r){
+					p.style = 'font-weight:bold;';
+					return Ext.util.Format.number(v, '0,000.##');
+				}
 			},
 
 			{text: "Status", width:120, dataIndex:'status', sortable:true, align:'left',
