@@ -61,14 +61,6 @@ Ext.define('TCMS.Order.Window', {
 			_this.actions[_this.dialogAction].call(_this);
 		});
 
-		// item event
-		this.gridPanel.window.form.on('afterSave', function() {
-			_this.gridPanel.window.hide();
-			_this.gridPanel.grid.load({
-				filter: Ext.encode({order_id:_this.dialogParams.id})
-			});
-		});
-
 		return this.callParent(arguments);
 	},
 	actions : {

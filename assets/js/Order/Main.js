@@ -66,6 +66,7 @@ Ext.define('TCMS.Order.Main', {
 			contextMenu.showAt(e.xy);
 		});
 
+		// after main form save
 		dialog.form.on('afterSave', function(form, act) {
 			dialog.hide();
 
@@ -87,17 +88,31 @@ Ext.define('TCMS.Order.Main', {
 
 		grid.load();
 
-		// when item saved do reload main grid
+		// order_item event
+		// ** after item form save
 		dialog.form.gridPanel.window.form.on('afterSave', function() {
+			dialog.form.gridPanel.window.hide();
+			dialog.form.gridPanel.grid.load({
+				filter: Ext.encode({order_id:dialog.dialogParams.id})
+			});
+
+			// main grid load
 			grid.load();
 
 			// reload money data
+			dialog.form.updateTotal();
 		});
+		// ** after item form delete
+		dialog.form.gridPanel.window.form.on('afterDelete', function() {
+			dialog.form.gridPanel.grid.load({
+				filter: Ext.encode({order_id:dialog.dialogParams.id})
+			});
 
-		dialog.form.gridPanel.window.form.on('afterDelete', function(form, act) {
+			// main grid load
 			grid.load();
 
 			// reload money data
+			dialog.form.updateTotal();
 		});
 
 		return this.callParent(arguments);

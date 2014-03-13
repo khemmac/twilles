@@ -207,13 +207,31 @@ Ext.define('TCMS.Order.Form', {
 			title: 'Order item'
 		});
 
-		var calculateTotal = function(){
+		this.numberNet = _createField('Ext.form.field.Display', {
+			fieldLabel:'Net',
+			name : 'net',
+			renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
+		});
+
+		this.dispNet = _createField('Ext.form.field.Display', {
+			fieldLabel:'Net',
+			name : 'net',
+			renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
+		});
+
+		this.dispTotal = _createField('Ext.form.field.Display', {
+			fieldLabel:'Total',
+			name : 'total',
+			style: { fontWeight: 'bold' },
+			renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
+		});
+
+		this.calculateTotal = function(){
 			var bForm = _this.getForm(),
-				txtNet = bForm.findField('net'),
+				txtNet = _this.dispNet,
 				txtDeliveryCost = bForm.findField('delivery_cost'),
-				txtTotal = bForm.findField('total');
+				txtTotal = _this.dispTotal;
 			var net = parseFloat(txtNet.getValue()),
-				vat = txtVat.getValue(),
 				deliveryCost = txtDeliveryCost.getValue(),
 				total = net + deliveryCost;
 			txtTotal.setValue(total);
@@ -232,11 +250,7 @@ Ext.define('TCMS.Order.Form', {
 				bodyStyle:'padding:0 22px 0 0'
 			},
 			items:[
-				_createField('Ext.form.field.Display', {
-					fieldLabel:'Net',
-					name : 'net',
-					renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
-				}),
+				this.dispNet,
 				_createField('BASE.field.NumericField', {
 					fieldLabel:'Delivery cost',
 					name : 'delivery_cost',
@@ -245,15 +259,10 @@ Ext.define('TCMS.Order.Form', {
 					fieldStyle: 'text-align: left;',
 					enableKeyEvents: true,
 					listeners: {
-						keyup: calculateTotal
+						keyup: this.calculateTotal
 					}
 				}),
-				_createField('Ext.form.field.Display', {
-					fieldLabel:'Total',
-					name : 'total',
-					style: { fontWeight: 'bold' },
-					renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
-				})
+				this.dispTotal
 			]
 		});
 
@@ -312,5 +321,26 @@ Ext.define('TCMS.Order.Form', {
 		});
 
 		return this.callParent(arguments);
+	},
+	updateTotal: function(){
+		var _this=this;
+		//var order_id = this.formParams.id;
+		//console.log(order_id);
+		this.form.submit({
+			url : this.getLoadUrl(),
+			success : function(form, act) {
+				if(act.result && act.result.data){
+					var data = act.result.data;
+					_this.dispNet.setValue(data.net);
+					_this.dispTotal.setValue(data.total);
+
+					_this.calculateTotal();
+				}
+			},
+			failure : this.failureAlert,
+			waitMsg : 'Saving...',
+			waitTitle : 'Please wait...',
+			params : this.getLoadParams()
+		});
 	}
 });
