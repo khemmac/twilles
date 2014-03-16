@@ -143,11 +143,6 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			$_pdf->Cell($w[4], 6, number_format($order->net), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
-			// VAT
-			$_pdf->Cell($all_width, 6, 'ภาษี', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, number_format($order->vat), 'LRTB', 0, 'R', 1);
-			$_pdf->Ln();
-
 			// DELIVERY
 			$_pdf->Cell($all_width, 6, 'ค่าจัดส่ง', 'LRTB', 0, 'R', 1);
 			$_pdf->Cell($w[4], 6, number_format($order->delivery_cost), 'LRTB', 0, 'R', 1);
@@ -183,6 +178,48 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		)*/);
 
 		// ****** LOOP ITEMS EACH PAGE
+		function get_collar_detail($o){
+			$str_arr = array();
+			if(empty($o->part_collar_id))
+				return '-';
+
+			array_push($str_arr, '<strong>'.$o->part_collar_code.'</strong>');
+			if(!empty($o->part_collar_type))
+				array_push($str_arr, $o->part_collar_type_name);
+			if(!empty($o->part_collar_thickness))
+				array_push($str_arr, $o->part_collar_thickness);
+			if(!empty($o->part_collar_width) && floatval($o->part_collar_width)>0)
+				array_push($str_arr, number_format($o->part_collar_width, 2).' นิ้ว');
+			array_push($str_arr, (($o->part_collar_stay==0)?'ไม่':'').'มีคอเสียบ');
+			return implode('<br />', $str_arr);
+		}
+		function get_cuff_detail($o){
+			$str_arr = array();
+			if(empty($o->part_cuff_id))
+				return '-';
+
+			array_push($str_arr, '<strong>'.$o->part_cuff_code.'</strong>');
+			if(!empty($o->part_cuff_type))
+				array_push($str_arr, $o->part_cuff_type_name);
+			if(!empty($o->part_cuff_thickness))
+				array_push($str_arr, $o->part_cuff_thickness);
+			if(!empty($o->part_cuff_width) && floatval($o->part_cuff_width)>0)
+				array_push($str_arr, number_format($o->part_cuff_width, 2).' นิ้ว');
+			return implode('<br />', $str_arr);
+		}
+		function get_body_detail($o){
+			$str_arr = array();
+			if(empty($o->part_cuff_id))
+				return '-';
+
+			array_push($str_arr, '<strong>'.$o->part_placket_code.'</strong>');
+			if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
+				array_push($str_arr, number_format($o->part_placket_width, 2).' นิ้ว');
+			if(!empty($o->part_pocket_code))
+				array_push($str_arr, $o->part_pocket_code);
+			return implode('<br />', $str_arr);
+		}
+
 		foreach($order_item AS $item){
 			// add a page
 			$pdf->AddPage();
@@ -218,20 +255,10 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		<td width="380" rowspan="19">
 			<table cellspacing="0" cellpadding="2" border="1">
 				<tr>
-					<td></td>
-					<td>
-						<strong>ปกเล็ก</strong>
-						<br />ปกธรรมดา
-						<br />รองสาบ 1 ชั้น
-						<br />ไม่มีคอเสียบ
-					</td>
-					<td></td>
-					<td>
-						<strong>แบบตัด 1 กระดุม</strong>
-						<br />ข้อมือธรรมดา
-						<br />หนานุ่ม 2 ชั้น
-						<br />2 นิ้ว
-					</td>
+					<td>'.$this->merge_collar($item).'</td>
+					<td>'.get_collar_detail($item).'</td>
+					<td>'.$this->merge_cuff($item).'</td>
+					<td>'.get_cuff_detail($item).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -252,15 +279,19 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 					</td>
 				</tr>
 				<tr>
-					<td></td>
-					<td>
-						<strong>สาปนอก</strong>
-						<br />1 นิ้ว
-						<br />กระเป๋า 1 ตัด
-						<br />รังดุมเม็ดสุดท้าย
-						<br />เย็บขวาง
+					<td>'.$this->merge_body($item).'</td>
+					<td>'.get_body_detail($item).'
+						<font color="red">
+						รังดุมเม็ดสุดท้าย
+						เย็บขวาง
+						</font>
 					</td>
 					<td colspan="2" rowspan="2">
+						<table cellspacing="0" cellpadding="2" border="0">
+							<tr><td>'.$item->part_pleat_code.''.$this->merge_pleat($item).'</td></tr>
+							<tr><td>'.$item->part_yoke_code.''.$this->merge_yoke($item).'</td></tr>
+							<tr><td>'.$item->part_bottom_code.'</td></tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
@@ -366,29 +397,51 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		$pdf->Output($pdf_name.'.pdf', 'I');
 	}
 
-	public function merge_image(){
-
+	// *** UTIL FOR FIND PATH
+	private function get_image_file_path($type, $name, $include_FC = TRUE){
+		$result = '';
+		switch ($type) {
+	        case 'fabric':
+	            $result = 'images/fabric/'.$name; break;
+	        case 'part-body':
+	            $result = 'images/parts/body/'.$name; break;
+	        case 'part-collar':
+	            $result = 'images/parts/collar/'.$name; break;
+	        case 'part-cuff':
+	            $result = 'images/parts/cuff/'.$name; break;
+	        case 'part-placket':
+	            $result = 'images/parts/placket/'.$name; break;
+	        case 'part-pleat':
+	            $result = 'images/parts/pleat/'.$name; break;
+	        case 'part-pocket':
+	            $result = 'images/parts/pocket/'.$name; break;
+	        case 'part-yoke':
+	            $result = 'images/parts/yoke/'.$name; break;
+			default: '';
+	    }
+	    return ($include_FC)?FCPATH.$result:$result;
 	}
 
-	private function get_image_file_path($type, $name){
+	private function get_image_cache_path($type, $name, $include_FC = TRUE){
 		$result = '';
-		switch ($source_image_type) {
+		switch ($type) {
 	        case 'fabric':
-	            $result = FCPATH.'images/fabric/'.$source_image_path;
+	            $result = 'images/temp/fabric/'.$name;
 	            break;
 	        case 'part':
-	            $result = FCPATH.'images/fabric/'.$source_image_path;
+	            $result = 'images/temp/part_merge/'.$name;
 	            break;
 			default: '';
 	    }
-	    return $result;
+	    return ($include_FC)?FCPATH.$result:$result;
 	}
+	// END UTIL
 
 	private function get_fabric_html_detail($item_id, $fabric_id){
 		// source file path
-		$source_path = FCPATH."images/fabric/$fabric_id.jpg";
+		$source_path = $this->get_image_file_path('fabric', "$fabric_id.jpg");
 		$dest_file_name = "$item_id-$fabric_id";
-		$dest_path = FCPATH."images/temp/fabric/$dest_file_name.jpg";
+		$dest_path = $this->get_image_cache_path('fabric', "$dest_file_name.jpg");
 
 		// fabric not set
 		if(empty($fabric_id))
@@ -396,37 +449,19 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 		// source file not found
 		if(!file_exists($source_path))
-			return '<br />'.$fabric_id;
+			return '<br />'.$fabric_id.'
+					<br /><img src="'.(base_url("images/image-missing.png")).'" />';
 
 		// dest file not found (not yet resized)
 		if(!file_exists($dest_path))
 			$this->resize_image($source_path, $dest_path);
 
 		return '<br />'.$fabric_id.'
-			<br /><img src="'.(base_url("images/temp/fabric/$dest_file_name.jpg")).'" width="80" />';
+			<br /><img src="'.(base_url($this->get_image_cache_path('fabric', "$dest_file_name.jpg", false)))
+			.'" width="90" />';
 	}
 
-	private function get_image_cache_path($type, $name){
-		$result = '';
-		switch ($source_image_type) {
-	        case 'fabric':
-	            $result = FCPATH.'images/fabric/'.$source_image_path;
-	            break;
-	        case 'part':
-	            $result = FCPATH.'images/fabric/'.$source_image_path;
-	            break;
-			default: '';
-	    }
-	    return $result;
-	}
-
-	private function resize_image($source_image_path, $thumbnail_image_path, $max_width = 80, $max_height = 80){
-		//$THUMBNAIL_IMAGE_MAX_WIDTH =
-		//define('THUMBNAIL_IMAGE_MAX_HEIGHT', 80);
-
-		//echo $source_image_path;
-		//return;
-
+	private function resize_image($source_image_path, $thumbnail_image_path, $max_width = 90, $max_height = 90){
 		list($source_image_width, $source_image_height, $source_image_type) = getimagesize($source_image_path);
 	    switch ($source_image_type) {
 	        case IMAGETYPE_GIF:
@@ -458,8 +493,349 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 	    imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
 	    imagejpeg($thumbnail_gd_image, $thumbnail_image_path, 85);
 	    imagedestroy($source_gd_image);
-	    imagedestroy($thumbnail_gd_image);
+		imagedestroy($thumbnail_gd_image);
 	    return true;
+	}
+
+	private function merge_image($image_1, $image_2){
+		imagealphablending($image_1, true);
+		imagesavealpha($image_1, true);
+		imagecopy($image_1, $image_2, 0, 0, 0, 0, 425, 640);
+		return $image_1;
+	}
+	private function glue($str_arr){ return implode('-', $str_arr); }
+
+	private function get_ouput_part_path($oi, $part, $extension, $include_FC = TRUE){
+		$dt = (!empty($oi->update_date))?$oi->update_date:$oi->create_date;
+		$dt = preg_replace('/\s/', '_', $dt);
+		return $this->get_image_cache_path('part', $this->glue(array($oi->order_id, $oi->id, $dt, "$part.$extension")), $include_FC);
+	}
+
+	public function test_merge_front(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_front($oi);
+	}
+
+	private function merge_front($oi){
+		$list = array();
+
+		// check body
+		$fabric_body = $oi->fabric_body_id;
+		$part_body = '';
+		// body right hand
+		array_push($list, $this->get_image_file_path('part-body',
+			$this->glue(array($fabric_body, 'right-hand.png'))));
+		// part body
+		if($oi->part_placket_code=='seamless')
+			array_push($list, $this->get_image_file_path('part-body',
+			$this->glue(array($fabric_body, 'body', 'seamless.png'))));
+		else
+			array_push($list, $this->get_image_file_path('part-body',
+				$this->glue(array($fabric_body, 'body', 'standard.png'))));
+		// body left hand
+		array_push($list, $this->get_image_file_path('part-body',
+			$this->glue(array($fabric_body, 'left-hand.png'))));
+
+		// placket
+		if(!empty($oi->part_placket_id) && !empty($oi->fabric_placket_id) && $oi->part_placket_code!='seamless')
+			array_push($list, $this->get_image_file_path('part-placket',
+				$this->glue(array($oi->fabric_placket_id, 'teb', $oi->part_placket_code.'.png'))));
+
+		// collar
+		if(!empty($oi->part_collar_id) && !empty($oi->fabric_collar_outer_id)){
+			// outer
+			array_push($list, $this->get_image_file_path('part-collar',
+				$this->glue(array($oi->fabric_collar_outer_id, 'collar', $oi->part_collar_code.'.png'))));
+			// inner
+			array_push($list, $this->get_image_file_path('part-collar',
+				$this->glue(array($oi->fabric_collar_inner_id, 'collar', 'inner.png'))));
+		}
+
+		// cuff
+		if(!empty($oi->part_cuff_id) && !empty($oi->fabric_cuff_outer_id)){
+			// outer
+			array_push($list, $this->get_image_file_path('part-cuff',
+				$this->glue(array($oi->fabric_cuff_outer_id, 'cuff', $oi->part_cuff_code, 'outer.png'))));
+			// inner
+			array_push($list, $this->get_image_file_path('part-cuff',
+				$this->glue(array($oi->fabric_cuff_inner_id, 'cuff', $oi->part_cuff_code, 'inner.png'))));
+		}
+
+		// pocket
+		if(!empty($oi->part_pocket_id))
+			array_push($list, $this->get_image_file_path('part-pocket',
+				$this->glue(array($oi->fabric_body_id, 'pocket', $oi->part_pocket_code.'.png'))));
+
+		$merged = $this->merge_images($list);
+		//foreach($list AS $l){
+		//	echo "<img src=\"".preg_replace('/\/home\/user\/data\/www\/php_www/', '', $l)."\" style=\"position:absolute;top:0px;left:0px;\" />";
+		//}
+		$output_path =	$this->get_ouput_part_path($oi, 'front', 'png');
+
+		imagepng($merged, $output_path);
+		imagedestroy($merged);
+	}
+
+	public function test_merge_collar(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_collar($oi);
+	}
+
+	private function merge_collar($oi){
+		// get front name
+		$source_file = $this->get_ouput_part_path($oi, 'front', 'png');
+
+		if(!file_exists($source_file))
+			$this->merge_front($oi);
+
+		$output_path =	$this->get_ouput_part_path($oi, 'collar', 'jpg');
+		if(file_exists($output_path))
+			return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'collar', 'jpg', FALSE))).'" width="90" />';
+
+		$image_1 = imagecreatefrompng($source_file);
+
+		// set background color to white
+		$final = imagecreatetruecolor(120, 160);
+		imagecopy($final, $image_1, 0, 0, 148, 67, 120, 160);
+
+		// resize image
+		$thumbnail_gd_image = imagecreatetruecolor(90, 120);
+	    imagecopyresampled($thumbnail_gd_image, $final, 0, 0, 0, 0, 90, 120, 120, 160);
+
+		imagejpeg($thumbnail_gd_image, $output_path, 85);
+		imagedestroy($image_1);
+		imagedestroy($thumbnail_gd_image);
+		imagedestroy($final);
+
+		return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'collar', 'jpg', FALSE))).'" width="90" />';
+	}
+
+	public function test_merge_cuff(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_cuff($oi);
+	}
+
+	private function merge_cuff($oi){
+		// get front name
+		$source_file = $this->get_ouput_part_path($oi, 'front', 'png');
+
+		if(!file_exists($source_file))
+			$this->merge_front($oi);
+
+		$output_path =	$this->get_ouput_part_path($oi, 'cuff', 'jpg');
+		if(file_exists($output_path))
+			return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'cuff', 'jpg', FALSE))).'" width="90" />';
+
+		$image_1 = imagecreatefrompng($source_file);
+
+		// set background color to white
+		$final = imagecreatetruecolor(90, 120);
+		imagecopy($final, $image_1, 0, 0, 250, 383, 90, 120);
+
+		imagejpeg($final, $output_path, 85);
+		imagedestroy($image_1);
+		imagedestroy($final);
+
+		return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'cuff', 'jpg', FALSE))).'" width="90" />';
+	}
+
+	public function test_merge_body(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_body($oi);
+	}
+
+	private function merge_body($oi){
+		// get front name
+		$source_file = $this->get_ouput_part_path($oi, 'front', 'png');
+
+		if(!file_exists($source_file))
+			$this->merge_front($oi);
+
+		$output_path =	$this->get_ouput_part_path($oi, 'body', 'jpg');
+		if(file_exists($output_path))
+			return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'body', 'jpg', FALSE))).'" width="90" />';
+
+		$image_1 = imagecreatefrompng($source_file);
+
+		// set background color to white
+		$final = imagecreatetruecolor(206, 275);
+		imagecopy($final, $image_1, 0, 0, 102, 133, 206, 275);
+
+		// resize image
+		$thumbnail_gd_image = imagecreatetruecolor(90, 120);
+	    imagecopyresampled($thumbnail_gd_image, $final, 0, 0, 0, 0, 90, 120, 206, 275);
+
+		imagejpeg($thumbnail_gd_image, $output_path, 85);
+		imagedestroy($image_1);
+		imagedestroy($thumbnail_gd_image);
+		imagedestroy($final);
+
+		return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'body', 'jpg', FALSE))).'" width="90" />';
+	}
+
+	// ----------------------- BACK
+
+	public function test_merge_back(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_back($oi);
+	}
+
+	private function merge_back($oi){
+		$list = array();
+		$fabric_body = $oi->fabric_body_id;
+
+		// pleat (back)
+		array_push($list, $this->get_image_file_path('part-pleat',
+			$this->glue(array($fabric_body, 'back', $oi->part_pleat_code.'.png'))));
+
+		// yoke
+		if(!empty($oi->part_yoke_id))
+			array_push($list, $this->get_image_file_path('part-yoke',
+				$this->glue(array($fabric_body, 'yoke', $oi->part_yoke_code.'.png'))));
+
+		$merged = $this->merge_images($list);
+		foreach($list AS $l){
+			echo "<img src=\"".preg_replace('/\/home\/user\/data\/www\/php_www/', '', $l)."\" style=\"position:absolute;top:0px;left:0px;\" />";
+		}
+		$output_path =	$this->get_ouput_part_path($oi, 'back', 'png');
+
+		imagepng($merged, $output_path);
+		imagedestroy($merged);
+	}
+
+	public function test_merge_yoke(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_yoke($oi);
+	}
+
+	private function merge_yoke($oi){
+		// get front name
+		$source_file = $this->get_ouput_part_path($oi, 'back', 'png');
+
+		if(!file_exists($source_file))
+			$this->merge_front($oi);
+
+		$output_path =	$this->get_ouput_part_path($oi, 'yoke', 'jpg');
+		if(file_exists($output_path))
+			return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'yoke', 'jpg', FALSE))).'" width="170" />';
+
+		$image_1 = imagecreatefrompng($source_file);
+
+		// set background color to white
+		$final = imagecreatetruecolor(271, 191);
+		imagecopy($final, $image_1, 0, 0, 98, 106, 271, 143);
+
+		// resize image
+		$thumbnail_gd_image = imagecreatetruecolor(170, 90);
+	    imagecopyresampled($thumbnail_gd_image, $final, 0, 0, 0, 0, 170, 90, 271, 143);
+
+		imagejpeg($thumbnail_gd_image, $output_path, 85);
+		imagedestroy($image_1);
+		imagedestroy($thumbnail_gd_image);
+		imagedestroy($final);
+
+		return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'yoke', 'jpg', FALSE))).'" width="170" />';
+	}
+
+	public function test_merge_pleat(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_pleat($oi);
+	}
+
+	private function merge_pleat($oi){
+		// get front name
+		$source_file = $this->get_ouput_part_path($oi, 'back', 'png');
+
+		if(!file_exists($source_file))
+			$this->merge_front($oi);
+
+		$output_path =	$this->get_ouput_part_path($oi, 'pleat', 'jpg');
+		if(file_exists($output_path))
+			return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'pleat', 'jpg', FALSE))).'" width="170" />';
+
+		$image_1 = imagecreatefrompng($source_file);
+
+		// set background color to white
+		$final = imagecreatetruecolor(271, 191);
+		imagecopy($final, $image_1, 0, 0, 98, 152, 271, 143);
+
+		// resize image
+		$thumbnail_gd_image = imagecreatetruecolor(170, 90);
+	    imagecopyresampled($thumbnail_gd_image, $final, 0, 0, 0, 0, 170, 90, 271, 143);
+
+		imagejpeg($thumbnail_gd_image, $output_path, 85);
+		imagedestroy($image_1);
+		imagedestroy($thumbnail_gd_image);
+		imagedestroy($final);
+
+		return '<img src="'.(base_url($this->get_ouput_part_path($oi, 'pleat', 'jpg', FALSE))).'" width="170" />';
+	}
+
+	public function test_merge_images(){
+		$list = array(
+			'/home/user/data/www/php_www/twilles/images/parts/body/GI-19424-right-hand.png',
+			'/home/user/data/www/php_www/twilles/images/parts/body/GI-19424-body-standard.png',
+			'/home/user/data/www/php_www/twilles/images/parts/body/GI-19424-left-hand.png',
+			'/home/user/data/www/php_www/twilles/images/parts/placket/GI-19430-teb-tuxedo.png',
+			'/home/user/data/www/php_www/twilles/images/parts/collar/GI-19404-collar-cutaway.png',
+			'/home/user/data/www/php_www/twilles/images/parts/collar/GI-19423-collar-inner.png',
+			'/home/user/data/www/php_www/twilles/images/parts/cuff/DO-Garnet-cuff-rounded-outer.png',
+			'/home/user/data/www/php_www/twilles/images/parts/cuff/GI-19403-cuff-rounded-inner.png',
+			'/home/user/data/www/php_www/twilles/images/parts/pocket/GI-656019-pocket-2-rounded.png'
+		);
+		$merged = $this->merge_images($list);
+		foreach($list AS $l){
+			echo "<img src=\"".preg_replace('/\/home\/user\/data\/www\/php_www/', '', $l)."\" style=\"position:absolute;top:0px;left:0px;\" />";
+		}
+		$output_path = '/home/user/data/www/php_www/twilles/images/temp/part_merge/xxxxxxxxxxx.jpg';
+		imagejpeg($merged, $output_path, 85);
+		imagedestroy($merged);
+	}
+
+	public function test_merge_images2(){
+		$list = array(
+			'/home/user/data/www/php_www/twilles/images/parts/pleat/GI-656113-back-side.png',
+			'/home/user/data/www/php_www/twilles/images/parts/yoke/RB-RBS82-yoke-split.png'
+		);
+		$merged = $this->merge_images($list);
+		foreach($list AS $l){
+			echo "<img src=\"".preg_replace('/\/home\/user\/data\/www\/php_www/', '', $l)."\" style=\"position:absolute;top:0px;left:0px;\" />";
+		}
+		$output_path = '/home/user/data/www/php_www/twilles/images/temp/part_merge/yyyyyyy.jpg';
+		imagejpeg($merged, $output_path, 85);
+		imagedestroy($merged);
+	}
+
+	private function merge_images($imgs){
+		$imgs_exist = array();
+		// check file exist
+		for($i=0;$i<count($imgs);$i++){
+			if(file_exists($imgs[$i]))
+				array_push($imgs_exist, $imgs[$i]);
+		}
+
+		// set base image
+		// set background color to white
+		$final = imagecreatetruecolor(425, 640);
+		$backgroundColor = imagecolorallocate($final, 255, 255, 255);
+		imagefill($final, 0, 0, $backgroundColor);
+
+		foreach ($imgs_exist as $index => $src_image_path)
+		{
+			//list ($x, $y) = indexToCoords($index);
+			$part_img = imagecreatefrompng($src_image_path);
+
+			imagecopy($final, $part_img, 0, 0, 0, 0, 425, 640);
+			imagedestroy($part_img);
+		}
+		return $final;
 	}
 
 }
