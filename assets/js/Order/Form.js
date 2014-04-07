@@ -266,13 +266,24 @@ Ext.define('TCMS.Order.Form', {
 			]
 		});
 
+		this.statusPanel = Ext.create('TCMS.Order.Status.Main', {
+			region: 'east',
+			width: 200,
+			split: true
+		});
+
 		this.itemPanel = Ext.create('Ext.panel.Panel', {
 			layout: 'border',
 			region: 'center',
 			border: false,
-			items: [
-				this.gridPanel,
-				formTotal
+			items: [{
+				xtype: 'panel',
+				region: 'center',
+				layout: 'border',
+				border: false,
+				items: [this.gridPanel, formTotal]
+			},
+			this.statusPanel
 			]
 		});
 
@@ -316,6 +327,13 @@ Ext.define('TCMS.Order.Form', {
 		this.gridPanel.editAct.setHandler(function(){
 			_this.gridPanel.window.openDialog('Edit item', 'edit', _this.gridPanel.grid, {
 				id: _this.gridPanel.grid.getSelectedId(),
+				order_id: _this.formParams.id
+			});
+		});
+
+		// *** ORDER STATUS
+		this.statusPanel.changeStatusAct.setHandler(function(){
+			_this.statusPanel.window.openDialog('Change order status', 'edit', _this, {
 				order_id: _this.formParams.id
 			});
 		});

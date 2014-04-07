@@ -14,6 +14,8 @@ Class Order_model extends Base_model
 
 		array_push($this->before_create, 'before_save_calculate_total');
 		array_push($this->before_update, 'before_save_calculate_total');
+
+		array_push($this->after_create, 'after_create_add_status_history');
     }
 
 	public function before_create_generate_code($o){
@@ -53,6 +55,11 @@ CONCAT(
 			$o['total'] = $net + $delivery_cost;
 		}
 		return $o;
+	}
+
+	public function after_create_add_status_history($o){
+		// we will recieve id after create
+
 	}
 
 }

@@ -28,7 +28,7 @@ class Order_report extends CI_Controller {
 		$pdf->setHeaderFont(Array('angsanaupc', '', 15));
 
 		// set default header data
-		$pdf->SetHeaderData('twilles_logo.png', 30, 'ใบสั่งตัดเสื้อ บริษัท ทวิลส์ คลับ จำกัด', '8/61 หมู่บ้านพิบูล');
+		$pdf->SetHeaderData('twilles_logo.png', 25, 'ใบสั่งตัดเสื้อ บริษัท ทวิลส์ คลับ จำกัด', '8/61 หมู่บ้านพิบูล');
 		//$pdf->SetHeaderData(PDF_HEADER_LOGO, 20, PDF_HEADER_TITLE.' PRINT', PDF_HEADER_STRING);
 		// remove default header/footer
 		//$pdf->setPrintHeader(false);
@@ -55,7 +55,7 @@ class Order_report extends CI_Controller {
 		// ---------------------------------------------------------
 
 		// add a page
-		$pdf->AddPage();
+		$pdf->AddPage('L');
 
 		// ---- START PDF CONTENT
 		// ***** USER INFO *****
@@ -222,7 +222,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 		foreach($order_item AS $item){
 			// add a page
-			$pdf->AddPage();
+			$pdf->AddPage('L');
 
 			$pdf->SetFont('angsanaupc', '', 14);
 /*
@@ -247,12 +247,12 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 '<table cellspacing="0" cellpadding="2" border="1">
 	<tr>
 		<td width="80" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
-		<td width="490" style="background-color:#CCCCCC;" colspan="2"><b>Slim Fit</b></td>
+		<td width="740" style="background-color:#CCCCCC;" colspan="2"><b>Slim Fit</b></td>
     </tr>
 	<tr>
 		<td width="80">รอบคอ</td>
-		<td width="110">'.number_format($item->collar).'</td>
-		<td width="380" rowspan="19">
+		<td width="120">'.number_format($item->collar).'</td>
+		<td width="620" rowspan="19">
 			<table cellspacing="0" cellpadding="2" border="1">
 				<tr>
 					<td>'.$this->merge_collar($item).'</td>
@@ -277,6 +277,12 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 						<strong>ผ้าข้อมือใน</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_cuff_inner_id).'
 					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="color:red;" align="center">
+						<strong>'.($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา').'</strong></td>
+					<td colspan="2" style="color:red;" align="center">
+						<strong>'.($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา').'</strong></td>
 				</tr>
 				<tr>
 					<td>'.$this->merge_body($item).'</td>
@@ -504,6 +510,28 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		return $image_1;
 	}
 	private function glue($str_arr){ return implode('-', $str_arr); }
+
+	public function test_output_fn(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(11);
+		$this->merge_collar($oi);
+		//print_r($oi);
+		//return;
+
+		$order_id = 11;
+		$order_item_id = 12;
+		$create_date = '2014-03-13 10:19:17';
+		$update_date = NULL;
+
+		$dt = (!empty($update_date))?$update_date:$create_date;
+		$dt = preg_replace('/\s/', '_', $dt);
+
+		$image_code = implode('-', array($order_id, $order_item_id, $dt, "front.jpg"));
+		echo $image_code;
+		return;
+
+		return $this->get_image_cache_path('part', $this->glue(array($oi->order_id, $oi->id, $dt, "$part.$extension")), $include_FC);
+	}
 
 	private function get_ouput_part_path($oi, $part, $extension, $include_FC = TRUE){
 		$dt = (!empty($oi->update_date))?$oi->update_date:$oi->create_date;
