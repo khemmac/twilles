@@ -171,11 +171,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			));
 		}
 
-		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','จำนวน','ราคา','รวม'), $order, $item_data
-		/*	array(
-				array('1','A1',4,6000,24000),
-				array('2','B2',3,5000,15000)
-		)*/);
+		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','จำนวน','ราคา','รวม'), $order, $item_data);
 
 		// ****** LOOP ITEMS EACH PAGE
 		function get_collar_detail($o){
@@ -225,21 +221,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			$pdf->AddPage('L');
 
 			$pdf->SetFont('angsanaupc', '', 14);
-/*
-			$pdf->Cell(30, 6, 'สัดส่วน', 'LRTB', 0, 'C', 1);
-			$pdf->Cell(50, 6, 'Slim Fit', 'LRTB', 0, 'C', 1);
-			$pdf->Ln();
 
-			$pdf->Cell(30, 6, 'สัดส่วน', 'LRTB', 0, 'C', 0);
-			$pdf->Cell(50, 6, 'Slim Fit', 'LRTB', 0, 'C', 0);
-
-			$pdf->MultiCell(50, 40, 'Slim Fit
-			xxx
-			xxxx
-			xxx', 'LRTB', 0, 'C', 1);
-
-			$pdf->Ln();
-*/
 //$pdf->Image(base_url('images/temp/body.png'), 80, 50, 50, '', '');
 //$pdf->Text(80, 48, 'เย็บธรรมดา');
 
@@ -254,10 +236,20 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		<td width="120">'.number_format($item->collar).'</td>
 		<td width="620" rowspan="19">
 			<table cellspacing="0" cellpadding="2" border="1">
+'.
+/*
 				<tr>
 					<td>'.$this->merge_collar($item).'</td>
 					<td>'.get_collar_detail($item).'</td>
 					<td>'.$this->merge_cuff($item).'</td>
+					<td>'.get_cuff_detail($item).'</td>
+				</tr>
+*/
+'
+				<tr>
+					<td align="center">'.$this->generate_thumb('collar', $item->part_collar_code).'</td>
+					<td>'.get_collar_detail($item).'</td>
+					<td align="center">'.$this->generate_thumb('cuff', $item->part_cuff_code).'</td>
 					<td>'.get_cuff_detail($item).'</td>
 				</tr>
 				<tr>
@@ -284,8 +276,9 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 					<td colspan="2" style="color:red;" align="center">
 						<strong>'.($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา').'</strong></td>
 				</tr>
-				<tr>
-					<td>'.$this->merge_body($item).'</td>
+				<tr>'.
+//					<td>'.$this->merge_body($item).'</td>
+					'<td>'.$this->merge_body($item).'</td>
 					<td>'.get_body_detail($item).'
 						<font color="red">
 						รังดุมเม็ดสุดท้าย
@@ -403,29 +396,93 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		$pdf->Output($pdf_name.'.pdf', 'I');
 	}
 
+	// *** IMAGE THUMBNAIL
+	private function get_thumb_path_file($type, $style){
+		$stock_path = $this->config->item('STOCK_PATH');
+		$thumb_path = $stock_path.'thumbnails/'.$type.'-'.$style.'.png';
+		return $thumb_path;
+	}
+
+	public function show_thumb_photo(){
+		$path = $this->input->get('path');
+		$this->output
+		    ->set_content_type('png')
+		    ->set_output(file_get_contents($path));
+	}
+
+	public function generate_thumb($type, $style){
+		$p = $this->get_thumb_path_file($type, $style);
+		$url = site_url('backend/order_report/show_thumb_photo?path='.$p);
+		if(!file_exists($p))
+			return '<img src="'.(base_url("images/image-missing.png")).'" />';
+		else
+			return '<img src="'.$url.'" width="180" />';
+	}
+
+	public function merge_body_thumb($oi){
+		$list = array();
+		// part body
+		if($oi->part_placket_code=='seamless')
+			array_push($list, $this->get_thumb_path_file('teb', 'seamless'));
+		else if($oi->part_placket_code=='seamless')
+			array_push($list, $this->get_thumb_path_file('teb', 'concealed'));
+		else
+			array_push($list, $this->get_thumb_path_file('teb', 'standard'));
+
+		if($oi->part_placket_code=='tuxedo')
+			array_push($list, $this->get_thumb_path_file('teb', 'tuxedo'));
+
+		// pocket
+		if(!empty($oi->part_pocket_id))
+			array_push($list, $this->get_thumb_path_file('pocket', $oi->part_pocket_code));
+
+		$merged = $this->merge_images($list, 400, 400);
+		//foreach($list AS $l){
+		//	echo "<img src=\"".preg_replace('/\/home\/user\/data\/www\/php_www/', '', $l)."\" style=\"position:absolute;top:0px;left:0px;\" />";
+		//}
+
+		$dt = (!empty($oi->update_date))?$oi->update_date:$oi->create_date;
+		$dt = preg_replace('/\s/', '_', $dt);
+		$output_path = $this->get_image_cache_path('thumbnails', $this->glue(array($oi->order_id, $oi->id, $dt, "teb.png")));
+
+		print_r($list);
+		echo $output_path;
+
+		imagepng($merged, $output_path);
+		imagedestroy($merged);
+	}
+
+	public function test_merge_body_thumb(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(1);
+		$this->merge_body_thumb($oi);
+	}
+	// *** END IMAGE THUMBNAIL
+
 	// *** UTIL FOR FIND PATH
-	private function get_image_file_path($type, $name, $include_FC = TRUE){
+	private function get_image_file_path($type, $name){
 		$result = '';
+		$stock_path = $this->config->item('STOCK_PATH');
 		switch ($type) {
 	        case 'fabric':
-	            $result = 'images/fabric/'.$name; break;
+	            $result = $stock_path.'fabric/'.$name; break;
 	        case 'part-body':
-	            $result = 'images/parts/body/'.$name; break;
+	            $result = $stock_path.'body/'.$name; break;
 	        case 'part-collar':
-	            $result = 'images/parts/collar/'.$name; break;
+	            $result = $stock_path.'collar/'.$name; break;
 	        case 'part-cuff':
-	            $result = 'images/parts/cuff/'.$name; break;
+	            $result = $stock_path.'cuff/'.$name; break;
 	        case 'part-placket':
-	            $result = 'images/parts/placket/'.$name; break;
+	            $result = $stock_path.'placket/'.$name; break;
 	        case 'part-pleat':
-	            $result = 'images/parts/pleat/'.$name; break;
+	            $result = $stock_path.'pleat/'.$name; break;
 	        case 'part-pocket':
-	            $result = 'images/parts/pocket/'.$name; break;
+	            $result = $stock_path.'pocket/'.$name; break;
 	        case 'part-yoke':
-	            $result = 'images/parts/yoke/'.$name; break;
+	            $result = $stock_path.'yoke/'.$name; break;
 			default: '';
 	    }
-	    return ($include_FC)?FCPATH.$result:$result;
+	    return $result;
 	}
 
 	private function get_image_cache_path($type, $name, $include_FC = TRUE){
@@ -436,6 +493,9 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 	            break;
 	        case 'part':
 	            $result = 'images/temp/part_merge/'.$name;
+	            break;
+	        case 'thumbnails':
+	            $result = 'images/temp/thumbnails/'.$name;
 	            break;
 			default: '';
 	    }
@@ -503,10 +563,10 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 	    return true;
 	}
 
-	private function merge_image($image_1, $image_2){
+	private function merge_image($image_1, $image_2, $width=425, $height=640){
 		imagealphablending($image_1, true);
 		imagesavealpha($image_1, true);
-		imagecopy($image_1, $image_2, 0, 0, 0, 0, 425, 640);
+		imagecopy($image_1, $image_2, 0, 0, 0, 0, $width, $height);
 		return $image_1;
 	}
 	private function glue($str_arr){ return implode('-', $str_arr); }
@@ -841,7 +901,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		imagedestroy($merged);
 	}
 
-	private function merge_images($imgs){
+	private function merge_images($imgs, $width=425, $height=640){
 		$imgs_exist = array();
 		// check file exist
 		for($i=0;$i<count($imgs);$i++){
@@ -851,7 +911,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 		// set base image
 		// set background color to white
-		$final = imagecreatetruecolor(425, 640);
+		$final = imagecreatetruecolor($width, $height);
 		$backgroundColor = imagecolorallocate($final, 255, 255, 255);
 		imagefill($final, 0, 0, $backgroundColor);
 
@@ -860,7 +920,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			//list ($x, $y) = indexToCoords($index);
 			$part_img = imagecreatefrompng($src_image_path);
 
-			imagecopy($final, $part_img, 0, 0, 0, 0, 425, 640);
+			imagecopy($final, $part_img, 0, 0, 0, 0, $width, $height);
 			imagedestroy($part_img);
 		}
 		return $final;
