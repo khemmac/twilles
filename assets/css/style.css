@@ -1,31 +1,17 @@
-.b-small-key {
-	background-image: url('../images/icons/key.gif') !important;
-}
-.b-small-magnifier {
-	background-image: url('../images/icons/magnifier.gif') !important;
-}
-.b-small-cross {
-	background-image: url('../images/icons/cross.gif') !important;
-}
+.b-small-key { background-image: url('../images/icons/key.gif') !important; }
+.b-small-magnifier { background-image: url('../images/icons/magnifier.gif') !important; }
+.b-small-cross { background-image: url('../images/icons/cross.gif') !important; }
 
 
-.b-flag-green {
-	background-image: url('../images/icons/flag_green.gif') !important;
-}
-.b-flag-red {
-	background-image: url('../images/icons/flag_red.gif') !important;
-}
+.b-flag-green { background-image: url('../images/icons/flag_green.gif') !important; }
+.b-flag-red { background-image: url('../images/icons/flag_red.gif') !important; }
 
+.b-application_add { background-image: url('../images/icons/application_add.gif') !important; }
+.b-application_edit { background-image: url('../images/icons/application_edit.gif') !important; }
+.b-application_delete { background-image: url('../images/icons/application_delete.gif') !important; }
 
-.b-application_add {
-	background-image: url('../images/icons/application_add.gif') !important;
-}
-.b-application_edit {
-	background-image: url('../images/icons/application_edit.gif') !important;
-}
-.b-application_delete {
-	background-image: url('../images/icons/application_delete.gif') !important;
-}
+.b-import { background-image: url('../images/icons/table_import.png') !important; }
+.b-export_excel { background-image: url('../images/icons/export_excel.png') !important; }
 
 /* ** MENU */
 .menu-large-fabric { background-image: url('../images/menu/polish_cloth.png') !important; }

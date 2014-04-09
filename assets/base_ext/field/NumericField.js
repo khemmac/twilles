@@ -11,7 +11,8 @@
  * @version: 2 compatible with ExtJS 4
  */
 Ext.define('BASE.field.NumericField', {
-    extend: 'Ext.form.field.Number',//Extending the NumberField
+    //extend: 'Ext.form.field.Number',//Extending the NumberField
+    extend: 'Ext.ux.form.NumericField',
 
     currencySymbol: null,
     currencySymbolPos : 'right', // left , right

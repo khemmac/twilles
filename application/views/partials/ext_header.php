@@ -21,7 +21,9 @@ function endsWith($haystack, $needle)
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/ext/resources/css/ext-all.css') ?>" />
 	<script type="text/javascript" src="<?= base_url('assets/ext/ext-all.js') ?>"></script>
-	<script type="text/javascript" src="<?= base_url('assets/ext/ux/NumericField.js') ?>"></script>
+	<!--script type="text/javascript" src="<?= base_url('assets/ext/ux/NumericField.js') ?>"></script-->
+	<!-- FOR SWF UPLOAD -->
+	<script type="text/javascript" src="<?= base_url('assets/ext/ux/swfupload/swfupload.js') ?>"></script>
 
 	<?php if(ENVIRONMENT=='production' || ENVIRONMENT=='testing'): ?>
 	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-base.js') ?>"></script>
@@ -34,6 +36,7 @@ function endsWith($haystack, $needle)
 		Ext.Loader.setConfig({
 			enabled: true,
 			paths: {
+				'Ext.ux': __base_url+'assets/ext/ux',
 				'BASE': __base_url+'assets/base_ext',
 				'TCMS': __base_url+'assets/js'
 			}

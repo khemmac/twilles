@@ -32,8 +32,13 @@ Ext.define('TCMS.Fabric.Main', {
 			iconCls: 'b-flag-red'
 		});
 
+		var importAct = Ext.create('BASE.Action', {
+			text: 'Import',
+			iconCls: 'b-import'
+		});
+
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, '-', activeAct, inActiveAct, '-', importAct]
 		});
 
 		var window = Ext.create('TCMS.Fabric.Window');
@@ -41,9 +46,13 @@ Ext.define('TCMS.Fabric.Main', {
 		var grid = Ext.create('TCMS.Fabric.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, '-', activeAct, inActiveAct, '-', importAct],
+			validateActions : [addAct, editAct, activeAct, inActiveAct, importAct]
 		});
+
+		// ** IMPORT
+		var importWindow = Ext.create('TCMS.Fabric.Import.Window');
+		// ** END IMPORT
 
 		this.items = [grid];
 
@@ -74,6 +83,10 @@ Ext.define('TCMS.Fabric.Main', {
 				type: 'fabric',
 				is_active:0
 			});
+		});
+
+		importAct.setHandler(function(){
+			importWindow.openDialog('Import fabric', 'add');
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
