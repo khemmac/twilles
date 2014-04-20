@@ -21,7 +21,7 @@ Ext.define('TCMS.Fabric.Import.Window', {
 
 		var uploader = Ext.create('Ext.ux.SWFUpload', {
 			autoStart: false
-			,debugMode: false
+			,debugMode: true
 			,targetUrl: __site_url+'backend/fabric/upload'
 			,fieldName: 'userfile'
 			,swfUrl: __base_url+'assets/ext/ux/swfupload/swfupload.swf'
@@ -59,6 +59,7 @@ Ext.define('TCMS.Fabric.Import.Window', {
 					_this.form.form.findField('UID').setValue(guid);
 				},
 				file_dialog_complete_handler: function(){
+
 					var uploadStats = uploader.getStats();
 					if(uploadStats.files_queued>0){
 						var progressBox = Ext.MessageBox.show({
@@ -166,6 +167,13 @@ Ext.define('TCMS.Fabric.Import.Window', {
 			_this.form.formParams = _this.dialogParams;
 			_this.form.formAction = _this.dialogAction;
 			_this.actions[_this.dialogAction].call(_this);
+		});
+
+		// after upload complete
+		uploader.on('uploadResponse', function(file, responseText, receivedResponse){
+			console.log('FROM UPLOAD RESPONSE');
+			console.log(responseText);
+			console.log(receivedResponse);
 		});
 
 		return this.callParent(arguments);

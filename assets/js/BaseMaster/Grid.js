@@ -129,7 +129,7 @@ Ext.define('TCMS.BaseMaster.Grid', {
 			fields: [
 				{ name:'id', type:'int' },
 				'name',
-				'alias',
+				//'alias',
 				{ name:'is_active', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
@@ -143,8 +143,8 @@ Ext.define('TCMS.BaseMaster.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left'},
+			{text: "Name", width:180, dataIndex:'name', sortable:true, align:'left'},
+			//{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left'},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){
 					var icns = (v)?'tick':'cross';

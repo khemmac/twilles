@@ -7,7 +7,7 @@ Ext.define('TCMS.BaseMaster.Window', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			height: 180,
+			height: 140,
 			width: 300,
 			resizable: false,
 			modal: true,
@@ -37,12 +37,12 @@ Ext.define('TCMS.BaseMaster.Window', {
 				xtype: 'textfield',
 				fieldLabel: 'Name',
 				allowBlank: false
-			}, {
+			}/*, {
 				name: 'alias',
 				xtype: 'textfield',
 				fieldLabel: 'Alias',
 				allowBlank: false
-			}, {
+			}*/, {
 				name: 'is_active',
 				xtype: 'checkboxfield',
 				fieldLabel: 'Active',

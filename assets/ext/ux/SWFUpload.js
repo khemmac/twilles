@@ -68,7 +68,7 @@ Ext.define('Ext.ux.SWFUpload', {
 
 		var params = Ext.apply({},this.baseParams);
 		Ext.each(this.relayCookies, function(cookieName) {
-			params[cookieName] = Ext.util.Cookies.get(cookieName);
+			params[cookieName] = Ext.util.Cookies.get(cookieName)
 		});
 
 
@@ -143,6 +143,11 @@ Ext.define('Ext.ux.SWFUpload', {
 
 				this.errorOccurred = true;
 
+				if(this.debugMode)
+				{
+					console.log('upload_error_handler', file, errorCode, errorMessage);
+				}
+
 				if(false!==this.fireEvent('uploadError', file, errorCode, errorMessage))
 				{
 					Ext.Msg.alert('Upload Failed', 'An error occured while uploading your file:<br><br>'+errorMessage);
@@ -214,7 +219,7 @@ Ext.define('Ext.ux.SWFUpload', {
 			},this)
 
 			,upload_success_handler: Ext.bind(function(file, responseText, receivedResponse) {
-console.log(responseText);
+
 				// skip during errors
 				if(this.errorOccurred)
 				{
