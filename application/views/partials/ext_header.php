@@ -23,9 +23,10 @@ function endsWith($haystack, $needle)
 	<script type="text/javascript" src="<?= base_url('assets/ext/ext-all.js') ?>"></script>
 	<!--script type="text/javascript" src="<?= base_url('assets/ext/ux/NumericField.js') ?>"></script-->
 	<!-- FOR SWF UPLOAD -->
-	<script type="text/javascript" src="<?= base_url('assets/ext/ux/swfupload/swfupload.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/jslib/swfupload/swfupload.js') ?>"></script>
 
 	<?php if(ENVIRONMENT=='production' || ENVIRONMENT=='testing'): ?>
+	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/ext-ux.js') ?>"></script>
 	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-base.js') ?>"></script>
 	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-js.js') ?>"></script>
 	<?php endif; ?>

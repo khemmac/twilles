@@ -52,6 +52,11 @@ function min_to_file($source_path, $out_file){
 /////////////////////////////////////////
 // set file below
 
+$ext_ux_path = realpath('../ext/ux');
+$ext_ux_out_file = realpath('').'/ext-ux.js';
+
+min_to_file($ext_ux_path, $ext_ux_out_file);
+
 $ext_base_path = realpath('../base_ext');
 $ext_base_out_file = realpath('').'/all-base.js';
 

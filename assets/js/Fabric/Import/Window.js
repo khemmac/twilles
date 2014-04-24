@@ -24,14 +24,14 @@ Ext.define('TCMS.Fabric.Import.Window', {
 			,debugMode: false
 			,targetUrl: __site_url+'backend/fabric/upload'
 			,fieldName: 'userfile'
-			,swfUrl: __base_url+'assets/ext/ux/swfupload/swfupload.swf'
+			,swfUrl: __base_url+'assets/jslib/swfupload/swfupload.swf'
 			,progressBar: false
 			,file_size_limit: "16 MB"
 			,file_types: '*.xls; *.xlsx;'
 			,file_types_description: 'Excel file'
 			,button_width: 59
 			,button_height: 18
-			,button_image_url: __base_url+'assets/ext/ux/swfupload/swf-upload-button-small.jpg'
+			,button_image_url: __base_url+'assets/jslib/swfupload/swf-upload-button-small.jpg'
 			,baseParams: [{
 				aa: 11
 			}],
