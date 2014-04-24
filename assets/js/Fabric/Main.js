@@ -109,6 +109,11 @@ Ext.define('TCMS.Fabric.Main', {
 			grid.load();
 		});
 
+		importWindow.on('afterImportSuccess', function(){
+			importWindow.hide();
+			grid.load();
+		});
+
 		window.transactionPanel.grid.on('calculatedSummaryAmount', function(v){
 			window.form.form.findField('length_yards').setValue(v);
 			grid.load();

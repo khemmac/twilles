@@ -21,7 +21,7 @@ Ext.define('TCMS.Fabric.Import.Window', {
 
 		var uploader = Ext.create('Ext.ux.SWFUpload', {
 			autoStart: false
-			,debugMode: true
+			,debugMode: false
 			,targetUrl: __site_url+'backend/fabric/upload'
 			,fieldName: 'userfile'
 			,swfUrl: __base_url+'assets/ext/ux/swfupload/swfupload.swf'
@@ -171,9 +171,25 @@ Ext.define('TCMS.Fabric.Import.Window', {
 
 		// after upload complete
 		uploader.on('uploadResponse', function(file, responseText, receivedResponse){
-			console.log('FROM UPLOAD RESPONSE');
-			console.log(responseText);
-			console.log(receivedResponse);
+			//console.log('FROM UPLOAD RESPONSE');
+			//console.log(responseText);
+			//console.log(receivedResponse);
+			if(receivedResponse){
+				_this.form.load({
+					url : __site_url+'backend/fabric/do_import',
+					success : function(form, act) {
+						_this.form.form.reset();
+						uploader.progressBar.hide();
+						_this.fireEvent('afterImportSuccess', _this, act);
+					},
+					failure : _this.failureAlert,
+					waitMsg : 'Deleting...',
+					waitTitle : 'Please wait...',
+					params : {
+						file:responseText
+					}
+				});
+			}
 		});
 
 		return this.callParent(arguments);
