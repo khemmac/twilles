@@ -4,7 +4,7 @@ Ext.define('TCMS.Fabric.Window', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			height: 440,
+			height: 455,
 			width: 600,
 			resizable: false,
 			modal: true,
@@ -130,6 +130,11 @@ Ext.define('TCMS.Fabric.Window', {
 				name: 'code',
 				xtype: 'textfield',
 				fieldLabel: 'Code',
+				allowBlank: false
+			},{
+				name: 'name',
+				xtype: 'textfield',
+				fieldLabel: 'Name',
 				allowBlank: false
 			},
 			this.comboFabricType,

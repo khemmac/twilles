@@ -74,13 +74,6 @@ Ext.define('TCMS.Order.Form', {
 			allowBlank: true
 		}, _fieldDefaults));
 
-		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
-			fieldLabel: 'Package',
-			name : 'inventory_packaging_id',
-			inventoryType: '4',
-			allowBlank: true
-		});
-
 		this.triggerMember = _createField('Ext.form.field.Trigger', {
 			fieldLabel:'Member',
 			name : 'member_fullname',
@@ -177,8 +170,7 @@ Ext.define('TCMS.Order.Form', {
 								fieldLabel: 'Zip code',
 								maxLength: 5
 							},
-							this.comboCountry,
-							this.comboInventoryPackage]
+							this.comboCountry]
 						},{
 							// delivery left column
 							columnWidth:0.5,

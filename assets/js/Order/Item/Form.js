@@ -347,6 +347,12 @@ Ext.define('TCMS.Order.Item.Form', {
 			inventoryType: '2',
 			allowBlank: true
 		});
+		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
+			fieldLabel: 'Package',
+			name : 'inventory_package_id',
+			inventoryType: '4',
+			allowBlank: true
+		});
 		// ** END PLACKET **
 
 		// ** FABRIC **
@@ -424,7 +430,12 @@ Ext.define('TCMS.Order.Item.Form', {
 						this.comboFabricCuffOuter
 					]
 				},
-				this.comboStitchingType]
+				this.comboStitchingType, {
+					xtype: 'fieldset',
+					title: 'Inventory',
+					defaults: _fieldDefaults,
+					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
+				}]
 			},{
 				// center column
 				// defaults for fields
@@ -444,11 +455,13 @@ Ext.define('TCMS.Order.Item.Form', {
 					title: 'Placket',
 					defaults: _fieldDefaults,
 					items: [this.comboPartPlacket, this.numberPlacketWidth]
-				}, {
-					xtype: 'fieldset',
-					title: 'Inventory',
-					defaults: _fieldDefaults,
-					items: [this.comboInventoryButton, this.comboInventoryLabel]
+				},
+				{
+					name: 'detail',
+					xtype: 'textarea',
+					fieldLabel: 'Other',
+					labelAlign: 'top',
+					rows: 10
 				}]
 			},{
 				// right column

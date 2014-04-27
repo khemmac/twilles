@@ -218,6 +218,8 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 		foreach($order_item AS $item){
 			// add a page
+			$pdf->SetMargins(4, 4, 4, 0);
+			$pdf->SetPrintHeader(false);
 			$pdf->AddPage('L');
 
 			$pdf->SetFont('angsanaupc', '', 14);
@@ -226,15 +228,15 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 //$pdf->Text(80, 48, 'เย็บธรรมดา');
 
 			$tbl =
-'<table cellspacing="0" cellpadding="2" border="1">
+'<table cellspacing="0" cellpadding="1" border="1">
 	<tr>
 		<td width="80" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
 		<td width="740" style="background-color:#CCCCCC;" colspan="2"><b>Slim Fit</b></td>
     </tr>
 	<tr>
 		<td width="80">รอบคอ</td>
-		<td width="120">'.number_format($item->collar).'</td>
-		<td width="620" rowspan="19">
+		<td width="160">'.number_format($item->collar).'</td>
+		<td width="580" rowspan="21">
 			<table cellspacing="0" cellpadding="2" border="1">
 '.
 /*
@@ -253,19 +255,19 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 					<td>'.get_cuff_detail($item).'</td>
 				</tr>
 				<tr>
-					<td>
+					<td align="center">
 						<strong>ผ้าคอนอก</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_collar_outer_id).'
 					</td>
-					<td>
+					<td align="center">
 						<strong>ผ้าคอใน</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_collar_inner_id).'
 					</td>
-					<td>
+					<td align="center">
 						<strong>ผ้าข้อมือนอก</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_cuff_outer_id).'
 					</td>
-					<td>
+					<td align="center">
 						<strong>ผ้าข้อมือใน</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_cuff_inner_id).'
 					</td>
@@ -278,7 +280,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 				</tr>
 				<tr>'.
 //					<td>'.$this->merge_body($item).'</td>
-					'<td>'.$this->merge_body($item).'</td>
+					'<td align="center">'.$this->merge_body($item).'</td>
 					<td>'.get_body_detail($item).'
 						<font color="red">
 						รังดุมเม็ดสุดท้าย
@@ -287,18 +289,32 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 					</td>
 					<td colspan="2" rowspan="2">
 						<table cellspacing="0" cellpadding="2" border="0">
-							<tr><td>'.$item->part_pleat_code.''.$this->merge_pleat($item).'</td></tr>
-							<tr><td>'.$item->part_yoke_code.''.$this->merge_yoke($item).'</td></tr>
-							<tr><td>'.$item->part_bottom_code.'</td></tr>
+							<tr><td align="center">'
+								//.$this->merge_pleat($item)
+								.$this->generate_thumb('back', $item->part_pleat_code)
+								.'<br />'
+								.$item->part_pleat_code
+							.'</td><td align="center">'
+								//.$this->merge_yoke($item)
+								.$this->generate_thumb('yoke', $item->part_yoke_code)
+								.'<br />'
+								.$item->part_yoke_code
+							.'</td></tr>
+							<tr><td align="center">'
+								.$this->generate_thumb('bottom', $item->part_bottom_code)
+								.'<br />'
+								.$item->part_bottom_code
+							.'</td><td>'
+							.'</td></tr>
 						</table>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td align="center">
 						<strong>ผ้าตัว</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_body_id).'
 					</td>
-					<td>
+					<td align="center">
 						<strong>ผ้าสาบใน</strong>
 						'.$this->get_fabric_html_detail($item->id, $item->fabric_placket_id).'
 					</td>
@@ -381,6 +397,14 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			<br />เย็บมือ
 		</td>
     </tr>
+	<tr>
+		<td colspan="2" style="background-color:#cccccc;">
+			<strong>อื่นๆ</strong>
+		</td>
+    </tr>
+	<tr>
+		<td colspan="2">'.nl2br($item->detail).'</td>
+    </tr>
 </table>';
 			$pdf->writeHTML($tbl, true, false, false, false, '');
 		}
@@ -399,6 +423,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 	// *** IMAGE THUMBNAIL
 	private function get_thumb_path_file($type, $style){
 		$stock_path = $this->config->item('STOCK_PATH');
+		//echo $stock_path.'thumbnails/'.$type.'-'.$style.'.png';
 		$thumb_path = $stock_path.'thumbnails/'.$type.'-'.$style.'.png';
 		return $thumb_path;
 	}
@@ -412,11 +437,12 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 	public function generate_thumb($type, $style){
 		$p = $this->get_thumb_path_file($type, $style);
+
 		$url = site_url('backend/order_report/show_thumb_photo?path='.$p);
 		if(!file_exists($p))
-			return '<img src="'.(base_url("images/image-missing.png")).'" />';
+			return '<img src="'.(base_url("images/image-missing.png?v=1")).'" />';
 		else
-			return '<img src="'.$url.'" width="180" />';
+			return '<img src="'.$url.'" width="90" />';
 	}
 
 	public function merge_body_thumb($oi){
@@ -426,11 +452,10 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 			array_push($list, $this->get_thumb_path_file('teb', 'seamless'));
 		else if($oi->part_placket_code=='seamless')
 			array_push($list, $this->get_thumb_path_file('teb', 'concealed'));
+		else if($oi->part_placket_code=='tuxedo')
+			array_push($list, $this->get_thumb_path_file('teb', 'tuxedo'));
 		else
 			array_push($list, $this->get_thumb_path_file('teb', 'standard'));
-
-		if($oi->part_placket_code=='tuxedo')
-			array_push($list, $this->get_thumb_path_file('teb', 'tuxedo'));
 
 		// pocket
 		if(!empty($oi->part_pocket_id))
@@ -524,7 +549,7 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 		return '<br />'.$fabric_id.'
 			<br /><img src="'.(base_url($this->get_image_cache_path('fabric', "$dest_file_name.jpg", false)))
-			.'" width="90" />';
+			.'" width="70" />';
 	}
 
 	private function resize_image($source_image_path, $thumbnail_image_path, $max_width = 90, $max_height = 90){
@@ -578,8 +603,8 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		//print_r($oi);
 		//return;
 
-		$order_id = 11;
-		$order_item_id = 12;
+		$order_id = 1;
+		$order_item_id = 1;
 		$create_date = '2014-03-13 10:19:17';
 		$update_date = NULL;
 

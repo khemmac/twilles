@@ -2,4 +2,4 @@
 
 $config['FRONT_PATH']	= 'http://twilles.com/';
 
-$config['STOCK_PATH']	= '/htdocs/stocks/';
+$config['STOCK_PATH']	= '/home/www/virtual/twilles.com/htdocs/stocks/';
