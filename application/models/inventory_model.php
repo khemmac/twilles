@@ -24,12 +24,17 @@ Class Inventory_model extends Base_model
 	}
 
 	public function before_create_check_Key($o){
+		if(empty($o['code'])) return $o;
+
 		$o['id'] = $o['code'];
 		unset($o['code']);
 		return $o;
 	}
 
 	public function before_update_check_Key($o){
+		if(empty($o['code'])) return $o;
+
+		$o['id'] = $o['code'];
 		unset($o['code']);
 		return $o;
 	}

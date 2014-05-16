@@ -1,14 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Order_report extends CI_Controller {
 
+	function __construct(){
+        parent::__construct();
+
+		$this->load->model('v_order_model','v_order');
+		$this->load->model('v_order_item_model','v_order_item');
+		$this->load->library('XOrder');
+	}
+
 	public function report(){
 
 		// prepare data
 		$order_id = $this->uri->segment(4);
-		$this->load->model('v_order_model','v_order');
 		$order = $this->v_order->get($order_id);
 
-		$this->load->model('v_order_item_model','v_order_item');
 		$order_item = $this->v_order_item->get_many_by(array('order_id'=>$order_id));
 
 		$pdf_name = $order->order_code;
@@ -174,48 +180,6 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','จำนวน','ราคา','รวม'), $order, $item_data);
 
 		// ****** LOOP ITEMS EACH PAGE
-		function get_collar_detail($o){
-			$str_arr = array();
-			if(empty($o->part_collar_id))
-				return '-';
-
-			array_push($str_arr, '<strong>'.$o->part_collar_code.'</strong>');
-			if(!empty($o->part_collar_type))
-				array_push($str_arr, $o->part_collar_type_name);
-			if(!empty($o->part_collar_thickness))
-				array_push($str_arr, $o->part_collar_thickness);
-			if(!empty($o->part_collar_width) && floatval($o->part_collar_width)>0)
-				array_push($str_arr, number_format($o->part_collar_width, 2).' นิ้ว');
-			array_push($str_arr, (($o->part_collar_stay==0)?'ไม่':'').'มีคอเสียบ');
-			return implode('<br />', $str_arr);
-		}
-		function get_cuff_detail($o){
-			$str_arr = array();
-			if(empty($o->part_cuff_id))
-				return '-';
-
-			array_push($str_arr, '<strong>'.$o->part_cuff_code.'</strong>');
-			if(!empty($o->part_cuff_type))
-				array_push($str_arr, $o->part_cuff_type_name);
-			if(!empty($o->part_cuff_thickness))
-				array_push($str_arr, $o->part_cuff_thickness);
-			if(!empty($o->part_cuff_width) && floatval($o->part_cuff_width)>0)
-				array_push($str_arr, number_format($o->part_cuff_width, 2).' นิ้ว');
-			return implode('<br />', $str_arr);
-		}
-		function get_body_detail($o){
-			$str_arr = array();
-			if(empty($o->part_cuff_id))
-				return '-';
-
-			array_push($str_arr, '<strong>'.$o->part_placket_code.'</strong>');
-			if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
-				array_push($str_arr, number_format($o->part_placket_width, 2).' นิ้ว');
-			if(!empty($o->part_pocket_code))
-				array_push($str_arr, $o->part_pocket_code);
-			return implode('<br />', $str_arr);
-		}
-
 		foreach($order_item AS $item){
 			// add a page
 			$pdf->SetMargins(4, 4, 4, 0);
@@ -224,188 +188,8 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 
 			$pdf->SetFont('angsanaupc', '', 14);
 
-//$pdf->Image(base_url('images/temp/body.png'), 80, 50, 50, '', '');
-//$pdf->Text(80, 48, 'เย็บธรรมดา');
+			$tbl = $this->xorder->getOrderItemHTML($item);
 
-			$tbl =
-'<table cellspacing="0" cellpadding="1" border="1">
-	<tr>
-		<td width="80" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
-		<td width="740" style="background-color:#CCCCCC;" colspan="2"><b>Slim Fit</b></td>
-    </tr>
-	<tr>
-		<td width="80">รอบคอ</td>
-		<td width="160">'.number_format($item->collar).'</td>
-		<td width="580" rowspan="21">
-			<table cellspacing="0" cellpadding="2" border="1">
-'.
-/*
-				<tr>
-					<td>'.$this->merge_collar($item).'</td>
-					<td>'.get_collar_detail($item).'</td>
-					<td>'.$this->merge_cuff($item).'</td>
-					<td>'.get_cuff_detail($item).'</td>
-				</tr>
-*/
-'
-				<tr>
-					<td align="center">'.$this->generate_thumb('collar', $item->part_collar_code).'</td>
-					<td>'.get_collar_detail($item).'</td>
-					<td align="center">'.$this->generate_thumb('cuff', $item->part_cuff_code).'</td>
-					<td>'.get_cuff_detail($item).'</td>
-				</tr>
-				<tr>
-					<td align="center">
-						<strong>ผ้าคอนอก</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_collar_outer_id).'
-					</td>
-					<td align="center">
-						<strong>ผ้าคอใน</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_collar_inner_id).'
-					</td>
-					<td align="center">
-						<strong>ผ้าข้อมือนอก</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_cuff_outer_id).'
-					</td>
-					<td align="center">
-						<strong>ผ้าข้อมือใน</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_cuff_inner_id).'
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="color:red;" align="center">
-						<strong>'.($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา').'</strong></td>
-					<td colspan="2" style="color:red;" align="center">
-						<strong>'.($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา').'</strong></td>
-				</tr>
-				<tr>'.
-//					<td>'.$this->merge_body($item).'</td>
-					'<td align="center">'.$this->merge_body($item).'</td>
-					<td>'.get_body_detail($item).'
-						<font color="red">
-						รังดุมเม็ดสุดท้าย
-						เย็บขวาง
-						</font>
-					</td>
-					<td colspan="2" rowspan="2">
-						<table cellspacing="0" cellpadding="2" border="0">
-							<tr><td align="center">'
-								//.$this->merge_pleat($item)
-								.$this->generate_thumb('back', $item->part_pleat_code)
-								.'<br />'
-								.$item->part_pleat_code
-							.'</td><td align="center">'
-								//.$this->merge_yoke($item)
-								.$this->generate_thumb('yoke', $item->part_yoke_code)
-								.'<br />'
-								.$item->part_yoke_code
-							.'</td></tr>
-							<tr><td align="center">'
-								.$this->generate_thumb('bottom', $item->part_bottom_code)
-								.'<br />'
-								.$item->part_bottom_code
-							.'</td><td>'
-							.'</td></tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td align="center">
-						<strong>ผ้าตัว</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_body_id).'
-					</td>
-					<td align="center">
-						<strong>ผ้าสาบใน</strong>
-						'.$this->get_fabric_html_detail($item->id, $item->fabric_placket_id).'
-					</td>
-				</tr>
-			</table>
-		</td>
-    </tr>
-	<tr>
-		<td>ไหล่</td>
-		<td>'.number_format($item->collar).'</td>
-    </tr>
-	<tr>
-		<td>อก</td>
-		<td>'.number_format($item->chest).'</td>
-    </tr>
-	<tr>
-		<td>บ่าหน้า</td>
-		<td>'.number_format($item->chest_front).'</td>
-    </tr>
-	<tr>
-		<td>บ่าหลัง</td>
-		<td>'.number_format($item->chest_back).'</td>
-    </tr>
-	<tr>
-		<td>เอว</td>
-		<td>'.number_format($item->waist).'</td>
-    </tr>
-	<tr>
-		<td>สะโพก</td>
-		<td>'.number_format($item->hips).'</td>
-    </tr>
-	<tr>
-		<td>ลำตัว</td>
-		<td>'.number_format($item->length_in_front).' x '.number_format($item->length_in_back).'</td>
-    </tr>
-	<tr>
-		<td>ยาวแขนซ้าย</td>
-		<td>'.number_format($item->sleeve_left).'</td>
-    </tr>
-	<tr>
-		<td>ยาวแขนขวา</td>
-		<td>'.number_format($item->sleeve_right).'</td>
-    </tr>
-	<tr>
-		<td>กล้ามแขน</td>
-		<td>'.number_format($item->biceps).'</td>
-    </tr>
-	<tr>
-		<td>ศอก</td>
-		<td>'.number_format($item->elbow).'</td>
-    </tr>
-	<tr>
-		<td>ข้อมือ</td>
-		<td>'.number_format($item->wrist).'</td>
-    </tr>
-	<tr>
-		<td>วงแขน</td>
-		<td>'.number_format($item->armhole).'</td>
-    </tr>
-	<tr>
-		<td>อกสูง</td>
-		<td>'.number_format($item->chest_height).'</td>
-    </tr>
-	<tr>
-		<td>อกห่าง</td>
-		<td>'.number_format($item->chest_distance).'</td>
-    </tr>
-	<tr>
-		<td>ระดับไหล่</td>
-		<td>'.$item->shoulder_level_name.'</td>
-    </tr>
-	<tr>
-		<td>ทรงไหล่</td>
-		<td>'.$item->shoulder_shape_name.'</td>
-    </tr>
-	<tr>
-		<td colspan="2">
-			<strong>ขาว</strong>
-			<br />เย็บเม็ดบนห่างจากกระดุมปก 2.5 นิ้ว
-			<br />เย็บมือ
-		</td>
-    </tr>
-	<tr>
-		<td colspan="2" style="background-color:#cccccc;">
-			<strong>อื่นๆ</strong>
-		</td>
-    </tr>
-	<tr>
-		<td colspan="2">'.nl2br($item->detail).'</td>
-    </tr>
-</table>';
 			$pdf->writeHTML($tbl, true, false, false, false, '');
 		}
 
@@ -481,6 +265,17 @@ $tbl = '<table cellspacing="0" cellpadding="3" border="0">
 		$this->load->model('v_order_item_model','v_order_item');
 		$oi = $this->v_order_item->get(1);
 		$this->merge_body_thumb($oi);
+	}
+
+	public function test_library(){
+		$this->load->model('v_order_item_model','v_order_item');
+		$oi = $this->v_order_item->get(1);
+
+		//$html = $this->xorder_report_item->GetItemHTML($oi);
+		//echo $html;
+
+		$html = $this->xorder->getOrderItemHTML($oi);
+		echo $html;
 	}
 	// *** END IMAGE THUMBNAIL
 

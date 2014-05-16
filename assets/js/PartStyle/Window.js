@@ -59,6 +59,11 @@ Ext.define('TCMS.PartStyle.Window', {
 				xtype: 'textfield',
 				fieldLabel: 'Code',
 				allowBlank: false
+			},{
+				name: 'name',
+				xtype: 'textfield',
+				fieldLabel: 'Name',
+				allowBlank: false
 			},
 			this.comboPartType, {
 				name: 'remark',
