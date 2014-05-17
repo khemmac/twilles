@@ -60,6 +60,15 @@ Ext.define('TCMS.Order.Item.Form', {
 
 		// **************** SIZE ****************
 
+		this.triggerMemberSize = _createField('Ext.form.field.Trigger', {
+			fieldLabel:'Member size',
+			name : 'member_size_name',
+			editable: false,
+			triggerCls: 'x-form-search-trigger',
+			allowBlank: true,
+			submitValue: false
+		});
+
 		this.comboSizeType = _createField('BASE.ComboStatic', {
 			fieldLabel:'Size type',
 			name : 'size_type',
@@ -95,6 +104,9 @@ Ext.define('TCMS.Order.Item.Form', {
 		});
 
 		var tabSize = [{
+			xtype: 'hidden',
+			name: 'member_size_id'
+		}, {
 			// column layout with 2 columns
 			layout:'column',
 			border:false,
@@ -111,10 +123,17 @@ Ext.define('TCMS.Order.Item.Form', {
 				columnWidth:0.34,
 				defaults:_fieldDefaults,
 				items:[
+				this.triggerMemberSize,
 				//this.comboSizeType,
-				_createField('BASE.field.NumericField', { fieldLabel:'Collar', name : 'collar' }),
-				_createField('BASE.field.NumericField', { fieldLabel:'Wrist', name : 'wrist' }),
 				{
+					xtype: 'fieldset',
+					title: 'Basic',
+					defaults: _fieldDefaults,
+					items: [
+						_createField('BASE.field.NumericField', { fieldLabel:'Collar', name : 'collar' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Wrist', name : 'wrist' })
+					]
+				}, {
 					xtype: 'fieldset',
 					title: 'Shoulder',
 					defaults: _fieldDefaults,
@@ -506,6 +525,44 @@ Ext.define('TCMS.Order.Item.Form', {
 				items: tabSize
 			}]
 		})];
+
+		this.memberSizeDialog = Ext.create('TCMS.MemberSize.Selector.Window');
+
+		// event
+		this.triggerMemberSize.onTriggerClick = function(){
+			// show member dialog
+			_this.memberSizeDialog.openDialog('Select member size', 'search');
+		};
+
+		// member size event
+		this.memberSizeDialog.submitAct.setHandler(function(){
+			var record = _this.memberSizeDialog.grid.getSelectedObject();
+			if(record){
+				var o = record.data;
+
+				// loop through fields
+				var fObj = _this.form.getFields();
+				for(var i=0;i<fObj.items.length;i++){
+					var f = fObj.items[i],
+						isExist = false;
+					for(var k in o){
+						if(f.name==k){
+							_this.form.findField(f.name).setValue(o[k]+'');
+							break;
+						}
+					}
+				}
+
+				_this.form.findField('member_size_name').setValue(o.name);
+				_this.form.findField('member_size_id').setValue(o.id);
+				_this.memberSizeDialog.hide();
+			}
+		});
+
+		this.memberSizeDialog.grid.on('celldblclick', function(g, td, cellIndex, r) {
+			if(!_this.memberSizeDialog.submitAct.isDisabled())
+				_this.memberSizeDialog.submitAct.execute();
+		});
 
 		return this.callParent(arguments);
 	}
