@@ -5,12 +5,14 @@ Ext.define('TCMS.Fabric.Main', {
 
 		Ext.apply(this, {
 			layout: 'border',
-			border: true
+			border: true,
+			moduleType: 'fabric'
 		});
 
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
 		var addAct = Ext.create('BASE.Action', {
 			text: 'Add',
@@ -21,7 +23,7 @@ Ext.define('TCMS.Fabric.Main', {
 			text: 'Edit',
 			iconCls: 'b-application_edit'
 		});
-
+/*
 		var activeAct = Ext.create('BASE.ActionMultiple', {
 			text: 'Active',
 			iconCls: 'b-flag-green'
@@ -31,6 +33,11 @@ Ext.define('TCMS.Fabric.Main', {
 			text: 'Inactive',
 			iconCls: 'b-flag-red'
 		});
+*/
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
+		});
 
 		var importAct = Ext.create('BASE.Action', {
 			text: 'Import',
@@ -38,7 +45,7 @@ Ext.define('TCMS.Fabric.Main', {
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct, '-', importAct]
+			items: [addAct, editAct, deleteAct, '-', importAct]
 		});
 
 		var window = Ext.create('TCMS.Fabric.Window');
@@ -46,8 +53,8 @@ Ext.define('TCMS.Fabric.Main', {
 		var grid = Ext.create('TCMS.Fabric.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct, '-', importAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct, importAct]
+			tbar: [addAct, editAct, deleteAct, '-', importAct],
+			validateActions : [addAct, editAct, deleteAct, importAct]
 		});
 
 		// ** IMPORT
@@ -58,21 +65,21 @@ Ext.define('TCMS.Fabric.Main', {
 
 		addAct.setHandler(function(){
 			window.openDialog('Add Fabric', 'add', grid, {
-				type: 'fabric'
+				type: _this.moduleType
 			});
 		});
 
 		editAct.setHandler(function(){
 			window.openDialog('Edit Fabric', 'edit', grid, {
 				id: grid.getSelectedId(),
-				type: 'fabric'
+				type: _this.moduleType
 			});
 		});
-
+/*
 		activeAct.setHandler(function(){
 			window.openDialog('Active', 'setStatus', grid, {
 				ids: grid.getSelectionsId().join(','),
-				type: 'fabric',
+				type: _this.moduleType,
 				is_active:1
 			});
 		});
@@ -80,8 +87,26 @@ Ext.define('TCMS.Fabric.Main', {
 		inActiveAct.setHandler(function(){
 			window.openDialog('Inactive', 'setStatus', grid, {
 				ids: grid.getSelectionsId().join(','),
-				type: 'fabric',
+				type: _this.moduleType,
 				is_active:0
+			});
+		});
+*/
+		deleteAct.setHandler(function(){
+			Ext.Msg.show({
+				title : "Warning",
+				msg : "Do you want to delete item(s) ?",
+				icon : Ext.Msg.WARNING,
+				buttons : Ext.Msg.YESNO,
+				fn : function(bt) {
+					if (bt == "yes") {
+						window.openDialog('Inactive', 'setStatus', grid, {
+							ids: grid.getSelectionsId().join(','),
+							type: _this.moduleType,
+							is_active:0
+						});
+					}
+				}
 			});
 		});
 

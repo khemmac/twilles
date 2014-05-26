@@ -97,15 +97,15 @@ Ext.define('TCMS.StyleCollection.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:80, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Code", width:150, dataIndex:'id', sortable:true, align:'left'},
 			{text: "Style group", width:90, dataIndex:'style_group_name', sortable:true, align:'left' },
-			{text: "Collar", width:100, dataIndex:'part_collar_id', sortable:true, align:'left'},
-			{text: "Cuff", width:100, dataIndex:'part_cuff_id', sortable:true, align:'left'},
-			{text: "Placket", width:100, dataIndex:'part_placket_id', sortable:true, align:'left'},
-			{text: "Pocket", width:100, dataIndex:'part_pocket_id', sortable:true, align:'left'},
-			{text: "Yoke", width:100, dataIndex:'part_yoke_id', sortable:true, align:'left'},
-			{text: "Pleat", width:100, dataIndex:'part_pleat_id', sortable:true, align:'left'},
-			{text: "Bottom", width:100, dataIndex:'part_bottom_id', sortable:true, align:'left'},
+			{text: "Collar", width:60, dataIndex:'part_collar_id', sortable:true, align:'left'},
+			{text: "Cuff", width:60, dataIndex:'part_cuff_id', sortable:true, align:'left'},
+			{text: "Placket", width:60, dataIndex:'part_placket_id', sortable:true, align:'left'},
+			{text: "Pocket", width:60, dataIndex:'part_pocket_id', sortable:true, align:'left'},
+			{text: "Yoke", width:60, dataIndex:'part_yoke_id', sortable:true, align:'left'},
+			{text: "Pleat", width:60, dataIndex:'part_pleat_id', sortable:true, align:'left'},
+			{text: "Bottom", width:60, dataIndex:'part_bottom_id', sortable:true, align:'left'},
 			{text: "Stitching", width:90, dataIndex:'stitching_type_name', sortable:true, align:'left'},
 			{text: "Inventory", width:100, dataIndex:'inventory_button_id', sortable:true, align:'left',
 				renderer: function(v,p,r){

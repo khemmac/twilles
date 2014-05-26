@@ -328,7 +328,8 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					items: [
 						this.comboFabricCollarInner,
 						this.comboFabricCollarOuter,
-						this.comboFabricPlacket,
+						//this.comboFabricPlacket,
+						this.comboFabricBody,
 						this.comboFabricCuffInner,
 						this.comboFabricCuffOuter
 					]

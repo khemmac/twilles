@@ -205,7 +205,137 @@ Ext.define('TCMS.StyleCollection.Form', {
 		});
 		// ** END PLACKET **
 
+		// ** FABRIC **
+		this.comboFabricCollarInner = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Inner collar',
+			name : 'fabric_collar_inner_id',
+			allowBlank: true
+		});
+		this.comboFabricCollarOuter = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Outer collar',
+			name : 'fabric_collar_outer_id',
+			allowBlank: true
+		});
+		this.comboFabricBody = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Body',
+			name : 'fabric_body_id',
+			allowBlank: true
+		});
+		this.comboFabricPlacket = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Placket',
+			name : 'fabric_placket_id',
+			allowBlank: true
+		});
+		this.comboFabricCuffInner = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Inner Cuff',
+			name : 'fabric_cuff_inner_id',
+			allowBlank: true
+		});
+		this.comboFabricCuffOuter = _createField('TCMS.BaseMaster.field.ComboFabric', {
+			fieldLabel: 'Outer cuff',
+			name : 'fabric_cuff_outer_id',
+			allowBlank: true
+		});
+		// ** END FABRIC **
 
+		this.items = [{
+			// column layout with 2 columns
+			layout:'column',
+			border:false,
+			// defaults for columns
+			defaults:{
+				columnWidth:0.3,
+				layout:'form',
+				border:false,
+				xtype:'panel',
+				bodyStyle:'padding:0 22px 0 0'
+			},
+			items:[{
+				// left column
+				// defaults for fields
+				columnWidth:0.34,
+				defaults:_fieldDefaults,
+				items:[{
+					name: 'code',
+					xtype: 'textfield',
+					fieldLabel: 'Code',
+					allowBlank: false
+				},
+				//this.comboStyleType,
+				this.comboStyleGroup, {
+					xtype: 'fieldset',
+					title: 'Collar',
+					defaults: _fieldDefaults,
+					items: [this.comboPartCollar, this.comboPartCuffType, this.numberCollarWidth, this.comboPartCollarStay]
+				}, {
+					xtype: 'fieldset',
+					title: 'Placket',
+					defaults: _fieldDefaults,
+					items: [this.comboPartPlacket, this.numberPlacketWidth]
+				},
+				this.comboStitchingType, {
+					xtype: 'fieldset',
+					title: 'Inventory',
+					defaults: _fieldDefaults,
+					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
+				}]
+			},{
+				// center column
+				// defaults for fields
+				columnWidth:0.33,
+				defaults:_fieldDefaults,
+				items:[{
+					name: 'description',
+					xtype: 'textarea',
+					fieldLabel: 'Detail',
+					rows: 3
+				}, {
+					xtype: 'fieldset',
+					title: 'Cuff',
+					defaults: _fieldDefaults,
+					items: [this.comboPartCuff, this.comboPartCollarType, this.numberCuffWidth, this.numberCuffThickness]
+				}, {
+					xtype: 'fieldset',
+					title: 'Other parts',
+					defaults: _fieldDefaults,
+					items: [
+						this.comboPartPocket,
+						this.comboPartYoke,
+						this.comboPartPleat,
+						this.comboPartBottom
+					]
+				}, {
+					name: 'remark',
+					xtype: 'textarea',
+					fieldLabel: 'Remark',
+					rows: 3
+				}]
+			},{
+				// right column
+				// defaults for fields
+				columnWidth:0.33,
+				defaults:_fieldDefaults,
+				items:[{
+					xtype: 'fieldset',
+					title: 'Fabric',
+					defaults: _fieldDefaults,
+					items: [
+						this.comboFabricCollarInner,
+						this.comboFabricCollarOuter,
+						//this.comboFabricPlacket,
+						this.comboFabricBody,
+						this.comboFabricCuffInner,
+						this.comboFabricCuffOuter
+					]
+				}, {
+					name: 'is_active',
+					xtype: 'checkboxfield',
+					fieldLabel: 'Active',
+					checked: !0
+				}]
+			}]
+		}];
+/*
 		this.items = [{
 			// column layout with 2 columns
 			layout:'column',
@@ -291,7 +421,7 @@ Ext.define('TCMS.StyleCollection.Form', {
 				}]
 			}]
 		}];
-
+*/
 		return this.callParent(arguments);
 	}
 });

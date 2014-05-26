@@ -16,9 +16,10 @@ class Istatus extends CI_Controller {
 		if(!empty($ids)){
 			$this->load->model($type.'_model',$type);
 
+			$skipValidation = TRUE;
 			$this->{$type}->update_many(explode(',', $ids), array(
 				'is_active'=>$is_active
-			));
+			), $skipValidation);
 		}
 		X::renderJSON(array(
 			'success'=>true,

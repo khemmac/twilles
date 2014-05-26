@@ -116,4 +116,10 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function order_confirm()
+	{
+		$this->phxview->RenderView('cms/order_confirm');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 }

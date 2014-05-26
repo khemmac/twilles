@@ -1,12 +1,12 @@
-Ext.define('TCMS.StyleCollection.Window', {
+Ext.define('TCMS.OrderConfirm.Window', {
 	extend	: 'BASE.Window',
 	requires : ['BASE.Window'],
 	constructor:function(config) {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 540,
-			width: 900,
+			height: 290,
+			width: 400,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -19,6 +19,21 @@ Ext.define('TCMS.StyleCollection.Window', {
 	initComponent : function() {
 		var _this=this;
 
+		this.form = Ext.create('BASE.Form', {
+			region: 'center',
+			defaults: {
+				labelWidth: 100,
+				labelAlign: 'right',
+				width: 300
+			},
+			items: [],
+			getDeleteParams : function() {
+				return Ext.apply({
+				}, this.formParams);
+			},
+			getDeleteUrl: function(){ return __site_url+'backend/dao/delete'; }
+		});
+
 		this.submitAct = Ext.create('BASE.Action', {
 			text: 'Submit'
 		});
@@ -27,12 +42,12 @@ Ext.define('TCMS.StyleCollection.Window', {
 			text: 'Cancel'
 		});
 
-		this.form = Ext.create('TCMS.StyleCollection.Form', { region: 'center' });
-
 		this.buttons = [
 			new Ext.button.Button(this.submitAct),
 			new Ext.button.Button(this.cancelAct)
 		];
+
+		//this.progress.show();
 
 		this.items = [this.form];
 
@@ -55,6 +70,7 @@ Ext.define('TCMS.StyleCollection.Window', {
 			_this.form.formAction = _this.dialogAction;
 			_this.actions[_this.dialogAction].call(_this);
 		});
+
 
 		return this.callParent(arguments);
 	},

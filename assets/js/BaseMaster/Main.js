@@ -26,7 +26,7 @@ Ext.define('TCMS.BaseMaster.Main', {
 			text: 'Edit',
 			iconCls: 'b-application_edit'
 		});
-
+/*
 		var activeAct = Ext.create('BASE.ActionMultiple', {
 			text: 'Active',
 			iconCls: 'b-flag-green'
@@ -36,9 +36,15 @@ Ext.define('TCMS.BaseMaster.Main', {
 			text: 'Inactive',
 			iconCls: 'b-flag-red'
 		});
+*/
+
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
+		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, '-', deleteAct]
 		});
 
 		var window = Ext.create('TCMS.BaseMaster.Window', {
@@ -49,8 +55,8 @@ Ext.define('TCMS.BaseMaster.Main', {
 			moduleType: this.moduleType,
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, '-', deleteAct],
+			validateActions : [addAct, editAct, deleteAct]
 		});
 
 		this.items = [grid];
@@ -67,7 +73,7 @@ Ext.define('TCMS.BaseMaster.Main', {
 				type: _this.moduleType
 			});
 		});
-
+/*
 		activeAct.setHandler(function(){
 			window.openDialog('Active', 'setStatus', grid, {
 				ids: grid.getSelectionsId().join(','),
@@ -81,6 +87,24 @@ Ext.define('TCMS.BaseMaster.Main', {
 				ids: grid.getSelectionsId().join(','),
 				type: _this.moduleType,
 				is_active:0
+			});
+		});
+*/
+		deleteAct.setHandler(function(){
+			Ext.Msg.show({
+				title : "Warning",
+				msg : "Do you want to delete item(s) ?",
+				icon : Ext.Msg.WARNING,
+				buttons : Ext.Msg.YESNO,
+				fn : function(bt) {
+					if (bt == "yes") {
+						window.openDialog('Inactive', 'setStatus', grid, {
+							ids: grid.getSelectionsId().join(','),
+							type: _this.moduleType,
+							is_active:0
+						});
+					}
+				}
 			});
 		});
 
