@@ -27,12 +27,14 @@ Ext.define('TCMS.TrendStyleCollection.Grid', {
 				}
 			},
 			fields: [
-				{ name:'id', type:'string' },
-				'name',
+				{ name:'id', type:'int' },
+				{ name:'code', type:'string' },
+				{ name:'name', type:'string' },
 				{ name:'style_group_id', type:'int' },
 				{ name:'style_group_name', type:'string' },
 				'description',
 				{ name:'part_collar_id', type:'string' },
+				{ name:'part_collar_code', type:'string' },
 				{ name:'part_collar_name', type:'string' },
 				{ name:'part_collar_type', type:'int' },
 				'part_collar_type_name',
@@ -40,6 +42,7 @@ Ext.define('TCMS.TrendStyleCollection.Grid', {
 				{ name:'part_collar_stay', type:'int' },
 
 				{ name:'part_cuff_id', type:'string' },
+				{ name:'part_cuff_code', type:'string' },
 				{ name:'part_cuff_name', type:'string' },
 				{ name:'part_cuff_type', type:'int' },
 				'part_cuff_type_name',
@@ -47,17 +50,23 @@ Ext.define('TCMS.TrendStyleCollection.Grid', {
 				{ name:'part_cuff_width', type:'float' },
 
 				{ name:'part_placket_id', type:'string' },
+				{ name:'part_placket_code', type:'string' },
 				{ name:'part_placket_name', type:'string' },
 				{ name:'part_placket_width', type:'float' },
 
 				{ name:'part_pocket_id', type:'string' },
+				{ name:'part_pocket_code', type:'string' },
 				{ name:'part_pocket_name', type:'string' },
 
 				{ name:'part_yoke_id', type:'string' },
+				{ name:'part_yoke_code', type:'string' },
 				{ name:'part_yoke_name', type:'string' },
 				{ name:'part_pleat_id', type:'string' },
+				{ name:'part_pleat_code', type:'string' },
 				{ name:'part_pleat_name', type:'string' },
+
 				{ name:'part_bottom_id', type:'string' },
+				{ name:'part_bottom_code', type:'string' },
 				{ name:'part_bottom_name', type:'string' },
 
 				{ name:'stitching_type', type:'int' },
@@ -97,15 +106,15 @@ Ext.define('TCMS.TrendStyleCollection.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:150, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Code", width:150, dataIndex:'code', sortable:true, align:'left'},
 			{text: "Style group", width:90, dataIndex:'style_group_name', sortable:true, align:'left' },
-			{text: "Collar", width:60, dataIndex:'part_collar_id', sortable:true, align:'left'},
-			{text: "Cuff", width:60, dataIndex:'part_cuff_id', sortable:true, align:'left'},
-			{text: "Placket", width:60, dataIndex:'part_placket_id', sortable:true, align:'left'},
-			{text: "Pocket", width:60, dataIndex:'part_pocket_id', sortable:true, align:'left'},
-			{text: "Yoke", width:60, dataIndex:'part_yoke_id', sortable:true, align:'left'},
-			{text: "Pleat", width:60, dataIndex:'part_pleat_id', sortable:true, align:'left'},
-			{text: "Bottom", width:60, dataIndex:'part_bottom_id', sortable:true, align:'left'},
+			{text: "Collar", width:80, dataIndex:'part_collar_code', sortable:true, align:'left'},
+			{text: "Cuff", width:100, dataIndex:'part_cuff_code', sortable:true, align:'left'},
+			{text: "Placket", width:80, dataIndex:'part_placket_code', sortable:true, align:'left'},
+			{text: "Pocket", width:80, dataIndex:'part_pocket_code', sortable:true, align:'left'},
+			{text: "Yoke", width:80, dataIndex:'part_yoke_code', sortable:true, align:'left'},
+			{text: "Pleat", width:80, dataIndex:'part_pleat_code', sortable:true, align:'left'},
+			{text: "Bottom", width:80, dataIndex:'part_bottom_code', sortable:true, align:'left'},
 			{text: "Stitching", width:90, dataIndex:'stitching_type_name', sortable:true, align:'left'},
 			{text: "Inventory", width:100, dataIndex:'inventory_button_id', sortable:true, align:'left',
 				renderer: function(v,p,r){

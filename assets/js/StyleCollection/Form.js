@@ -32,7 +32,7 @@ Ext.define('TCMS.StyleCollection.Form', {
 				return Ext.apply({
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/icode/'+((_this.formAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.formAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
 				}, this.formParams);
