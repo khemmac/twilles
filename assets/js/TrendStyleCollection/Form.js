@@ -272,7 +272,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					xtype: 'fieldset',
 					title: 'Collar',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCollar, this.comboPartCuffType, this.numberCollarWidth, this.comboPartCollarStay]
+					items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, this.comboPartCollarStay]
 				}, {
 					xtype: 'fieldset',
 					title: 'Placket',
@@ -299,7 +299,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					xtype: 'fieldset',
 					title: 'Cuff',
 					defaults: _fieldDefaults,
-					items: [this.comboPartCuff, this.comboPartCollarType, this.numberCuffWidth, this.numberCuffThickness]
+					items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, this.numberCuffThickness]
 				}, {
 					xtype: 'fieldset',
 					title: 'Other parts',
