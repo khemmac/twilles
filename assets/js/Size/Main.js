@@ -4,12 +4,14 @@ Ext.define('TCMS.Size.Main', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			layout: 'border'
+			layout: 'border',
+			modelType: 'size'
 		});
 
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
 		var addAct = Ext.create('BASE.Action', {
 			text: 'Add',
@@ -21,18 +23,13 @@ Ext.define('TCMS.Size.Main', {
 			iconCls: 'b-application_edit'
 		});
 
-		var activeAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Active',
-			iconCls: 'b-flag-green'
-		});
-
-		var inActiveAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Inactive',
-			iconCls: 'b-flag-red'
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, deleteAct]
 		});
 
 		var window = Ext.create('TCMS.Size.Window');
@@ -40,38 +37,30 @@ Ext.define('TCMS.Size.Main', {
 		var grid = Ext.create('TCMS.Size.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, deleteAct],
+			validateActions : [addAct, editAct, deleteAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
 			window.openDialog('Add size', 'add', grid, {
-				type: 'style_collection',
-				style_type: '2'
+				type: _this.modelType,
+				is_active: 1
 			});
 		});
 
 		editAct.setHandler(function(){
 			window.openDialog('Edit size', 'edit', grid, {
 				id: grid.getSelectedId(),
-				type: 'style_collection',
-				style_type: '2'
+				type: _this.modelType
 			});
 		});
 
-		activeAct.setHandler(function(){
-			window.openDialog('Active', 'setStatus', grid, {
+		deleteAct.setHandler(function(){
+			window.openDialog('Delete size', 'delete', grid, {
 				ids: grid.getSelectionsId().join(','),
-				is_active:1
-			});
-		});
-
-		inActiveAct.setHandler(function(){
-			window.openDialog('Inactive', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:0
+				type: _this.modelType
 			});
 		});
 
@@ -90,8 +79,7 @@ Ext.define('TCMS.Size.Main', {
 			grid.load();
 		});
 
-		window.form.on('afterSetStatus', function() {
-			window.hide();
+		window.form.on('afterDelete', function() {
 			grid.load();
 		});
 

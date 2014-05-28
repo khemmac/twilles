@@ -20,7 +20,7 @@ Ext.define('TCMS.MainViewport', {
 			border: false,
 			tbar: [{
 				xtype: 'buttongroup',
-				columns: 3,
+				columns: 4,
 				title: 'Master data',
 				items: [{
 					text: 'Fabric',
@@ -30,6 +30,14 @@ Ext.define('TCMS.MainViewport', {
 					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
 					href: __site_url+'cms/fabric'
+				},{
+					text: 'Standard size',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-large-size-model',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/size'
 				},{
 					text: 'Fabric type', iconCls: 'menu-small-fabric_type',
 					hrefTarget: '_self',
