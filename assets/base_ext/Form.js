@@ -38,13 +38,13 @@ Ext.define('BASE.Form', {
 	},
 
 	getSaveUrl : function() {
-		return MUST_IMPLEMENT('/' + ((this.formAction == "add") ? 'AddUrl' : 'EditUrl'));
+		return MUST_IMPLEMENT_FORM_SAVE_URL('/' + ((this.formAction == "add") ? 'AddUrl' : 'EditUrl'));
 	},
 	getLoadUrl : function() {
-		return MUST_IMPLEMENT('LoadUrl');
+		return MUST_IMPLEMENT_FORM_LOAD_URL('LoadUrl');
 	},
 	getDeleteUrl : function() {
-		return MUST_IMPLEMENT('DeleteUrl');
+		return MUST_IMPLEMENT_FORM_DELETE_URL('DeleteUrl');
 	},
 	getSaveParams : function() {
 		return this.formParams;

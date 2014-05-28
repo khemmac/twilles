@@ -1,5 +1,6 @@
 .b-small-key { background-image: url('../images/icons/key.gif') !important; }
 .b-small-magnifier { background-image: url('../images/icons/magnifier.gif') !important; }
+.b-small-tick { background-image: url('../images/icons/tick.gif') !important; }
 .b-small-cross { background-image: url('../images/icons/cross.gif') !important; }
 
 
@@ -38,3 +39,5 @@
 .menu-large-package_utilities{ background-image: url('../images/menu/package_utilities.png') !important; }
 .menu-large-order-history{ background-image: url('../images/menu/order-history.png') !important; }
 .menu-large-money{ background-image: url('../images/menu/money.png') !important; }
+
+.menu-large-appointment{ background-image: url('../images/menu/appointment.png') !important; }

@@ -141,6 +141,20 @@ Ext.define('TCMS.MainViewport', {
 					hrefTarget: '_self',
 					href: __site_url+'cms/order_confirm'
 				}]
+			},{
+				xtype: 'buttongroup',
+				columns: 1,
+				title: 'Appointments',
+				padding:'6 0 5 0',
+				items: [{
+					text: 'Appointment',
+					scale: 'large',
+					rowspan: 1, iconCls: 'menu-large-appointment',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/appointment'
+				}]
 			}/*,{
 				xtype: 'buttongroup',
 				columns: 3,

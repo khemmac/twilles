@@ -135,12 +135,6 @@ Ext.define('TCMS.BaseMaster.Window', {
 			this.hide(null, function() {
 				_this.form.deleteData();
 			});
-		},
-		"setStatus" : function() {
-			var _this = this;
-			this.hide(null, function() {
-				_this.form.setStatus();
-			});
 		}
 	}
 });
