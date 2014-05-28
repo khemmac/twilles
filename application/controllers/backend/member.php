@@ -109,7 +109,25 @@ class Member extends CI_Controller {
 			'phone'=>$this->input->post('phone'),
 			'first_name'=>$this->input->post('first_name'),
 			'last_name'=>$this->input->post('last_name'),
-			'active'=>$active
+			'active'=>$active,
+
+			'mobile_number_country'=>X::Request('mobile_number_country'),
+			'mobile_number'=>X::Request('mobile_number'),
+			'mobile_number_ext'=>X::Request('mobile_number_ext'),
+
+			'primary_address_line_1'=>X::Request('primary_address_line_1'),
+			'primary_address_line_2'=>X::Request('primary_address_line_2'),
+			'primary_address_city'=>X::Request('primary_address_city'),
+			'primary_address_state_province'=>X::Request('primary_address_state_province'),
+			'primary_address_zip'=>X::Request('primary_address_zip'),
+			'primary_address_country'=>X::Request('primary_address_country'),
+			'secondary_address_line_1'=>X::Request('secondary_address_line_1'),
+			'secondary_address_line_2'=>X::Request('secondary_address_line_2'),
+			'secondary_address_city'=>X::Request('secondary_address_city'),
+			'secondary_address_state_province'=>X::Request('secondary_address_state_province'),
+			'secondary_address_zip'=>X::Request('secondary_address_zip'),
+			'secondary_address_country'=>X::Request('secondary_address_country')
+
 		);
 		$date_str = date('Y-m-d H:i:s', time());
         $data['create_date'] = $date_str;
@@ -117,14 +135,15 @@ class Member extends CI_Controller {
 		$user = $this->ion_auth->user()->row();
 		$data['create_by'] = $user->username;
 
+		$email_username = X::Request('email');
+
 		$id = $this->ion_auth->register(
-			$this->input->post('username'),
-			$this->input->post('password'),
-			$this->input->post('email'),
+			$email_username,
+			X::Request('password'),
+			$email_username,
 			$data,
 			array(
-				$this->input->post('group')
-			)
+				X::Request('group')			)
 		);
 		if($id){
 			// set member active on inactive
@@ -153,12 +172,31 @@ class Member extends CI_Controller {
 		$id = X::Request('id');
 		$active = X::Request('active');
 
+		$email_username = X::Request('email');
+
 		$data = array(
-			'username'=>$this->input->post('username'),
-			'email'=>$this->input->post('email'),
-			'phone'=>$this->input->post('phone'),
-			'first_name'=>$this->input->post('first_name'),
-			'last_name'=>$this->input->post('last_name')
+			'username'=>$email_username,
+			'email'=>$email_username,
+			'phone'=>X::Request('phone'),
+			'first_name'=>X::Request('first_name'),
+			'last_name'=>X::Request('last_name'),
+
+			'mobile_number_country'=>X::Request('mobile_number_country'),
+			'mobile_number'=>X::Request('mobile_number'),
+			'mobile_number_ext'=>X::Request('mobile_number_ext'),
+
+			'primary_address_line_1'=>X::Request('primary_address_line_1'),
+			'primary_address_line_2'=>X::Request('primary_address_line_2'),
+			'primary_address_city'=>X::Request('primary_address_city'),
+			'primary_address_state_province'=>X::Request('primary_address_state_province'),
+			'primary_address_zip'=>X::Request('primary_address_zip'),
+			'primary_address_country'=>X::Request('primary_address_country'),
+			'secondary_address_line_1'=>X::Request('secondary_address_line_1'),
+			'secondary_address_line_2'=>X::Request('secondary_address_line_2'),
+			'secondary_address_city'=>X::Request('secondary_address_city'),
+			'secondary_address_state_province'=>X::Request('secondary_address_state_province'),
+			'secondary_address_zip'=>X::Request('secondary_address_zip'),
+			'secondary_address_country'=>X::Request('secondary_address_country')
 		);
 		$date_str = date('Y-m-d H:i:s', time());
         $data['update_date'] = $date_str;

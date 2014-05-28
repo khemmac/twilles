@@ -4,16 +4,11 @@ Ext.define('TCMS.Member.Form', {
 	constructor:function(config) {
 		var _this=this;
 
-		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'inventory'
-		});
-
 		Ext.apply(this, {
 			layout: 'border',
 			border: false,
 			bodyPadding : '',
 			autoScroll: true,
-			plugins: [uxFormStatus],
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
@@ -31,20 +26,17 @@ Ext.define('TCMS.Member.Form', {
 			},
 			getSaveParams : function() {
 				return Ext.apply({
-					type: 'order_item'
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.formAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend/member/'+((_this.formAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
-					type: 'v_order_item'
 				}, this.formParams);
 			},
-			getLoadUrl: function(){ return __site_url+'backend/dao/load'; },
-			getDeleteUrl: function(){ return __site_url+'backend/dao/delete'; },
+			getLoadUrl: function(){ return __site_url+'backend/member/load'; },
+			getDeleteUrl: function(){ return __site_url+'backend/member/delete'; },
 			getDeleteParams : function() {
 				return Ext.apply({
-					type: 'order_item'
 				}, this.formParams);
 			}
 		});
@@ -56,9 +48,15 @@ Ext.define('TCMS.Member.Form', {
 
 		var _fieldDefaults = {
 			labelAlign: 'right',
+			width: 300,
+			labelWidth: 90
+		};
+		var _fieldDefaultsTab = {
+			labelAlign: 'right',
 			anchor:'100%',
 			labelWidth: 90
 		};
+
 		var _createField = function(ns, config){
 			return Ext.create(ns, Ext.apply(config, _fieldDefaults));
 		};
@@ -73,136 +71,194 @@ Ext.define('TCMS.Member.Form', {
 			]
 		});
 		var tabMember = [
-			this.comboRole,
-			{
-				name: 'username',
-				xtype: 'textfield',
-				fieldLabel: 'Username',
+		this.comboRole,
+		{
+			name: 'email',
+			xtype: 'textfield',
+			fieldLabel: 'Email',
+			allowBlank: false,
+			vtype: 'email'
+		}/*, {
+			name: 'username',
+			xtype: 'textfield',
+			fieldLabel: 'Username',
+			allowBlank: false,
+			maxLength: 100
+		}*/, {
+			name: 'password',
+			xtype: 'textfield',
+			fieldLabel: 'Password',
+			allowBlank: true
+		}, {
+			name: 'first_name',
+			xtype: 'textfield',
+			fieldLabel: 'First name',
+			allowBlank: false
+		}, {
+			name: 'last_name',
+			xtype: 'textfield',
+			fieldLabel: 'Last name',
+			allowBlank: false
+		}, {
+			xtype: 'fieldcontainer',
+			fieldLabel: 'Mobile',
+			layout: 'hbox',
+			defaults: _fieldDefaults,
+			defaultType: 'textfield',
+			items: [{
+				width: 40,
+				name: 'mobile_number_country',
+				hideLabel: true,
 				allowBlank: false,
-				maxLength: 100
+				maxLength:10
 			}, {
-				name: 'password',
-				xtype: 'textfield',
-				fieldLabel: 'Password',
-				allowBlank: true
+				flex: 1,
+				name: 'mobile_number',
+				hideLabel: true,
+				allowBlank: false,
+				margins: '0 0 0 5',
+				maxLength:15
 			}, {
-				name: 'email',
-				xtype: 'textfield',
-				fieldLabel: 'Email',
-				allowBlank: false
-			}, {
-				name: 'first_name',
-				xtype: 'textfield',
-				fieldLabel: 'First name',
-				allowBlank: false
-			}, {
-				name: 'last_name',
-				xtype: 'textfield',
-				fieldLabel: 'Last name',
-				allowBlank: false
-			}, {
-				name: 'phone',
-				xtype: 'textfield',
-				fieldLabel: 'Phone',
-				allowBlank: true,
-				maxLength: 20
-			}, {
-				name: 'last_login',
-				xtype: 'displayfield',
-				fieldLabel: 'Last login',
-				renderer: function(v){
-					if(v){
-						var d = new Date(v*1000);
-						return Ext.Date.format(d, 'j M Y H:i:s');
-					}else
-						return '-';
-				}
-			}, {
-				name: 'active',
-				xtype: 'checkboxfield',
-				fieldLabel: 'Active',
-				checked: !0
-			}];
-
-		// **************** TAB ADDRESS ****************
-		var tabAddress = [{
-			// column layout with 2 columns
-			layout:'column',
-			border:false,
-			// defaults for columns
-			defaults:{
-				columnWidth:0.3,
-				layout:'form',
-				border:false,
-				xtype:'panel',
-				bodyStyle:'padding:0 22px 0 0'
-			},
-			items:[{
-				// left column
-				// defaults for fields
-				columnWidth:0.5,
-				defaults:_fieldDefaults,
-				items:[{
-					xtype: 'textfield',
-					fieldLabel:'Name',
-					name : 'address_name',
-					allowBlank: false
-				}, {
-					xtype: 'textfield',
-					fieldLabel:'Delivery name',
-					name : 'fullname',
-					allowBlank: false
-				}, {
-					name: 'address1',
-					xtype: 'textarea',
-					fieldLabel: 'Address 1',
-					//labelAlign: 'top',
-					rows: 3
-				}, {
-					name: 'address2',
-					xtype: 'textarea',
-					fieldLabel: 'Address 2',
-					//labelAlign: 'top',
-					rows: 3
-				}]
-			},{
-				// right column
-				// defaults for fields
-				columnWidth:0.5,
-				defaults:_fieldDefaults,
-				items:[{
-					name: 'address1',
-					xtype: 'textarea',
-					fieldLabel: 'Address 1',
-					labelAlign: 'top',
-					rows: 3
-				}, {
-					name: 'address2',
-					xtype: 'textarea',
-					fieldLabel: 'Address 2',
-					labelAlign: 'top',
-					rows: 3
-				}]
+				width: 40,
+				name: 'mobile_number_ext',
+				hideLabel: true,
+				margins: '0 0 0 5',
+				maxLength:10
 			}]
+		}, {
+			name: 'phone',
+			xtype: 'textfield',
+			fieldLabel: 'Phone',
+			allowBlank: true,
+			maxLength: 20
+		}, {
+			name: 'last_login',
+			xtype: 'displayfield',
+			fieldLabel: 'Last login',
+			renderer: function(v){
+				if(v){
+					var d = new Date(v*1000);
+					return Ext.Date.format(d, 'j M Y H:i:s');
+				}else
+					return '-';
+			}
+		}, {
+			name: 'active',
+			xtype: 'checkboxfield',
+			fieldLabel: 'Active',
+			checked: !0
 		}];
 
-		this.items = [Ext.create('Ext.tab.Panel', {
+		// **************** TAB ADDRESS ****************
+		var tabAddress1 = [{
+			name: 'primary_address_line_1',
+			xtype: 'textarea',
+			fieldLabel: 'Address line 1',
+			//labelAlign: 'top',
+			rows: 3,
+			allowBlank: false
+		}, {
+			name: 'primary_address_line_2',
+			xtype: 'textarea',
+			fieldLabel: 'Address line 2',
+			//labelAlign: 'top',
+			rows: 3
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'City',
+			name : 'primary_address_city',
+			allowBlank: false
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'Province',
+			name : 'primary_address_state_province',
+			allowBlank: false
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'Zip',
+			name : 'primary_address_zip',
+			maxLength:15,
+			allowBlank: false
+
+		}, Ext.create('BASE.ComboAjax', Ext.apply({
+			fieldLabel: 'Country',
+			name : 'primary_address_country',
+			proxyExtraParams: {
+				type:'country'
+			},
+			value: '221',
+			proxySorters: [{property: 'name', direction: 'ASC'}],
+			allowBlank: false
+		}, _fieldDefaults))];
+
+		var tabAddress2 = [{
+			name: 'secondary_address_line_1',
+			xtype: 'textarea',
+			fieldLabel: 'Address line 1',
+			//labelAlign: 'top',
+			rows: 3,
+			allowBlank: true
+		}, {
+			name: 'secondary_address_line_2',
+			xtype: 'textarea',
+			fieldLabel: 'Address line 2',
+			//labelAlign: 'top',
+			rows: 3
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'City',
+			name : 'secondary_address_city',
+			allowBlank: true
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'Province',
+			name : 'secondary_address_state_province',
+			allowBlank: true
+		}, {
+			xtype: 'textfield',
+			fieldLabel:'Zip',
+			name : 'secondary_address_zip',
+			maxLength:15
+
+		}, Ext.create('BASE.ComboAjax', Ext.apply({
+			fieldLabel: 'Country',
+			name : 'secondary_address_country',
+			proxyExtraParams: {
+				type:'country'
+			},
+			proxySorters: [{property: 'name', direction: 'ASC'}],
+			allowBlank: true
+		}, _fieldDefaults))];
+
+		this.tabForm = Ext.create('Ext.tab.Panel', {
 			region: 'center',
 			border: false,
+			defaults:_fieldDefaults,
 			items: [{
 				title: 'Member',
+				id: 'tab-member',
 				border: true,
 				bodyPadding: '5 0 0 10',
 				defaults: _fieldDefaults,
 				items: tabMember
-		    }, {
-				title: 'Address',
+			}, {
+				title: 'Address 1',
+				id: 'tab-address1',
 				border: true,
 				bodyPadding: '5 0 0 10',
 				defaults: _fieldDefaults,
-				items: tabAddress
+				items: tabAddress1
+			}, {
+				title: 'Address 2',
+				id: 'tab-address2',
+				border: true,
+				bodyPadding: '5 0 0 10',
+				defaults: _fieldDefaults,
+				items: tabAddress2
 			}]
-		})];
+		});
+
+		this.items = [this.tabForm];
 
 		// event
 		this.on('afterLoad', function(form, act){

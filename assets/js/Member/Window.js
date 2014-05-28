@@ -5,8 +5,8 @@ Ext.define('TCMS.Member.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 420,
-			width: 500,
+			height: 350,
+			width: 400,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -42,9 +42,24 @@ Ext.define('TCMS.Member.Window', {
 		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
+			// check form valid
+			if(!_this.form.form.isValid()){
+				var fields = _this.form.form.getFields();
+				console.log(fields);
+				for(var i=0;i<fields.items.length;i++){
+					var o = fields.items[i];
+					if(!o.isValid()){
+						_this.form.tabForm.setActiveTab(o.up().id);
+
+						break;
+					}
+				}
+			}
+
 			// check password
 			var passField = _this.form.form.findField('password'),
 				passValue = passField.getValue();
+
 			if(_this.dialogAction=='edit' && !Ext.isEmpty(passValue)){
 				Ext.Msg.show({
 					title : 'Password changed.',
@@ -79,9 +94,21 @@ Ext.define('TCMS.Member.Window', {
 	},
 	actions : {
 		"add" : function() {
+			// set require for password field
+			var pwd = this.form.form.findField('password');
+			pwd.allowBlank = false;
+			pwd.isValid();
+			this.form.tabForm.setActiveTab(0);
+
 			this.form.reset();
 		},
 		"edit" : function() {
+			// un set require for password field
+			var pwd = this.form.form.findField('password');
+			pwd.allowBlank = true;
+			pwd.isValid();
+			this.form.tabForm.setActiveTab(0);
+
 			this.form.reset();
 			this.form.loadData();
 		},

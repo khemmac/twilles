@@ -4,12 +4,14 @@ Ext.define('TCMS.Member.Main', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			layout: 'border'
+			layout: 'border',
+			modelType: 'user'
 		});
 
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
 		var addAct = Ext.create('BASE.Action', {
 			text: 'Add',
@@ -48,14 +50,14 @@ Ext.define('TCMS.Member.Main', {
 
 		addAct.setHandler(function(){
 			window.openDialog('Add member', 'add', grid, {
-				type: 'part_style'
+				type: _this.modelType
 			});
 		});
 
 		editAct.setHandler(function(){
 			window.openDialog('Edit member', 'edit', grid, {
 				id: grid.getSelectedId(),
-				type: 'part_style'
+				type: _this.modelType
 			});
 		});
 
