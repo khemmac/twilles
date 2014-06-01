@@ -77,7 +77,7 @@ Ext.define('TCMS.Order.Form', {
 
 		this.comboAddressType = _createField('BASE.ComboStatic', {
 			fieldLabel:'Address',
-			name : 'style_type',
+			name : 'delivery_address_type',
 			allowBlank: true,
 			store:[
 				['0', 'Custom'],
@@ -95,6 +95,47 @@ Ext.define('TCMS.Order.Form', {
 			allowBlank: false,
 			submitValue: false
 		});
+
+		var evtDelListeners = {
+			keyup: function(){
+				if(_this.comboAddressType.getValue()!='0'){
+					_this.comboAddressType.setValue('0');
+				}
+			}
+		};
+
+		var txtDelAddress1 = _createField('Ext.form.field.TextArea', {
+				name: 'delivery_address_line_1',
+				fieldLabel: 'Address 1',
+				rows: 2,
+				enableKeyEvents: true,
+				listeners: evtDelListeners
+			}),
+			txtDelAddress2 = _createField('Ext.form.field.TextArea', {
+				name: 'delivery_address_line_2',
+				fieldLabel: 'Address 2',
+				rows: 2,
+				enableKeyEvents: true,
+				listeners: evtDelListeners
+			}),
+			txtDelCity = _createField('Ext.form.field.Text', {
+				name: 'delivery_city',
+				fieldLabel: 'City',
+				enableKeyEvents: true,
+				listeners: evtDelListeners
+			}),
+			txtDelState = _createField('Ext.form.field.Text', {
+				name: 'delivery_state_province',
+				fieldLabel: 'State/province',
+				enableKeyEvents: true,
+				listeners: evtDelListeners
+			}),
+			txtDelZip = _createField('Ext.form.field.Text', {
+				name: 'delivery_zip',
+				fieldLabel: 'Zip',
+				enableKeyEvents: true,
+				listeners: evtDelListeners
+			});
 
 		var formMain = Ext.create('Ext.panel.Panel', {
 			region: 'north',
@@ -174,37 +215,17 @@ Ext.define('TCMS.Order.Form', {
 							columnWidth:0.45,
 							defaults:_fieldDefaults,
 							items:[
-							this.comboAddressType
-							, {
-								name: 'delivery_city',
-								xtype: 'textfield',
-								fieldLabel: 'City'
-							}, {
-								name: 'delivery_state_province',
-								xtype: 'textfield',
-								fieldLabel: 'State/province'
-							}, {
-								name: 'delivery_zip',
-								xtype: 'textfield',
-								fieldLabel: 'Zip code',
-								maxLength: 10
-							},
-							this.comboCountry]
+								this.comboAddressType,
+								txtDelCity,
+								txtDelState,
+								txtDelZip,
+								this.comboCountry
+							]
 						},{
 							// delivery left column
 							columnWidth:0.55,
 							defaults:_fieldDefaults,
-							items:[{
-								name: 'delivery_address_line_1',
-								xtype: 'textarea',
-								fieldLabel: 'Address 1',
-								rows: 2
-							}, {
-								name: 'delivery_address_line_2',
-								xtype: 'textarea',
-								fieldLabel: 'Address 2',
-								rows: 2
-							}]
+							items:[txtDelAddress1, txtDelAddress2]
 						}]
 					}]
 				}]
@@ -312,13 +333,7 @@ Ext.define('TCMS.Order.Form', {
 		};
 
 		var setAddress = function(o){
-			var delAddress1 = _this.form.findField('delivery_address_line_1'),
-				delAddress2 = _this.form.findField('delivery_address_line_2'),
-				delCity = _this.form.findField('delivery_city'),
-				delState = _this.form.findField('delivery_state_province'),
-				delZip = _this.form.findField('delivery_zip'),
-				delCountry = _this.form.findField('delivery_country_id'),
-				delData = null;
+			var delData = null;
 			if(o==null){
 				_this.comboAddressType.setValue('0');
 				delData = {
@@ -341,13 +356,12 @@ Ext.define('TCMS.Order.Form', {
 					address_country:		o[userPrefix+'address_country']
 				};
 			}
-			console.log(addrType, userPrefix, o, delData);
-			delAddress1	.setValue(delData['address_line_1']),
-			delAddress2	.setValue(delData['address_line_2']),
-			delCity		.setValue(delData['address_city']),
-			delState	.setValue(delData['address_state_province']),
-			delZip		.setValue(delData['address_zip']),
-			delCountry	.setValue(delData['address_country']);
+			txtDelAddress1		.setValue(delData['address_line_1']),
+			txtDelAddress2		.setValue(delData['address_line_2']),
+			txtDelCity			.setValue(delData['address_city']),
+			txtDelState			.setValue(delData['address_state_province']),
+			txtDelZip			.setValue(delData['address_zip']),
+			_this.comboCountry	.setValue(delData['address_country']);
 		};
 		var resetAddress = function(){
 			setAddress(null);
@@ -356,7 +370,6 @@ Ext.define('TCMS.Order.Form', {
 
 		this.comboAddressType.on('change', function(combo, newValue, oldValue){
 			var m = _this.form.findField('member_id').getValue();
-			console.log(m, Ext.isEmpty(m));
 			if(newValue=='1' || newValue=='2'){
 				if(Ext.isEmpty(m)){
 					Ext.Msg.show({
