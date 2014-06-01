@@ -128,5 +128,11 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function send_shirt()
+	{
+		$this->phxview->RenderView('cms/send_shirt');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 
 }
