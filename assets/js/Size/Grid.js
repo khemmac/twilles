@@ -28,19 +28,10 @@ Ext.define('TCMS.Size.Grid', {
 				{ name:'code', type:'string' },
 				{ name:'name', type:'string' },
 				{ name:'collar', type:'float' },
-				{ name:'shoulder', type:'float' },
-				{ name:'chest', type:'float' },
-				{ name:'waist', type:'float' },
-				{ name:'hips', type:'float' },
-				{ name:'length_in', type:'float' },
-				{ name:'length_out', type:'float' },
-				{ name:'sleeve_left', type:'float' },
-				{ name:'sleeve_right', type:'float' },
 				{ name:'biceps', type:'float' },
 				{ name:'elbow', type:'float' },
 				{ name:'wrist', type:'float' },
-				{ name:'chest_height', type:'float' },
-				{ name:'chest_distance', type:'float' },
+				{ name:'armhole', type:'float' },
 
 				{ name:'is_active', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -58,27 +49,11 @@ Ext.define('TCMS.Size.Grid', {
 			{text: "Code", width:60, dataIndex:'code', sortable:true, align:'left'},
 			{text: "Name", width:110, dataIndex:'name', sortable:true, align:'left' },
 			{text: "Collar", width:70, dataIndex:'collar', sortable:true, align:'left' },
-			{text: "Shoulder", width:70, dataIndex:'shoulder', sortable:true, align:'left'},
-			{text: "Chest", width:70, dataIndex:'chest', sortable:true, align:'left'},
-			{text: "Waist", width:70, dataIndex:'waist', sortable:true, align:'left'},
-			{text: "Hips", width:70, dataIndex:'hips', sortable:true, align:'left'},
-			{text: "Length in", width:70, dataIndex:'length_in', sortable:true, align:'left'},
-			{text: "Length out", width:70, dataIndex:'length_out', sortable:true, align:'left'},
-			{text: "Left sleeve", width:70, dataIndex:'sleeve_left', sortable:true, align:'left'},
-			{text: "Right sleeve", width:70, dataIndex:'sleeve_right', sortable:true, align:'left'},
-			{text: "Biceps", width:70, dataIndex:'biceps', sortable:true, align:'left'},
-			{text: "Elbow", width:70, dataIndex:'elbow', sortable:true, align:'left'},
-			{text: "Wrist", width:70, dataIndex:'wrist', sortable:true, align:'left'},
-			{text: "Chest height", width:70, dataIndex:'chest_height', sortable:true, align:'left'},
-			{text: "Chest distance", width:70, dataIndex:'chest_distance', sortable:true, align:'left'},
-			/*
-			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
-				renderer: function(v,p,r){
-					var icns = (v)?'tick':'cross';
-					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
-				}
-			},
-			*/
+			{text: "Biceps", width:70, dataIndex:'biceps', sortable:true, align:'left' },
+			{text: "Elbow", width:70, dataIndex:'elbow', sortable:true, align:'left' },
+			{text: "Wrist", width:70, dataIndex:'wrist', sortable:true, align:'left' },
+			{text: "Armhole", width:70, dataIndex:'armhole', sortable:true, align:'left' },
+
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			},

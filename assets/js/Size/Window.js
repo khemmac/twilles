@@ -4,7 +4,7 @@ Ext.define('TCMS.Size.Window', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			height: 360,
+			height: 560,
 			width: 600,
 			resizable: false,
 			modal: true,

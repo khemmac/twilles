@@ -58,6 +58,15 @@ Ext.define('TCMS.Size.Form', {
 			return Ext.create(ns, Ext.apply(config, _fieldDefaults));
 		};
 
+		var _createSizeField = function(config){
+			config = Ext.apply(config, {
+				allowBlank: true,
+				minValue: 0,
+				value: 0
+			});
+			return Ext.create('TCMS.BaseMaster.field.Numeric', Ext.apply(config, _fieldDefaults));
+		};
+
 		this.items = [{
 			// column layout with 2 columns
 			layout:'column',
@@ -75,120 +84,91 @@ Ext.define('TCMS.Size.Form', {
 				// defaults for fields
 				defaults:_fieldDefaults,
 				items:[{
-					name: 'code',
-					xtype: 'textfield',
-					fieldLabel: 'Code',
-					allowBlank: false
+					xtype: 'fieldset',
+					title: 'Size',
+					defaults: _fieldDefaults,
+					items: [{
+						name: 'code',
+						xtype: 'textfield',
+						fieldLabel: 'Code',
+						allowBlank: false
+					}, {
+						name: 'name',
+						xtype: 'textfield',
+						fieldLabel: 'Name',
+						allowBlank: false
+					}]
 				}, {
-					name: 'name',
-					xtype: 'textfield',
-					fieldLabel: 'Name',
-					allowBlank: false
-				},
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Collar',
-					name: 'collar',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Shoulder',
-					name: 'shoulder',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Chest',
-					name: 'chest',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Waist',
-					name: 'waist',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Hips',
-					name: 'hips',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Length in',
-					name: 'length_in',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Length out',
-					name: 'length_out',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				})
+					xtype: 'fieldset',
+					title: 'Basic',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Collar', name: 'collar' }),
+						_createSizeField({ fieldLabel: 'Biceps', name: 'biceps' }),
+						_createSizeField({ fieldLabel: 'Elbow', name: 'elbow' }),
+						_createSizeField({ fieldLabel: 'Wrist', name: 'wrist' }),
+						_createSizeField({ fieldLabel: 'Armhole', name: 'armhole' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Chest',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Front', name: 'chest_front' }),
+						_createSizeField({ fieldLabel: 'Back', name: 'chest_back' }),
+						_createSizeField({ fieldLabel: 'Front piece', name: 'chest_frontpiece' }),
+						_createSizeField({ fieldLabel: 'Back piece', name: 'chest_backpiece' }),
+						_createSizeField({ fieldLabel: 'Height', name: 'chest_height' }),
+						_createSizeField({ fieldLabel: 'Distance', name: 'chest_distance' })
+					]
+				}
 				]
 			},{
 				// center column
 				// defaults for fields
 				defaults:_fieldDefaults,
-				items:[
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Left sleeve',
-					name: 'sleeve_left',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Right sleeve',
-					name: 'sleeve_right',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Biceps',
-					name: 'biceps',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Elbow',
-					name: 'elbow',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Wrist',
-					name: 'wrist',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Chest height',
-					name: 'chest_height',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				}),
-				_createField('TCMS.BaseMaster.field.Numeric', {
-					fieldLabel: 'Chest distance',
-					name: 'chest_distance',
-					allowBlank: true,
-					minValue: 0,
-					value: 0
-				})]
+				items:[{
+					xtype: 'fieldset',
+					title: 'Shoulder',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Shoulder', name: 'shoulder' }),
+						_createSizeField({ fieldLabel: 'Center', name: 'shoulder_center' }),
+						_createSizeField({ fieldLabel: 'Side', name: 'shoulder_side' })
+					]
+				}, {
+					xtype: 'fieldset',
+					title: 'Waist',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Front piece', name: 'waist_frontpiece' }),
+						_createSizeField({ fieldLabel: 'Back piece', name: 'waist_backpiece' })
+					]
+				},{
+					xtype: 'fieldset',
+					title: 'Hips',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Front piece', name: 'hips_frontpiece' }),
+						_createSizeField({ fieldLabel: 'Back piece', name: 'hips_backpiece' })
+					]
+				},{
+					xtype: 'fieldset',
+					title: 'Lenngth in',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Front', name: 'length_in_front' }),
+						_createSizeField({ fieldLabel: 'Back', name: 'length_in_back' })
+					]
+				},{
+					xtype: 'fieldset',
+					title: 'Sleeve',
+					defaults: _fieldDefaults,
+					items: [
+						_createSizeField({ fieldLabel: 'Left', name: 'sleeve_left' }),
+						_createSizeField({ fieldLabel: 'Right', name: 'sleeve_right' })
+					]
+				}]
 			}]
 		}];
 
