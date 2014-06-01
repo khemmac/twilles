@@ -64,15 +64,28 @@ Ext.define('TCMS.Order.Form', {
 			]
 		});
 */
-		this.comboCountry = Ext.create('BASE.ComboAjax', Ext.apply({
+		this.comboCountry = _createField('BASE.ComboAjax', {
 			fieldLabel: 'Country',
 			name : 'delivery_country_id',
 			proxyExtraParams: {
 				type:'country'
 			},
 			proxySorters: [{property: 'name', direction: 'ASC'}],
-			allowBlank: true
-		}, _fieldDefaults));
+			allowBlank: true,
+			value: '221'
+		});
+
+		this.comboAddressType = _createField('BASE.ComboStatic', {
+			fieldLabel:'Address',
+			name : 'style_type',
+			allowBlank: true,
+			store:[
+				['0', 'Custom'],
+				['1', 'Primary'],
+				['2', 'Secondary']
+			],
+			value: '0'
+		});
 
 		this.triggerMember = _createField('Ext.form.field.Trigger', {
 			fieldLabel:'Member',
@@ -87,7 +100,7 @@ Ext.define('TCMS.Order.Form', {
 			region: 'north',
 			split: true,
 			border: true,
-			height: 160,
+			height: 175,
 			// column layout with 2 columns
 			layout:'column',
 			// defaults for columns
@@ -158,30 +171,36 @@ Ext.define('TCMS.Order.Form', {
 						},
 						items:[{
 							// delivery left column
-							columnWidth:0.5,
+							columnWidth:0.45,
 							defaults:_fieldDefaults,
-							items:[{
-								name: 'delivery_name',
+							items:[
+							this.comboAddressType
+							, {
+								name: 'delivery_city',
 								xtype: 'textfield',
-								fieldLabel: 'Name'
+								fieldLabel: 'City'
 							}, {
-								name: 'delivery_zipcode',
+								name: 'delivery_state_province',
+								xtype: 'textfield',
+								fieldLabel: 'State/province'
+							}, {
+								name: 'delivery_zip',
 								xtype: 'textfield',
 								fieldLabel: 'Zip code',
-								maxLength: 5
+								maxLength: 10
 							},
 							this.comboCountry]
 						},{
 							// delivery left column
-							columnWidth:0.5,
+							columnWidth:0.55,
 							defaults:_fieldDefaults,
 							items:[{
-								name: 'delivery_address1',
+								name: 'delivery_address_line_1',
 								xtype: 'textarea',
 								fieldLabel: 'Address 1',
 								rows: 2
 							}, {
-								name: 'delivery_address2',
+								name: 'delivery_address_line_2',
 								xtype: 'textarea',
 								fieldLabel: 'Address 2',
 								rows: 2
@@ -286,19 +305,104 @@ Ext.define('TCMS.Order.Form', {
 
 		this.memberDialog = Ext.create('TCMS.MemberSize.Member.Window');
 
-		// event
+		// **** event
 		this.triggerMember.onTriggerClick = function(){
 			// show member dialog
 			_this.memberDialog.openDialog('Select member', 'search');
 		};
 
-		// member event
+		var setAddress = function(o){
+			var delAddress1 = _this.form.findField('delivery_address_line_1'),
+				delAddress2 = _this.form.findField('delivery_address_line_2'),
+				delCity = _this.form.findField('delivery_city'),
+				delState = _this.form.findField('delivery_state_province'),
+				delZip = _this.form.findField('delivery_zip'),
+				delCountry = _this.form.findField('delivery_country_id'),
+				delData = null;
+			if(o==null){
+				_this.comboAddressType.setValue('0');
+				delData = {
+					address_line_1: null,
+					address_line_2: null,
+					address_city: null,
+					address_state_province: null,
+					address_zip: null,
+					address_country: '221'
+				};
+			}else{
+				var addrType = _this.comboAddressType.getValue(),
+					userPrefix = (addrType=='1')?'primary_':'secondary_';
+				delData = {
+					address_line_1:			o[userPrefix+'address_line_1'],
+					address_line_2:			o[userPrefix+'address_line_2'],
+					address_city:			o[userPrefix+'address_city'],
+					address_state_province:	o[userPrefix+'address_state_province'],
+					address_zip:			o[userPrefix+'address_zip'],
+					address_country:		o[userPrefix+'address_country']
+				};
+			}
+			console.log(addrType, userPrefix, o, delData);
+			delAddress1	.setValue(delData['address_line_1']),
+			delAddress2	.setValue(delData['address_line_2']),
+			delCity		.setValue(delData['address_city']),
+			delState	.setValue(delData['address_state_province']),
+			delZip		.setValue(delData['address_zip']),
+			delCountry	.setValue(delData['address_country']);
+		};
+		var resetAddress = function(){
+			setAddress(null);
+		};
+
+
+		this.comboAddressType.on('change', function(combo, newValue, oldValue){
+			var m = _this.form.findField('member_id').getValue();
+			console.log(m, Ext.isEmpty(m));
+			if(newValue=='1' || newValue=='2'){
+				if(Ext.isEmpty(m)){
+					Ext.Msg.show({
+						title : "Error",
+						msg : "Please select member",
+						icon : Ext.Msg.ERROR,
+						buttons : Ext.Msg.OK
+					});
+					_this.triggerMember.focus();
+					_this.comboAddressType.setValue('0');
+				}else{
+					_this.form.load({
+						url : __site_url+'backend/dao/load',
+						clientValidation : true,
+						success : function(form, act) {
+							_this.fireEvent('afterLoad', _this, act);
+							var o = act.result.data;
+							setAddress(o);
+						},
+						failure : _this.form.failureAlert,
+						waitMsg : 'Loading...',
+						waitTitle : 'Please wait...',
+						params : {
+							type: 'user',
+							id: m
+						}
+					});
+				}
+			}
+		});
+
+
+		// **** member event
 		this.memberDialog.submitAct.setHandler(function(){
-			var record = _this.memberDialog.grid.getSelectedObject();
+			var record = _this.memberDialog.grid.getSelectedObject(),
+				txtMemberFullname = _this.form.findField('member_fullname'),
+				hdnMemberId = _this.form.findField('member_id');
 			if(record){
 				var memberObj = record.data;
-				_this.form.findField('member_fullname').setValue(memberObj.first_name+' '+memberObj.last_name);
-				_this.form.findField('member_id').setValue(memberObj.id);
+
+				if(hdnMemberId.getValue()!=memberObj.id){
+					resetAddress();
+					hdnMemberId.setValue(memberObj.id);
+					txtMemberFullname.setValue(memberObj.first_name+' '+memberObj.last_name);
+				}
+
 				_this.memberDialog.hide();
 			}
 		});
