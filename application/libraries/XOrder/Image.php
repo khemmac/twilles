@@ -32,7 +32,7 @@ class Image {
 		imagedestroy($imbObj);
 	}
 
-	private function resize($source_image_path, $thumbnail_image_path, $max_width = 90, $max_height = 90){
+	public function resize($source_image_path, $thumbnail_image_path, $max_width = 90, $max_height = 90){
 		list($source_image_width, $source_image_height, $source_image_type) = getimagesize($source_image_path);
 	    switch ($source_image_type) {
 	        case IMAGETYPE_GIF:

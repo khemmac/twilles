@@ -66,28 +66,35 @@ class Order_report extends CI_Controller {
 		// ---- START PDF CONTENT
 		// ***** USER INFO *****
 		$pdf->SetFont('angsanaupc', 'B', 17);
-$tbl = '<table cellspacing="0" cellpadding="3" border="0">
+$tbl = '
+<table cellspacing="0" cellpadding="0" border="0" width="1150">
 	<tr>
 		<td width="20"></td>
-		<td colspan="3">วันกำหนดเสร็จ  '.$order->order_completed_date.'</td>
-	</tr>
-    <tr>
-        <td rowspan="4" width="20"></td>
-        <td width="305">'.$order->delivery_name.'
-			<br />
-			'.$order->delivery_address1.'
-			<br />
-			'.$order->delivery_address2.'
-			<br />
-			'.$order->delivery_country_name.' '.$order->delivery_zipcode.'
-        </td>
-        <td rowspan="4" width="10"></td>
-        <td rowspan="4" align="center">
-        	<table cellspaceing="0" cellpadding="3" border="1">
-        		<tr><td style="background-color:#eeeeee;">รหัส<br />'.$order->order_code.'</td></tr>
+		<td width="350">
+			วันสั่งสินค้า  '.$order->order_date.'<br />
+			วันกำหนดเสร็จ  '.$order->order_completed_date.'<br />
+			<table cellspacing="0" cellpadding="3" border="1">
+			    <tr><td align="center" style="background-color:#eeeeee;">ที่อยู่จัดส่ง</td></tr>
+			    <tr>
+			        <td>'.$order->delivery_name.'
+						<br />
+						'.$order->delivery_address_line_1.'
+						<br />
+						'.$order->delivery_address_line_2.'
+						<br />
+						'.$order->delivery_country_name.' '.$order->delivery_zip.'
+			        </td>
+				</tr>
+			</table>
+		</td>
+		<td width="200"></td>
+		<td width="230" align="center">
+        	<table cellspaceing="0" cellpadding="3" border="1" width="200">
+        		<tr><td style="background-color:#eeeeee;">รหัสสั่งซื้อ</td></tr>
+        		<tr><td>'.$order->order_code.'</td></tr>
         	</table>
-        </td>
-    </tr>
+		</td>
+	</tr>
 </table>';
 		$pdf->writeHTML($tbl, true, false, false, false, '');
 		// ***** END USER INFO *****
