@@ -305,13 +305,14 @@ class Thumbnail {
 
 	private function getFabricHtmlDetail($item, $fabric_name_property){
 		$_CI =& get_instance();
+		$fabric_ext = '.jpg';
 
 		$item_id = $item->id;
 		$fabric_id = $item->{$fabric_name_property};
 
 		// source file path
-		$source_path = $this->path->getFabricPath("$fabric_id.jpg");
-		$dest_file_name = "$item_id-$fabric_id";
+		$source_path = $this->path->getFabricPath("$fabric_id$fabric_ext");
+		$dest_file_name = "$item_id-$fabric_id$fabric_ext";
 		$dest_path = $this->path->getFabricOutputPath($dest_file_name);
 
 		// fabric not set
@@ -323,11 +324,15 @@ class Thumbnail {
 			return '<br />'.$fabric_id.'
 					<br /><img src="'.(base_url("images/image-missing.png")).'" />';
 
-		// dest file not found (not yet resized)
-		if(!file_exists($dest_path))
-			$this->image->resize($source_path, $dest_path);
+		$isFileExist = file_exists($dest_path);
+
+		// ถ้าหาไฟล์ไม่เจอ ให้ทำการ resize
+		if(!file_exists($dest_path)){
+			$resizeOutput = $this->image->resize($source_path, $dest_path);
+		}
 
 		$imgTag = $this->path->getFabricImageTag($dest_path);
+
 		return '<br />'.$fabric_id.'
 				<br />'.$imgTag;
 	}

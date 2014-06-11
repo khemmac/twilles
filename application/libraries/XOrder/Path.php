@@ -37,7 +37,7 @@ class Path {
 		$preg_base_path = preg_replace('/\//', '\/', $base_path);
 		$url = preg_replace('/'.$preg_base_path.'/', $base_url, $dest);
 
-		if(!file_exists($dest))
+		if (!file_exists($dest))
 			return '<img src="'.(base_url("images/image-missing.png?v=2")).'" />';
 		else
 			return '<img src="'.$url.'?v=11" width="'.$width.'" />';
@@ -56,12 +56,10 @@ class Path {
 		$base_path = $_CI->config->item('FABRIC_OUTPUT_PATH');
 		$base_url = $_CI->config->item('FABRIC_OUTPUT_URL');
 
-
-
 		$preg_base_path = preg_replace('/\//', '\/', $base_path);
 		$url = preg_replace('/'.$preg_base_path.'/', $base_url, $dest);
 
-		if(!file_exists($dest))
+		if (!file_exists($dest))
 			return '<img src="'.(base_url("images/image-missing.png?v=2")).'" width="'.$width.'" />';
 		else
 			return '<img src="'.$url.'?v=11" width="'.$width.'" />';

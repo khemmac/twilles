@@ -198,6 +198,8 @@ $tbl = '
 			$tbl = $this->xorder->getOrderItemHTML($item);
 
 			$pdf->writeHTML($tbl, true, false, false, false, '');
+
+			//break;
 		}
 
 		//$pdf->Write(0, $txt, '', 0, 'L', true, 0, false, false, 0);

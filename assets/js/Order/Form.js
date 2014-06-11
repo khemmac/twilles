@@ -7,7 +7,7 @@ Ext.define('TCMS.Order.Form', {
 		Ext.apply(this, {
 			bodyPadding : false,
 			layout: 'border',
-			autoScroll: true,
+			autoScroll: false,
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
