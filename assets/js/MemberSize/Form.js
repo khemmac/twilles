@@ -10,7 +10,7 @@ Ext.define('TCMS.MemberSize.Form', {
 
 		Ext.apply(this, {
 			bodyStyle : 'padding:5px 0px 0px 0px;',
-			autoScroll: true,
+			autoScroll: false,
 			plugins: [uxFormStatus],
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
@@ -74,7 +74,8 @@ Ext.define('TCMS.MemberSize.Form', {
 				['2', 'Measure Yourself'],
 				['3', 'Measure Your Shirt'],
 				['4', 'Send Us Your Shirt'],
-				['5', 'Standard Size']
+				['5', 'Standard Size'],
+				['6', 'Pick up your shirt']
 			]
 		});
 
@@ -148,6 +149,7 @@ Ext.define('TCMS.MemberSize.Form', {
 					defaults: _fieldDefaults,
 					items: [
 						_createField('BASE.field.NumericField', { fieldLabel:'Shoulder', name : 'shoulder' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Center', name : 'shoulder_center' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Side', name : 'shoulder_side' }),
 						this.comboShoulderShape,
 						this.comboShoulderLevel,
@@ -179,6 +181,7 @@ Ext.define('TCMS.MemberSize.Form', {
 						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'chest_buffer' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Front', name : 'chest_front' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Back', name : 'chest_back' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Height', name : 'chest_height' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Distance', name : 'chest_distance' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Front piece', name : 'chest_frontpiece' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Back piece', name : 'chest_backpiece' })

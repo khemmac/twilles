@@ -5,7 +5,7 @@ Ext.define('TCMS.MemberSize.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 540,
+			height: 570,
 			width: 900,
 			resizable: false,
 			modal: true,

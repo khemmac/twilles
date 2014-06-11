@@ -7,6 +7,8 @@ function endsWith($haystack, $needle)
 	}
 	return (substr($haystack, -$length) === $needle);
 }
+
+$SV = '?v=1.0';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +28,9 @@ function endsWith($haystack, $needle)
 	<script type="text/javascript" src="<?= base_url('assets/jslib/swfupload/swfupload.js') ?>"></script>
 
 	<?php if(ENVIRONMENT=='production' || ENVIRONMENT=='testing'): ?>
-	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/ext-ux.js') ?>"></script>
-	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-base.js') ?>"></script>
-	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-js.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/ext-ux.js').$SV ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-base.js').$SV ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/jsdeploy/all-js.js').$SV ?>"></script>
 	<?php endif; ?>
 
 	<script type="text/javascript">
