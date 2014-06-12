@@ -3,6 +3,7 @@
 require_once(XORDER_ROOT . 'XOrder/Path.php');
 require_once(XORDER_ROOT . 'XOrder/Util.php');
 require_once(XORDER_ROOT . 'XOrder/Image.php');
+require_once(XORDER_ROOT . 'XOrder/SizeDetail.php');
 
 class Thumbnail {
 
@@ -14,20 +15,45 @@ class Thumbnail {
 		$this->path = new Path();
 		$this->util = new Util();
 		$this->image = new Image();
+		$this->sizeDetail = new SizeDetail();
+	}
+
+	private function dtl_measure_type($o){
+		if(in_array($o->member_size_type, array(1,2,3,4))) // งานวัดจากเสื้อ
+			return 1;
+		else if(in_array($o->member_size_type, array(5,6))) // งานวัดจากตัว
+			return 2;
+		return 0;
+	}
+	private function dtl_shoulder($o, $mtype){
+		$rtn = number_format($o->collar);
+		if($mtype==1)
+			$rtn .= ' x '.number_format($o->shoulder_center).' x '.number_format($o->shoulder_side);
+		return $rtn;
+	}
+	private function dtl_chest($o, $mtype){
+		//(($measure_type==1)?' x '.number_format($item->chest_frontpiece):number_format($item->chest))
+		//.(($measure_type==1)?' x '.number_format($item->chest_backpiece)
+		//	:' + '.number_format($item->chest_buffer))
+		$rtn = number_format($o->collar);
+		if($mtype==1)
+			$rtn .= ' x '.number_format($o->shoulder_center).' x '.number_format($o->shoulder_side);
+		return $rtn;
 	}
 
 	public function GenerateHTML($item){
+		$measure_type = $this->dtl_measure_type($item);
 
 		$html =
 '<table cellspacing="0" cellpadding="1" border="1">
 	<tr>
 		<td width="80" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
-		<td width="740" style="background-color:#CCCCCC;" colspan="2"><b>Slim Fit</b></td>
-    </tr>
-	<tr>
-		<td width="80">รอบคอ</td>
-		<td width="160">'.number_format($item->collar).'</td>
-		<td width="580" rowspan="22">
+		<td width="140" style="background-color:#CCCCCC;">
+			<b>Slim Fit</b>
+			'.(($measure_type==1)?' - งานวัดจากเสื้อ'
+				:(($measure_type==2)?' - งานวัดจากตัว':'')).'
+		</td>
+		<td width="600" rowspan="23">
 			<table cellspacing="0" cellpadding="2" border="1">
 				<tr>
 					<td align="center">'.$this->mergeTmbnl('collar', 'getTmbnlImgsCollar', $item).'</td>
@@ -102,12 +128,16 @@ class Thumbnail {
 		</td>
     </tr>
 	<tr>
-		<td>ไหล่</td>
+		<td>รอบคอ</td>
 		<td>'.number_format($item->collar).'</td>
     </tr>
 	<tr>
+		<td>ไหล่</td>
+		<td>'.$this->sizeDetail->shoulder($item).'</td>
+    </tr>
+	<tr>
 		<td>อก</td>
-		<td>'.number_format($item->chest).'</td>
+		<td>'.$this->sizeDetail->chest($item).'</td>
     </tr>
 	<tr>
 		<td>บ่าหน้า</td>
@@ -119,15 +149,15 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>เอว</td>
-		<td>'.number_format($item->waist).'</td>
+		<td>'.$this->sizeDetail->waist($item).'</td>
     </tr>
 	<tr>
 		<td>สะโพก</td>
-		<td>'.number_format($item->hips).'</td>
+		<td>'.$this->sizeDetail->hips($item).'</td>
     </tr>
 	<tr>
 		<td>ลำตัว</td>
-		<td>'.number_format($item->length_in_front).' x '.number_format($item->length_in_back).'</td>
+		<td>'.$this->sizeDetail->length($item).'</td>
     </tr>
 	<tr>
 		<td>ยาวแขนซ้าย</td>
@@ -139,11 +169,11 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>กล้ามแขน</td>
-		<td>'.number_format($item->biceps).'</td>
+		<td>'.$this->sizeDetail->biceps($item).'</td>
     </tr>
 	<tr>
 		<td>ศอก</td>
-		<td>'.number_format($item->elbow).'</td>
+		<td>'.$this->sizeDetail->elbow($item).'</td>
     </tr>
 	<tr>
 		<td>ข้อมือ</td>
@@ -151,7 +181,7 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>วงแขน</td>
-		<td>'.number_format($item->armhole).'</td>
+		<td>'.$this->sizeDetail->armhole($item).'</td>
     </tr>
 	<tr>
 		<td>อกสูง</td>
@@ -163,7 +193,7 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>ระดับไหล่</td>
-		<td>'.$item->shoulder_level_name.'</td>
+		<td>'.$item->shoulder_level_name.'&nbsp;&nbsp;&nbsp;&nbsp;'.$item->shoulder_slope.'</td>
     </tr>
 	<tr>
 		<td>ทรงไหล่</td>
@@ -171,7 +201,7 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td colspan="2">
-			<strong>ขาว</strong>
+			<strong>'.$item->inventory_button_name.'</strong>
 			<br />เย็บเม็ดบนห่างจากกระดุมปก 2.5 นิ้ว
 			<br />เย็บมือ
 		</td>

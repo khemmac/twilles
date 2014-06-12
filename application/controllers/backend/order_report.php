@@ -180,7 +180,7 @@ $tbl = '
 				$item->fabric_body_id,
 				$item->item_amount,
 				$item->item_price,
-				$item->item_price + $item->item_amount
+				$item->item_price * $item->item_amount
 			));
 		}
 
