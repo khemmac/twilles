@@ -5,7 +5,7 @@ Ext.define('TCMS.Order.Item.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 570,
+			height: 600,
 			width: 910,
 			resizable: false,
 			modal: true,

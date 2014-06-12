@@ -114,7 +114,7 @@ Ext.define('TCMS.Order.Form', {
 			txtDelAddress2 = _createField('Ext.form.field.TextArea', {
 				name: 'delivery_address_line_2',
 				fieldLabel: 'Address 2',
-				rows: 2,
+				rows: 3,
 				enableKeyEvents: true,
 				listeners: evtDelListeners
 			}),

@@ -8,7 +8,7 @@ Ext.define('TCMS.Order.Item.Form', {
 			layout: 'border',
 			border: false,
 			bodyPadding : '',
-			autoScroll: true,
+			autoScroll: false,
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
@@ -124,6 +124,12 @@ Ext.define('TCMS.Order.Item.Form', {
 				defaults:_fieldDefaults,
 				items:[
 				this.triggerMemberSize,
+				{
+					xtype: 'displayfield',
+					fieldLabel: 'Size type',
+					name: 'member_size_type_name',
+					value: '-'
+				},
 				//this.comboSizeType,
 				{
 					xtype: 'fieldset',
@@ -139,6 +145,7 @@ Ext.define('TCMS.Order.Item.Form', {
 					defaults: _fieldDefaults,
 					items: [
 						_createField('BASE.field.NumericField', { fieldLabel:'Shoulder', name : 'shoulder' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Center', name : 'shoulder_center' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Side', name : 'shoulder_side' }),
 						comboShoulderShape,
 						comboShoulderLevel,
@@ -170,6 +177,7 @@ Ext.define('TCMS.Order.Item.Form', {
 						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'chest_buffer' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Front', name : 'chest_front' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Back', name : 'chest_back' }),
+						_createField('BASE.field.NumericField', { fieldLabel:'Height', name : 'chest_height' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Distance', name : 'chest_distance' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Front piece', name : 'chest_frontpiece' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Back piece', name : 'chest_backpiece' })
@@ -553,6 +561,7 @@ Ext.define('TCMS.Order.Item.Form', {
 					}
 				}
 
+				_this.form.findField('member_size_type_name').setValue(o.size_type_name);
 				_this.form.findField('member_size_name').setValue(o.name);
 				_this.form.findField('member_size_id').setValue(o.id);
 				_this.memberSizeDialog.hide();
