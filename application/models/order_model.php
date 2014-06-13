@@ -6,6 +6,8 @@ Class Order_model extends Base_model
 
 	public $primary_key = 'id';
 
+	protected $soft_delete = TRUE;
+
 	public function __construct()
     {
         parent::__construct();

@@ -8,7 +8,7 @@ Ext.define('TCMS.Member.Form', {
 			layout: 'border',
 			border: false,
 			bodyPadding : '',
-			autoScroll: true,
+			autoScroll: false,
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
 				for(var i=0;i<children.length;i++){
@@ -21,7 +21,7 @@ Ext.define('TCMS.Member.Form', {
 						}
 					});
 				};
-				o.active = (o.active && o.active=='on')?1:0;
+				//o.active = (o.active && o.active=='on')?1:0;
 				return o;
 			},
 			getSaveParams : function() {
@@ -109,13 +109,13 @@ Ext.define('TCMS.Member.Form', {
 				width: 40,
 				name: 'mobile_number_country',
 				hideLabel: true,
-				allowBlank: false,
+				allowBlank: true,
 				maxLength:10
 			}, {
 				flex: 1,
 				name: 'mobile_number',
 				hideLabel: true,
-				allowBlank: false,
+				allowBlank: true,
 				margins: '0 0 0 5',
 				maxLength:15
 			}, {
@@ -142,15 +142,20 @@ Ext.define('TCMS.Member.Form', {
 				}else
 					return '-';
 			}
-		}, {
+		}/*, {
 			name: 'active',
 			xtype: 'checkboxfield',
 			fieldLabel: 'Active',
 			checked: !0
-		}];
+		}*/];
 
 		// **************** TAB ADDRESS ****************
 		var tabAddress1 = [{
+			xtype: 'textfield',
+			fieldLabel:'Full name',
+			name : 'primary_address_fullname',
+			allowBlank: false
+		},{
 			name: 'primary_address_line_1',
 			xtype: 'textarea',
 			fieldLabel: 'Address line 1',
@@ -189,9 +194,20 @@ Ext.define('TCMS.Member.Form', {
 			value: '221',
 			proxySorters: [{property: 'name', direction: 'ASC'}],
 			allowBlank: false
-		}, _fieldDefaults))];
+		}, _fieldDefaults)),
+		{
+			xtype: 'textfield',
+			fieldLabel:'Phone',
+			name : 'primary_address_phone',
+			allowBlank: true
+		}];
 
 		var tabAddress2 = [{
+			xtype: 'textfield',
+			fieldLabel:'Full name',
+			name : 'secondary_address_fullname',
+			allowBlank: true
+		},{
 			name: 'secondary_address_line_1',
 			xtype: 'textarea',
 			fieldLabel: 'Address line 1',
@@ -228,7 +244,13 @@ Ext.define('TCMS.Member.Form', {
 			},
 			proxySorters: [{property: 'name', direction: 'ASC'}],
 			allowBlank: true
-		}, _fieldDefaults))];
+		}, _fieldDefaults)),
+		{
+			xtype: 'textfield',
+			fieldLabel:'Phone',
+			name : 'secondary_address_phone',
+			allowBlank: true
+		}];
 
 		this.tabForm = Ext.create('Ext.tab.Panel', {
 			region: 'center',

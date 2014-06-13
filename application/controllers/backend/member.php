@@ -9,6 +9,9 @@ class Member extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 
+		$this->load->model('user_model', 'user');
+		$this->load->model('user_shipping_model', 'user_shipping');
+
 		// check logged in
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			X::renderJSON(array(
@@ -43,6 +46,9 @@ class Member extends CI_Controller {
 				$o->group = 1;
 			}
 		}
+
+		// call model mapping
+		$this->user->after_get_map_shipping($o);
 
 		X::renderJSON(array(
 			'success'=>true,
@@ -115,18 +121,22 @@ class Member extends CI_Controller {
 			'mobile_number'=>X::Request('mobile_number'),
 			'mobile_number_ext'=>X::Request('mobile_number_ext'),
 
+			'primary_address_fullname'=>X::Request('primary_address_fullname'),
 			'primary_address_line_1'=>X::Request('primary_address_line_1'),
 			'primary_address_line_2'=>X::Request('primary_address_line_2'),
 			'primary_address_city'=>X::Request('primary_address_city'),
 			'primary_address_state_province'=>X::Request('primary_address_state_province'),
 			'primary_address_zip'=>X::Request('primary_address_zip'),
 			'primary_address_country'=>X::Request('primary_address_country'),
+			'primary_address_phone'=>X::Request('primary_address_phone'),
+			'secondary_address_fullname'=>X::Request('secondary_address_fullname'),
 			'secondary_address_line_1'=>X::Request('secondary_address_line_1'),
 			'secondary_address_line_2'=>X::Request('secondary_address_line_2'),
 			'secondary_address_city'=>X::Request('secondary_address_city'),
 			'secondary_address_state_province'=>X::Request('secondary_address_state_province'),
 			'secondary_address_zip'=>X::Request('secondary_address_zip'),
-			'secondary_address_country'=>X::Request('secondary_address_country')
+			'secondary_address_country'=>X::Request('secondary_address_country'),
+			'secondary_address_phone'=>X::Request('secondary_address_phone')
 
 		);
 		$date_str = date('Y-m-d H:i:s', time());
@@ -151,6 +161,8 @@ class Member extends CI_Controller {
 				$this->ion_auth->activate($id);
 			else
 				$this->ion_auth->deactivate($id);
+
+			$this->user->after_create_save_shipping($id);
 
 			X::renderJSON(array(
 				'success'=>true,
@@ -185,18 +197,22 @@ class Member extends CI_Controller {
 			'mobile_number'=>X::Request('mobile_number'),
 			'mobile_number_ext'=>X::Request('mobile_number_ext'),
 
+			'primary_address_fullname'=>X::Request('primary_address_fullname'),
 			'primary_address_line_1'=>X::Request('primary_address_line_1'),
 			'primary_address_line_2'=>X::Request('primary_address_line_2'),
 			'primary_address_city'=>X::Request('primary_address_city'),
 			'primary_address_state_province'=>X::Request('primary_address_state_province'),
 			'primary_address_zip'=>X::Request('primary_address_zip'),
 			'primary_address_country'=>X::Request('primary_address_country'),
+			'primary_address_phone'=>X::Request('primary_address_phone'),
+			'secondary_address_fullname'=>X::Request('secondary_address_fullname'),
 			'secondary_address_line_1'=>X::Request('secondary_address_line_1'),
 			'secondary_address_line_2'=>X::Request('secondary_address_line_2'),
 			'secondary_address_city'=>X::Request('secondary_address_city'),
 			'secondary_address_state_province'=>X::Request('secondary_address_state_province'),
 			'secondary_address_zip'=>X::Request('secondary_address_zip'),
-			'secondary_address_country'=>X::Request('secondary_address_country')
+			'secondary_address_country'=>X::Request('secondary_address_country'),
+			'secondary_address_phone'=>X::Request('secondary_address_phone')
 		);
 		$date_str = date('Y-m-d H:i:s', time());
         $data['update_date'] = $date_str;
@@ -216,6 +232,9 @@ class Member extends CI_Controller {
 			else
 				$this->ion_auth->deactivate($id);
 
+			$data['id'] = $id;
+			$this->user->after_update_save_shipping($data);
+
 			X::renderJSON(array(
 				'success'=>true,
 				'data'=>array(
@@ -230,5 +249,21 @@ class Member extends CI_Controller {
 			));
 		}
 	}
+
+	public function LoadAddress(){
+		$id = X::Request('id');
+		$sequence = X::Request('sequence');
+		$o = null;
+		if($sequence=='1')
+			$o = $this->user_shipping->getPrimary($id);
+		else if($sequence=='2')
+			$o = $this->user_shipping->getSecondary($id);
+
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$o
+		));
+	}
+
 
 }
