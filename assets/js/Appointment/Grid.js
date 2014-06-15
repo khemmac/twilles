@@ -41,6 +41,7 @@ Ext.define('TCMS.Appointment.Grid', {
 				{ name:'address_zip', type:'string' },
 				{ name:'address_country', type:'int' },
 				{ name:'address_country_name', type:'string' },
+				{ name:'address_phone', type:'string' },
 				{ name:'status', type:'int' },
 				{ name:'status_name', type:'string' },
 				{ name:'completed_date', type:'string' },
@@ -71,6 +72,9 @@ Ext.define('TCMS.Appointment.Grid', {
 			{text: "Full name", width:150, dataIndex:'full_name', sortable:true, align:'left'},
 			{text: "Appointment date", width:100, dataIndex:'appointment_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i'):'-'; }
+			},
+			{text: "Phone", width:110, dataIndex:'address_phone', sortable:true, align:'left',
+				renderer: function(v){ return (v)?v:'-'; }
 			},
 			{text: "Status", width:100, dataIndex:'status', sortable:false, align:'left',
 				renderer: function(v,p,r){

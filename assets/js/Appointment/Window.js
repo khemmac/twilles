@@ -5,7 +5,7 @@ Ext.define('TCMS.Appointment.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 390,
+			height: 410,
 			width: 600,
 			resizable: false,
 			modal: true,
@@ -104,6 +104,10 @@ Ext.define('TCMS.Appointment.Window', {
 				xtype:'displayfield',
 				name: 'address_country_name',
 				fieldLabel: 'Country'
+			},{
+				xtype:'displayfield',
+				name: 'address_phone',
+				fieldLabel: 'Phone'
 			}],
 			getLoadUrl: function(){ return __site_url+'backend/dao/load'; },
 			getDeleteUrl: function(){ return __site_url+'backend/dao/delete'; },
