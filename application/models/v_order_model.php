@@ -6,4 +6,6 @@ Class V_order_model extends Base_model
 
 	public $primary_key = 'id';
 
+	protected $soft_delete = TRUE;
+
 }

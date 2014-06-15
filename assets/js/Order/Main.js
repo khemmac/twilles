@@ -4,12 +4,14 @@ Ext.define('TCMS.Order.Main', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			layout: 'border'
+			layout: 'border',
+			modelType: 'order'
 		});
 
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
 		var addAct = Ext.create('BASE.Action', {
 			text: 'Add',
@@ -21,13 +23,18 @@ Ext.define('TCMS.Order.Main', {
 			iconCls: 'b-application_edit'
 		});
 
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
+		});
+
 		var viewAct = Ext.create('BASE.ActionSingle', {
 			text: 'View',
 			iconCls: 'b-small-magnifier'
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, viewAct]
+			items: [addAct, editAct, deleteAct, viewAct]
 		});
 
 		var dialog = Ext.create('TCMS.Order.Window');
@@ -35,8 +42,8 @@ Ext.define('TCMS.Order.Main', {
 		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, viewAct],
-			validateActions : [addAct, editAct, viewAct]
+			tbar: [addAct, editAct, deleteAct, viewAct],
+			validateActions : [addAct, editAct, deleteAct, viewAct]
 		});
 
 		this.items = [grid];
@@ -48,6 +55,13 @@ Ext.define('TCMS.Order.Main', {
 		editAct.setHandler(function(){
 			dialog.openDialog('Edit order', 'edit', grid, {
 				id: grid.getSelectedId()
+			});
+		});
+
+		deleteAct.setHandler(function(){
+			dialog.openDialog('Delete order', 'delete', grid, {
+				ids: grid.getSelectionsId().join(','),
+				type: _this.modelType
 			});
 		});
 
@@ -85,6 +99,9 @@ Ext.define('TCMS.Order.Main', {
 			grid.load();
 		});
 
+		dialog.form.on('afterDelete', function(){
+			grid.load();
+		});
 
 		grid.load();
 
