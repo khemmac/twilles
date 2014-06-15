@@ -82,6 +82,10 @@ Ext.define('TCMS.Order.Window', {
 			this.gridPanel.grid.load({
 				filter: Ext.encode({order_id:this.dialogParams.id})
 			});
+			// load payment status grid
+			this.form.paymentStatusGrid.load({
+				filter: Ext.encode({order_id:this.dialogParams.id})
+			});
 		},
 		"delete" : function() {
 			var _this = this;

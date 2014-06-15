@@ -261,7 +261,7 @@ class Member extends CI_Controller {
 
 		X::renderJSON(array(
 			'success'=>true,
-			'data'=>$o
+			'data'=>(empty($o))?'-':$o
 		));
 	}
 

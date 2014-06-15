@@ -316,10 +316,28 @@ Ext.define('TCMS.Order.Form', {
 			]
 		});
 
-		this.statusPanel = Ext.create('TCMS.Order.Status.Main', {
-			region: 'east',
-			width: 200,
+		this.orderStatusPanel = Ext.create('TCMS.Order.Status.Main', {
+			title: 'Order status',
+			region: 'center'
+		});
+
+		this.paymentStatusGrid = Ext.create('TCMS.Order.PaymentStatus.Grid', {
+			title: 'Payment status',
+			region: 'north',
+			height: 140,
 			split: true
+		});
+
+		this.statusPanel = Ext.create('Ext.panel.Panel', {
+			region: 'east',
+			width: 240,
+			split: true,
+			layout: 'border',
+			border: false,
+			items: [
+				this.orderStatusPanel,
+				this.paymentStatusGrid
+			]
 		});
 
 		this.itemPanel = Ext.create('Ext.panel.Panel', {
@@ -353,14 +371,14 @@ Ext.define('TCMS.Order.Form', {
 		var setAddress = function(o){
 			var delData = null;
 			if(o==null){
-				_this.comboAddressType.setValue('0');
+				//_this.comboAddressType.setValue('0');
 				delData = {
 					address_line_1: null,
 					address_line_2: null,
 					address_city: null,
 					address_state_province: null,
 					address_zip: null,
-					address_country: '221',
+					address_country: 'null',
 					address_phone: null
 				};
 			}else{
@@ -401,9 +419,10 @@ Ext.define('TCMS.Order.Form', {
 		};
 
 
-		this.comboAddressType.on('change', function(combo, newValue, oldValue){
-			var m = _this.form.findField('member_id').getValue();
-			if(newValue=='1' || newValue=='2'){
+		this.comboAddressType.on('select', function(combo){
+			var v = combo.getValue(),
+				m = _this.form.findField('member_id').getValue();
+			if(v=='1' || v=='2'){
 				if(Ext.isEmpty(m)){
 					Ext.Msg.show({
 						title : "Error",
@@ -418,7 +437,6 @@ Ext.define('TCMS.Order.Form', {
 						url : __site_url+'backend/member/LoadAddress',
 						clientValidation : true,
 						success : function(form, act) {
-							_this.fireEvent('afterLoad', _this, act);
 							var o = act.result.data;
 							setAddress(o);
 						},
@@ -427,7 +445,7 @@ Ext.define('TCMS.Order.Form', {
 						waitTitle : 'Please wait...',
 						params : {
 							id: m,
-							sequence: newValue
+							sequence: v
 						}
 					});
 				}
@@ -474,11 +492,13 @@ Ext.define('TCMS.Order.Form', {
 		});
 
 		// *** ORDER STATUS
+		/*
 		this.statusPanel.changeStatusAct.setHandler(function(){
 			_this.statusPanel.window.openDialog('Change order status', 'edit', _this, {
 				order_id: _this.formParams.id
 			});
 		});
+		*/
 
 		return this.callParent(arguments);
 	},
