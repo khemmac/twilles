@@ -115,7 +115,7 @@ class Member extends CI_Controller {
 			'phone'=>$this->input->post('phone'),
 			'first_name'=>$this->input->post('first_name'),
 			'last_name'=>$this->input->post('last_name'),
-			'active'=>$active,
+			//'active'=>$active,
 
 			'mobile_number_country'=>X::Request('mobile_number_country'),
 			'mobile_number'=>X::Request('mobile_number'),
@@ -153,14 +153,15 @@ class Member extends CI_Controller {
 			$email_username,
 			$data,
 			array(
-				X::Request('group')			)
+				X::Request('group')
+			)
 		);
 		if($id){
 			// set member active on inactive
-			if($active==1)
+			//if($active==1)
 				$this->ion_auth->activate($id);
-			else
-				$this->ion_auth->deactivate($id);
+			//else
+			//	$this->ion_auth->deactivate($id);
 
 			$this->user->after_create_save_shipping($id);
 
@@ -182,7 +183,7 @@ class Member extends CI_Controller {
 	public function Update()
 	{
 		$id = X::Request('id');
-		$active = X::Request('active');
+		//$active = X::Request('active');
 
 		$email_username = X::Request('email');
 
@@ -227,10 +228,10 @@ class Member extends CI_Controller {
 		$update_result = $this->ion_auth->update($id, $data);
 		if($update_result){
 			// set member active on inactive
-			if($active==1)
-				$this->ion_auth->activate($id);
-			else
-				$this->ion_auth->deactivate($id);
+			//if($active==1)
+			//	$this->ion_auth->activate($id);
+			//else
+			//	$this->ion_auth->deactivate($id);
 
 			$data['id'] = $id;
 			$this->user->after_update_save_shipping($data);
@@ -262,6 +263,20 @@ class Member extends CI_Controller {
 		X::renderJSON(array(
 			'success'=>true,
 			'data'=>(empty($o))?'-':$o
+		));
+	}
+
+	public function SetActive(){
+		$id = X::Request('id');
+		$active = X::Request('active');
+		if($active=='1')
+			$this->ion_auth->activate($id);
+		else
+			$this->ion_auth->deactivate($id);
+
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$id
 		));
 	}
 

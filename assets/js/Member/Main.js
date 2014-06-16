@@ -23,12 +23,12 @@ Ext.define('TCMS.Member.Main', {
 			iconCls: 'b-application_edit'
 		});
 
-		var activeAct = Ext.create('BASE.ActionMultiple', {
+		var activeAct = Ext.create('BASE.ActionSingle', {
 			text: 'Active',
 			iconCls: 'b-flag-green'
 		});
 
-		var inActiveAct = Ext.create('BASE.ActionMultiple', {
+		var inActiveAct = Ext.create('BASE.ActionSingle', {
 			text: 'Inactive',
 			iconCls: 'b-flag-red'
 		});
@@ -62,16 +62,16 @@ Ext.define('TCMS.Member.Main', {
 		});
 
 		activeAct.setHandler(function(){
-			window.openDialog('Active', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:1
+			window.openDialog('Active', 'setActive', grid, {
+				id: grid.getSelectedId(),
+				active:1
 			});
 		});
 
 		inActiveAct.setHandler(function(){
-			window.openDialog('Inactive', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:0
+			window.openDialog('Inactive', 'setActive', grid, {
+				id: grid.getSelectedId(),
+				active:0
 			});
 		});
 
@@ -90,7 +90,7 @@ Ext.define('TCMS.Member.Main', {
 			grid.load();
 		});
 
-		window.form.on('afterSetStatus', function() {
+		window.form.on('afterSetActive', function() {
 			window.hide();
 			grid.load();
 		});

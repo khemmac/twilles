@@ -38,6 +38,28 @@ Ext.define('TCMS.Member.Form', {
 			getDeleteParams : function() {
 				return Ext.apply({
 				}, this.formParams);
+			},
+			getSetActiveParams : function() {
+				return Ext.apply({
+				}, this.formParams);
+			},
+			getSetActiveUrl : function() {
+				return __site_url+'backend/member/setActive';
+			},
+			setActive : function() {
+				var _this = this;
+				var url = this.getSetActiveUrl();
+				_this.form.load({
+					url : url,
+					clientValidation : true,
+					success : function(form, act) {
+						_this.fireEvent('afterSetActive', _this, act);
+					},
+					failure : _this.failureAlert,
+					waitMsg : 'Changing status...',
+					waitTitle : 'Please wait...',
+					params : _this.getSetActiveParams()
+				});
 			}
 		});
 
