@@ -106,9 +106,6 @@ Class User_model extends Base_model
 					'phone'=>$u->primary_address_phone
 				);
 
-				echo 'SAVE PRIMARY AS : ';
-				print_r($pData);
-
 				$p = $this->user_shipping->getPrimary($user_id);
 				if(!empty($p)){
 					$this->user_shipping->update($p->id, $pData);
@@ -129,9 +126,6 @@ Class User_model extends Base_model
 					'country'=>$u->secondary_address_country,
 					'phone'=>$u->secondary_address_phone
 				);
-
-				echo 'SAVE SECONDARY AS : ';
-				print_r($pData);
 
 				$p = $this->user_shipping->getSecondary($user_id);
 				if(!empty($p)){

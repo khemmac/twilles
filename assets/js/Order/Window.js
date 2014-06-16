@@ -72,6 +72,10 @@ Ext.define('TCMS.Order.Window', {
 			this.gridPanel.grid.load({
 				filter: Ext.encode({order_id:-1})
 			});
+			// load payment status grid
+			this.form.paymentStatusPanel.grid.load({
+				filter: Ext.encode({order_id:-1})
+			});
 		},
 		"edit" : function() {
 			this.form.form.reset();
@@ -83,7 +87,7 @@ Ext.define('TCMS.Order.Window', {
 				filter: Ext.encode({order_id:this.dialogParams.id})
 			});
 			// load payment status grid
-			this.form.paymentStatusGrid.load({
+			this.form.paymentStatusPanel.grid.load({
 				filter: Ext.encode({order_id:this.dialogParams.id})
 			});
 		},

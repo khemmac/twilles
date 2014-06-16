@@ -57,6 +57,8 @@ Ext.define('TCMS.Order.Grid', {
 
 				{ name:'payment_method', type:'int' },
 				{ name:'payment_ref', type:'string' },
+				{ name:'payment_status', type:'int' },
+				{ name:'payment_status_name', type:'string' },
 				{ name:'status', type:'int' },
 				{ name:'status_name', type:'string' },
 
@@ -92,8 +94,37 @@ Ext.define('TCMS.Order.Grid', {
 				}
 			},
 
-			{text: "Status", width:120, dataIndex:'status', sortable:true, align:'left',
-				renderer: function(v,p,r){ return r.data.status_name; }
+			{text: "Payment status", width:120, dataIndex:'payment_status', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					var setBg = function(img, color){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';
+					};
+					var getMsg = function(text){ return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+text; };
+					if(v==1){
+						setBg('hourglass.png', 'red');
+					} else if(v==2){
+						setBg('tick.gif', 'green');
+					}
+					return !Ext.isEmpty(r.data.payment_status_name)?getMsg(r.data.payment_status_name):'-';
+				}
+			},
+			{text: "Order status", width:150, dataIndex:'status', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					var setBg = function(img, color){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';
+					};
+					var getMsg = function(text){ return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+text; };
+					if(v==1){
+						setBg('hourglass.png', 'red');
+					} else if(v==2){
+						setBg('user-worker.png', 'orange');
+					} else if(v==3){
+						setBg('truck-box.png', '#cccc00');
+					} else if(v==4){
+						setBg('tick.gif', 'green');
+					}
+					return !Ext.isEmpty(r.data.status_name)?getMsg(r.data.status_name):'-';
+				}
 			},
 
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',

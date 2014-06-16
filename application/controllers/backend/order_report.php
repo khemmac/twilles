@@ -277,8 +277,12 @@ $tbl = '
 	}
 
 	public function test_library(){
+		$id = X::Request('id');
+		if(empty($id))
+			$id = 1;
+
 		$this->load->model('v_order_item_model','v_order_item');
-		$oi = $this->v_order_item->get(1);
+		$oi = $this->v_order_item->get($id);
 
 		//$html = $this->xorder_report_item->GetItemHTML($oi);
 		//echo $html;

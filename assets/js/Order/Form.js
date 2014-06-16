@@ -321,7 +321,7 @@ Ext.define('TCMS.Order.Form', {
 			region: 'center'
 		});
 
-		this.paymentStatusGrid = Ext.create('TCMS.Order.PaymentStatus.Grid', {
+		this.paymentStatusPanel = Ext.create('TCMS.Order.PaymentStatus.Grid', {
 			title: 'Payment status',
 			region: 'north',
 			height: 140,
@@ -336,7 +336,7 @@ Ext.define('TCMS.Order.Form', {
 			border: false,
 			items: [
 				this.orderStatusPanel,
-				this.paymentStatusGrid
+				this.paymentStatusPanel
 			]
 		});
 

@@ -31,6 +31,7 @@ Ext.define('TCMS.OrderConfirm.Grid', {
 				{ name:'id', type:'string' },
 				{ name:'full_name', type:'string' },
 				{ name:'email', type:'string' },
+				{ name:'order_number', type:'string' },
 				{ name:'amount_transfer', type:'int' },
 				{ name:'date_of_transfer', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'bank_transferred_to', type:'string' },
@@ -44,6 +45,7 @@ Ext.define('TCMS.OrderConfirm.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
+			{text: "Order code", width:120, dataIndex:'order_number', sortable:true, align:'left'},
 			{text: "Name", width:180, dataIndex:'full_name', sortable:true, align:'left'},
 			{text: "Email", width:150, dataIndex:'email', sortable:true, align:'left'},
 			{text: "Amount", width:100, dataIndex:'amount_transfer', sortable:true, align:'left',

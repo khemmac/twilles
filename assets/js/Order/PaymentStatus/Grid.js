@@ -42,13 +42,16 @@ Ext.define('TCMS.Order.PaymentStatus.Grid', {
 		this.columns = [
 			{text: "Status", width:100, dataIndex:'status', sortable:false, align:'left',
 				renderer: function(v,p,r){
+					var setBg = function(img, color){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';
+					};
+					var getMsg = function(text){ return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+text; };
 					if(v==1){
-						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/exclamation.gif\') 5px center no-repeat; color:red;';
-						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
-					}else if(v==2){
-						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/tick.gif\') 5px center no-repeat; color:green;';
-						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
+						setBg('hourglass.png', 'red');
+					} else if(v==2){
+						setBg('tick.gif', 'green');
 					}
+					return !Ext.isEmpty(r.data.status_name)?getMsg(r.data.status_name):'-';
 				}
 			},
 			{text: "Date", width:120, dataIndex:'status_date', sortable:false, align:'left',
