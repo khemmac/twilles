@@ -71,8 +71,8 @@ $tbl = '
 	<tr>
 		<td width="20"></td>
 		<td width="350">
-			วันสั่งสินค้า  '.$order->order_date.'<br />
-			วันกำหนดเสร็จ  '.$order->order_completed_date.'<br />
+			วันสั่งสินค้า  '.myDateFormat($order->order_date, 'j F Y').'<br />
+			วันกำหนดเสร็จ  '.myDateFormat($order->order_completed_date, 'j F Y').'<br />
 			<table cellspacing="0" cellpadding="3" border="1">
 			    <tr><td align="center" style="background-color:#eeeeee;">ที่อยู่จัดส่ง</td></tr>
 			    <tr>
@@ -283,6 +283,9 @@ $tbl = '
 
 		$this->load->model('v_order_item_model','v_order_item');
 		$oi = $this->v_order_item->get($id);
+
+		//print_r($oi);
+		//return;
 
 		//$html = $this->xorder_report_item->GetItemHTML($oi);
 		//echo $html;

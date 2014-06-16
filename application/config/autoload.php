@@ -64,7 +64,7 @@ $autoload['libraries'] = array('x','EnumConflictType','ion_auth','PHXView','data
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'path', 'file', 'form','array','date');
+$autoload['helper'] = array('url', 'path', 'file', 'form','array','date', 'my_utility_helper');
 
 
 /*

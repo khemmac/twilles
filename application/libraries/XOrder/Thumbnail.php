@@ -18,13 +18,6 @@ class Thumbnail {
 		$this->sizeDetail = new SizeDetail();
 	}
 
-	private function dtl_measure_type($o){
-		if(in_array($o->member_size_type, array(1,2,3,4))) // งานวัดจากเสื้อ
-			return 1;
-		else if(in_array($o->member_size_type, array(5,6))) // งานวัดจากตัว
-			return 2;
-		return 0;
-	}
 	private function dtl_shoulder($o, $mtype){
 		$rtn = number_format($o->collar);
 		if($mtype==1)
@@ -42,7 +35,7 @@ class Thumbnail {
 	}
 
 	public function GenerateHTML($item){
-		$measure_type = $this->dtl_measure_type($item);
+		$measure_type = $this->sizeDetail->get_measure_type($item);//$this->dtl_measure_type($item);
 
 		$html =
 '<table cellspacing="0" cellpadding="1" border="1">
@@ -99,16 +92,16 @@ class Thumbnail {
 							<tr><td align="center">'
 								.$this->mergeTmbnl('back', 'getTmbnlImgsBack', $item)
 								.'<br />'
-								.$item->part_pleat_code
+								.$item->part_pleat_id
 							.'</td><td align="center">'
 								.$this->mergeTmbnl('yoke', 'getTmbnlImgsYoke', $item)
 								.'<br />'
-								.$item->part_yoke_code
+								.$item->part_yoke_id
 							.'</td></tr>
 							<tr><td align="center">'
 								.$this->mergeTmbnl('bottom', 'getTmbnlImgsBottom', $item)
 								.'<br />'
-								.$item->part_bottom_code
+								.$item->part_bottom_id
 							.'</td><td>'
 							.'</td></tr>
 						</table>
@@ -228,9 +221,9 @@ class Thumbnail {
 			$item->id, $partPrefix, $this->util->getDateStr($item).'.jpg'
 		));
 
+		//echo $this->util->getDateStr($item).'<hr>';
+		//echo $getImgsFunc.'<hr>';
 		$imgs = call_user_func(array($this, $getImgsFunc), $item);
-		//print_r($imgs);
-		//echo '<br>'.PHP_EOL;
 
 		$out = $this->image->merge($imgs);
 		$this->image->save($out, $destPath);
@@ -248,7 +241,7 @@ class Thumbnail {
 		// base img
 		array_push($imgs, $this->path->getThumbnailsPath(array(
 			'collar',
-			$item->part_collar_code.'.png'
+			$item->part_collar_id.'.png'
 		)));
 
 		if(!empty($item->inventory_button_id))
@@ -262,7 +255,7 @@ class Thumbnail {
 	private function getTmbnlImgsCuff($item){
 		$imgs = array();
 
-		$code = $item->part_cuff_code;
+		$code = $item->part_cuff_id;
 		// base img
 		array_push($imgs, $this->path->getThumbnailsPath(array(
 			'cuff', $code.'.png'
@@ -287,7 +280,7 @@ class Thumbnail {
 	private function getTmbnlImgsBody($item){
 		$imgs = array();
 
-		$code = $item->part_placket_code;
+		$code = $item->part_placket_id;
 		// base img
 		if($item->part_placket_code=='tuxedo'){
 			array_push($imgs, $this->path->getThumbnailsPath(array('teb', 'standard.png')));
@@ -309,7 +302,7 @@ class Thumbnail {
 	private function getTmbnlImgsBack($item){
 		$imgs = array();
 
-		$code = $item->part_pleat_code;
+		$code = $item->part_pleat_id;
 		array_push($imgs, $this->path->getThumbnailsPath(array('back', $code.'.png')));
 
 		return $imgs;
@@ -318,7 +311,7 @@ class Thumbnail {
 	private function getTmbnlImgsYoke($item){
 		$imgs = array();
 
-		$code = $item->part_yoke_code;
+		$code = $item->part_yoke_id;
 		array_push($imgs, $this->path->getThumbnailsPath(array('yoke', $code.'.png')));
 
 		return $imgs;
@@ -326,8 +319,10 @@ class Thumbnail {
 
 	private function getTmbnlImgsBottom($item){
 		$imgs = array();
+		$code = $item->part_bottom_id;
 
-		$code = $item->part_bottom_code;
+		$code = preg_replace('/^bottom-/', '', $code);
+
 		array_push($imgs, $this->path->getThumbnailsPath(array('bottom', $code.'.png')));
 
 		return $imgs;
@@ -373,7 +368,7 @@ class Thumbnail {
 		if(empty($o->part_collar_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_collar_code.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_collar_id.'</strong>');
 		if(!empty($o->part_collar_type))
 			array_push($str_arr, $o->part_collar_type_name);
 		if(!empty($o->part_collar_thickness))
@@ -388,7 +383,7 @@ class Thumbnail {
 		if(empty($o->part_cuff_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_cuff_code.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_cuff_id.'</strong>');
 		if(!empty($o->part_cuff_type))
 			array_push($str_arr, $o->part_cuff_type_name);
 		if(!empty($o->part_cuff_thickness))
@@ -402,7 +397,7 @@ class Thumbnail {
 		if(empty($o->part_cuff_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_placket_code.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_placket_id.'</strong>');
 		if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
 			array_push($str_arr, number_format($o->part_placket_width, 2).' นิ้ว');
 		if(!empty($o->part_pocket_code))

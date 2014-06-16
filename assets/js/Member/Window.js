@@ -118,10 +118,10 @@ Ext.define('TCMS.Member.Window', {
 				_this.form.deleteData();
 			});
 		},
-		"setStatus" : function() {
+		"setActive" : function() {
 			var _this = this;
 			this.hide(null, function() {
-				_this.form.setStatus();
+				_this.form.setActive();
 			});
 		}
 	}
