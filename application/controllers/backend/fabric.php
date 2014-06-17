@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class fabric extends CI_Controller {
+class Fabric extends CI_Controller {
 
 	function __construct()
 	{

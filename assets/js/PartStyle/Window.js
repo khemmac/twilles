@@ -84,7 +84,7 @@ Ext.define('TCMS.PartStyle.Window', {
 				return Ext.apply({
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/icode/'+((_this.dialogAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend/part_style/'+((_this.dialogAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
 				}, this.formParams);
