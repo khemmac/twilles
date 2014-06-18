@@ -9,6 +9,7 @@ Ext.define('BASE.Action', {
 		return this.callParent(arguments);
 	},
 	validateSingle : function(source) {
+		this.source = source;
 		var s = source.getSelectionsId();
 		if (Ext.isArray(s))
 			this[(s.length == 1) ? "enable" : "disable"]();
@@ -16,6 +17,7 @@ Ext.define('BASE.Action', {
 			this[(s != null) ? "enable" : "disable"]();
 	},
 	validateMultiple : function(source) {
+		this.source = source;
 		var s = source.getSelectionsId();
 		if (Ext.isArray(s))
 			this[(s.length > 0) ? "enable" : "disable"]();

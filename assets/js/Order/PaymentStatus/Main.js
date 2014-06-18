@@ -12,32 +12,58 @@ Ext.define('TCMS.Order.PaymentStatus.Main', {
 	initComponent : function() {
 		var _this=this;
 
+		var form = this.form = Ext.create('TCMS.Order.PaymentStatus.Form');
+
 		this.pendingAct = Ext.create('BASE.Action', {
 			text: 'Pending payment',
-			iconCls: 'b-application_add'
+			iconCls: 'b-small-hourglass'
 		});
+		this.pendingAct.validate = function(source) {
+			this.validateSingle(source);
+			if(!this.isDisabled()){
+				var o = source.getSelectedObject();
+				if(o.get('payment_status')>=1)
+					this.setDisabled(true);
+			}
+		};
 
 		this.paidAct = Ext.create('BASE.Action', {
 			text: 'Paid',
-			iconCls: 'b-application_add'
+			iconCls: 'b-small-tick'
 		});
+		this.paidAct.validate = function(source) {
+			this.validateSingle(source);
+			if(!this.isDisabled()){
+				var o = source.getSelectedObject();
+				if(o.get('payment_status')>=2)
+					this.setDisabled(true);
+			}
+		};
 
-		var contextMenu = new Ext.menu.Menu({
+		var groupMenu = new Ext.menu.Menu({
 			items: [this.pendingAct, this.paidAct]
 		});
 
 		this.grid = Ext.create('TCMS.Order.PaymentStatus.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [this.pendingAct, this.paidAct],
-			validateActions : [this.pendingAct, this.paidAct]
+			tbar: [{
+				text:'Change status',
+				iconCls: 'b-small-tick-white',
+				menu: groupMenu
+	        }]
 		});
 
 		this.items = [this.grid];
 
-		this.grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
-			e.preventDefault();
-			contextMenu.showAt(e.xy);
+		// ** Hander
+		this.pendingAct.setHandler(function(){
+			var id = _this.pendingAct.source.getSelectedId();
+			form.changeStatusPending(id);
+		});
+		this.paidAct.setHandler(function(){
+			var id = _this.paidAct.source.getSelectedId();
+			form.changeStatusPaid(id);
 		});
 
 		return this.callParent(arguments);

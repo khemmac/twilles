@@ -208,6 +208,16 @@ Ext.define('TCMS.Order.Form', {
 				this.triggerMember, {
 					name: 'member_id',
 					xtype: 'hiddenfield'
+				}, {
+					name: 'payment_status_name',
+					xtype: 'displayfield',
+					fieldLabel: 'Payment status',
+					value: '-'
+				}, {
+					name: 'status_name',
+					xtype: 'displayfield',
+					fieldLabel: 'Order status',
+					value: '-'
 				}]
 			},{
 				// column 2
@@ -321,7 +331,7 @@ Ext.define('TCMS.Order.Form', {
 			region: 'center'
 		});
 
-		this.paymentStatusPanel = Ext.create('TCMS.Order.PaymentStatus.Grid', {
+		this.paymentStatusPanel = Ext.create('TCMS.Order.PaymentStatus.Main', {
 			title: 'Payment status',
 			region: 'north',
 			height: 140,

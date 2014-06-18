@@ -5,16 +5,29 @@ class Order extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 
-		$this->load->model('order_status_history_model', 'order_status_history');
-		$this->load->model('order_payment_status_history_model', 'order_payment_status_history');
+		$this->load->model('order_model', 'order');
 	}
 
 	public function ChangeStatus(){
 
 	}
 
-	public function ChangePaymentStatus(){
+	public function PaymentStatusPending(){
+		$id = X::Request('id');
+		$res = $this->order->ChangePaymentStatus($id, $this->order->PAYMENT_STATUS_PENDING);
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$res
+		));
+	}
 
+	public function PaymentStatusPaid(){
+		$id = X::Request('id');
+		$res = $this->order->ChangePaymentStatus($id, $this->order->PAYMENT_STATUS_PAID);
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$res
+		));
 	}
 
 }

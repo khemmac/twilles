@@ -39,11 +39,17 @@ Ext.define('TCMS.Order.Main', {
 
 		var dialog = Ext.create('TCMS.Order.Window');
 
+		var vActions = [
+			addAct, editAct, deleteAct, viewAct,
+			dialog.form.paymentStatusPanel.pendingAct,
+			dialog.form.paymentStatusPanel.paidAct
+		];
+
 		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
 			border: false,
 			tbar: [addAct, editAct, deleteAct, viewAct],
-			validateActions : [addAct, editAct, deleteAct, viewAct]
+			validateActions : vActions
 		});
 
 		this.items = [grid];
@@ -130,6 +136,12 @@ Ext.define('TCMS.Order.Main', {
 
 			// reload money data
 			dialog.form.updateTotal();
+		});
+
+		// payment status event
+		dialog.form.paymentStatusPanel.form.on('afterChangeStatus', function(form, act){
+			dialog.form.paymentStatusPanel.grid.load();
+			grid.load();
 		});
 
 		return this.callParent(arguments);

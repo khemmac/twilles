@@ -8,16 +8,26 @@ Class Order_model extends Base_model
 
 	protected $soft_delete = TRUE;
 
+	public $PAYMENT_STATUS_PENDING = 1;
+	public $PAYMENT_STATUS_PAID = 2;
+
+	public $STATUS_PENDING_FABRIC = 1;
+	public $STATUS_PENDING_TAILOR = 2;
+	public $STATUS_DELIVERY = 3;
+	public $STATUS_COMPLETE = 4;
+	public $STATUS_CANCEL = 5;
+
 	public function __construct()
     {
         parent::__construct();
+
+		$this->load->model('order_status_history_model', 'order_status_history');
+		$this->load->model('order_payment_status_history_model', 'order_payment_status_history');
 
 		array_push($this->before_create, 'before_create_generate_code');
 
 		array_push($this->before_create, 'before_save_calculate_total');
 		array_push($this->before_update, 'before_save_calculate_total');
-
-		array_push($this->after_create, 'after_create_add_status_history');
     }
 
 	public function before_create_generate_code($o){
@@ -59,9 +69,15 @@ CONCAT(
 		return $o;
 	}
 
-	public function after_create_add_status_history($o){
-		// we will recieve id after create
+	public function ChangePaymentStatus($id, $status){
+		$res = $this->update($id, array(
+			'payment_status'=>$status
+		));
 
+		// add history
+		$this->order_payment_status_history->InsertHistory($id, $status);
+
+		return $res;
 	}
 
 }

@@ -3,6 +3,11 @@
 .b-small-tick { background-image: url('../images/icons/tick.gif') !important; }
 .b-small-cross { background-image: url('../images/icons/cross.gif') !important; }
 
+.b-small-tick-white { background-image: url('../images/icons/tick-white.png') !important; }
+.b-small-hourglass { background-image: url('../images/icons/hourglass.png') !important; }
+.b-small-truck-box { background-image: url('../images/icons/truck-box.png') !important; }
+.b-small-user-black { background-image: url('../images/icons/user-black.png') !important; }
+.b-small-user-worker { background-image: url('../images/icons/user-worker.png') !important; }
 
 .b-flag-green { background-image: url('../images/icons/flag_green.gif') !important; }
 .b-flag-red { background-image: url('../images/icons/flag_red.gif') !important; }
