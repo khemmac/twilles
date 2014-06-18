@@ -33,14 +33,14 @@ Class User_model extends Base_model
 		}
 		$s = $this->user_shipping->getSecondary($o->id);
 		if(!empty($s)){
-			$o->secondary_address_fullname  = $p->full_name;
-			$o->secondary_address_line_1  = $p->address_line_1;
-			$o->secondary_address_line_2  = $p->address_line_2;
-			$o->secondary_address_city  = $p->city;
-			$o->secondary_address_state_province  = $p->state;
-			$o->secondary_address_zip  = $p->zip;
-			$o->secondary_address_country  = $p->country;
-			$o->secondary_address_phone  = $p->phone;
+			$o->secondary_address_fullname  = $s->full_name;
+			$o->secondary_address_line_1  = $s->address_line_1;
+			$o->secondary_address_line_2  = $s->address_line_2;
+			$o->secondary_address_city  = $s->city;
+			$o->secondary_address_state_province  = $s->state;
+			$o->secondary_address_zip  = $s->zip;
+			$o->secondary_address_country  = $s->country;
+			$o->secondary_address_phone  = $s->phone;
 		}
 		return $o;
 	}
