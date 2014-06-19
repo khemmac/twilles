@@ -46,7 +46,7 @@ class Thumbnail {
 			'.(($measure_type==1)?' - งานวัดจากเสื้อ'
 				:(($measure_type==2)?' - งานวัดจากตัว':'')).'
 		</td>
-		<td width="600" rowspan="23">
+		<td width="600" rowspan="22">
 			<table cellspacing="0" cellpadding="2" border="1">
 				<tr>
 					<td align="center">'.$this->mergeTmbnl('collar', 'getTmbnlImgsCollar', $item).'</td>
@@ -82,6 +82,7 @@ class Thumbnail {
 //					<td>'.$this->merge_body($item).'</td>
 					'<td align="center">'.$this->mergeTmbnl('teb', 'getTmbnlImgsBody', $item).'</td>
 					<td>'.$this->getBodyDetail($item).'
+						<br />
 						<font color="red">
 						รังดุมเม็ดสุดท้าย
 						เย็บขวาง
@@ -118,6 +119,7 @@ class Thumbnail {
 					</td>
 				</tr>
 			</table>
+			'.$this->getInventoryDetail($item).'
 		</td>
     </tr>
 	<tr>
@@ -207,9 +209,6 @@ class Thumbnail {
 	<tr>
 		<td colspan="2">'.nl2br($item->detail).'</td>
     </tr>
-	<tr>
-		<td colspan="2">Package : '.((empty($item->inventory_package_name))?'-':$item->inventory_package_name).'</td>
-    </tr>
 </table>';
 		return $html;
 
@@ -287,6 +286,11 @@ class Thumbnail {
 			array_push($imgs, $this->path->getThumbnailsPath(array('teb', 'tuxedo.png')));
 		}else
 			array_push($imgs, $this->path->getThumbnailsPath(array('teb', $code.'.png')));
+
+		$pocket_id = $item->part_pocket_id;
+		if(!empty($pocket_id) && $item->part_placket_code!='tuxedo'){
+			array_push($imgs, $this->path->getThumbnailsPath(array('pocket', $pocket_id.'.png')));
+		}
 
 		$btn_id = $item->inventory_button_id;
 		if(!empty($btn_id)){
@@ -401,7 +405,16 @@ class Thumbnail {
 		if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
 			array_push($str_arr, number_format($o->part_placket_width, 2).' นิ้ว');
 		if(!empty($o->part_pocket_code))
-			array_push($str_arr, $o->part_pocket_code);
+			array_push($str_arr, $o->part_pocket_id);
+		return implode('<br />', $str_arr);
+	}
+
+	private function getInventoryDetail($o){
+		$str_arr = array();
+		if(!empty($o->inventory_package_name))
+			array_push($str_arr, 'Package : '.$o->inventory_package_name);
+		if(!empty($o->inventory_label_name))
+			array_push($str_arr, 'Label : '.$o->inventory_label_name);
 		return implode('<br />', $str_arr);
 	}
 

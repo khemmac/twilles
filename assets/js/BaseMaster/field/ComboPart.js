@@ -5,7 +5,7 @@ Ext.define('TCMS.BaseMaster.field.ComboPart', {
 	proxyFields:[ 'id', 'code' ],
 	proxyIdProperty: 'id',
 	displayField: 'code',
-	valueField: 'id',
+	valueField: 'code',
 
 	// utility params
 	partType: null,

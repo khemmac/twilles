@@ -140,7 +140,7 @@ Ext.define('TCMS.Inventory.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:60, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Code", width:120, dataIndex:'id', sortable:true, align:'left'},
 			{text: "Type", width:70, dataIndex:'inventory_type', sortable:true, align:'left',
 				renderer: function(v){
 					var types = {

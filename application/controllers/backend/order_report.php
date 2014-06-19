@@ -187,10 +187,16 @@ $tbl = '
 		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','จำนวน','ราคา','รวม'), $order, $item_data);
 
 		// ****** LOOP ITEMS EACH PAGE
+		$pdf->resetHeaderTemplate();
+		$pdf->SetHeaderData('twilles_logo.png', 22
+			, 'ใบสั่งตัดเสื้อ บริษัท ทวิลส์ คลับ จำกัด'
+			  .'                                                '.$order->order_code
+			  .'                                                             '.$order->delivery_name
+			, '8/61 หมู่บ้านพิบูล');
 		foreach($order_item AS $item){
 			// add a page
-			$pdf->SetMargins(4, 4, 4, 0);
-			$pdf->SetPrintHeader(false);
+			$pdf->SetMargins(4, 18, 4, 0);
+			//$pdf->SetPrintHeader(false);
 			$pdf->AddPage('L');
 
 			$pdf->SetFont('angsanaupc', '', 14);
