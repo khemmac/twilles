@@ -5,8 +5,8 @@ Ext.define('TCMS.StyleGroup.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 380,
-			width: 650,
+			height: 550,
+			width: 850,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -26,19 +26,19 @@ Ext.define('TCMS.StyleGroup.Window', {
 
 		this.fabricGrid = Ext.create('TCMS.StyleGroup.Fabric.Grid', {
 			title: 'Fabric selection',
-			region: 'east',
-			width: 350,
-			border: true,
-			split: true
+			region: 'center',
+			border: true
 		});
 
 		this.form = Ext.create('BASE.Form', {
-			region: 'center',
+			region: 'west',
+			split: true,
+			width: 250,
 			border: true,
 			defaults: {
 				labelWidth: 60,
 				labelAlign: 'right',
-				width: 250
+				width: 200
 			},
 			items: [{
 				name: 'name',

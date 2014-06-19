@@ -8,7 +8,7 @@ function endsWith($haystack, $needle)
 	return (substr($haystack, -$length) === $needle);
 }
 
-$SV = '?v=1.4';
+$SV = '?v=1.5';
 ?>
 <!DOCTYPE html>
 <html lang="en">
