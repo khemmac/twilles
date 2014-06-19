@@ -21,8 +21,10 @@ Ext.define('TCMS.Order.PaymentStatus.Main', {
 		this.pendingAct.validate = function(source) {
 			this.validateSingle(source);
 			if(!this.isDisabled()){
-				var o = source.getSelectedObject();
-				if(o.get('payment_status')>=1)
+				var o = source.getSelectedObject(),
+					status = o.get('payment_status');
+				console.log('VALIDATE PENDING:', status);
+				if(status>=1)
 					this.setDisabled(true);
 			}
 		};
@@ -34,8 +36,10 @@ Ext.define('TCMS.Order.PaymentStatus.Main', {
 		this.paidAct.validate = function(source) {
 			this.validateSingle(source);
 			if(!this.isDisabled()){
-				var o = source.getSelectedObject();
-				if(o.get('payment_status')>=2)
+				var o = source.getSelectedObject(),
+					status = o.get('payment_status');
+				console.log('VALIDATE PAID:', status);
+				if(status!=1)
 					this.setDisabled(true);
 			}
 		};

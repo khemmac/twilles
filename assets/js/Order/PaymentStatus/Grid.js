@@ -22,7 +22,7 @@ Ext.define('TCMS.Order.PaymentStatus.Grid', {
 					type: 'json',
 					root: 'rows',
 					totalProperty: 'totalCount',
-					idProperty: 'status'
+					idProperty: 'id'
 				},
 				simpleSortMode: true,
 				extraParams: {
@@ -30,17 +30,18 @@ Ext.define('TCMS.Order.PaymentStatus.Grid', {
 				}
 			},
 			fields: [
+				{ name:'id', type:'int' },
 				{ name:'status', type:'int' },
 				{ name:'status_name', type:'string' },
 				{ name:'status_date', type:'date', dateFormat: 'Y-m-d H:i:s' }
 			],
 			remoteSort: true,
-			sorters: [{property: 'status_date', direction: 'DESC'}],
+			sorters: [{property: 'id', direction: 'DESC'}],
 			pageSize: 25
 		});
 
 		this.columns = [
-			{text: "Status", width:100, dataIndex:'status', sortable:false, align:'left',
+			{text: "Status", width:140, dataIndex:'status', sortable:false, align:'left',
 				renderer: function(v,p,r){
 					var setBg = function(img, color){
 						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';

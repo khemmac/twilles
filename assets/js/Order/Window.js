@@ -6,7 +6,7 @@ Ext.define('TCMS.Order.Window', {
 		Ext.apply(this, {
 			title: 'Login',
 			height: 580,
-			width: 900,
+			width: 920,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -88,6 +88,10 @@ Ext.define('TCMS.Order.Window', {
 			});
 			// load payment status grid
 			this.form.paymentStatusPanel.grid.load({
+				filter: Ext.encode({order_id:this.dialogParams.id})
+			});
+			// load payment status grid
+			this.form.orderStatusPanel.grid.load({
 				filter: Ext.encode({order_id:this.dialogParams.id})
 			});
 		},

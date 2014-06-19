@@ -95,7 +95,7 @@ Ext.define('BASE.Grid', {
 
 
 	/** * ILoadable ** */
-	load : function(arg) {
+	load : function(arg, cb) {
 		//if(typeof(arg)!="object"){
 		//	this.reload();
 		//	return;
@@ -104,13 +104,31 @@ Ext.define('BASE.Grid', {
 
 		var baseParam = {};
 		//Ext.apply(ds.baseParams, arg);
+
+		// selection model buff
+		var sm = this.selModel,
+			sels = this.getSelectionsObject();
+
 		var ids = this.getSelectionsId();
 		var _this = this;
 		baseParam = {
 			params : arg,
 			callback : function() {
-				_this.validate();
 				_this.fireEvent('afterLoad', _this, ids);
+
+				// unset then set selection if "ids"
+				if(!Ext.isEmpty(ids)){
+					sm.deselectAll();
+					var mdls = [];
+					for(var i=0;i<ids.length;i++){
+						mdls.push(_this.store.getById(ids[i]));
+					}
+					sm.select(mdls);
+				}
+				if(typeof(cb)=='function') cb(_this, ids);
+
+				// call validate
+				_this.validate();
 			}
 		};
 /*

@@ -14,4 +14,11 @@ Class Order_status_history_model extends MY_Model
         return $o;
     }
 
+	public function InsertHistory($order_id, $status){
+		$this->insert(array(
+			'order_id'=>$order_id,
+			'status'=>$status
+		));
+	}
+
 }

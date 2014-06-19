@@ -340,7 +340,7 @@ Ext.define('TCMS.Order.Form', {
 
 		this.statusPanel = Ext.create('Ext.panel.Panel', {
 			region: 'east',
-			width: 240,
+			width: 280,
 			split: true,
 			layout: 'border',
 			border: false,

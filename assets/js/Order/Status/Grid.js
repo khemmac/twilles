@@ -12,10 +12,12 @@ Ext.define('TCMS.Order.Status.Grid', {
 	initComponent : function() {
 		var _this=this;
 
+		this.selModel = new Ext.selection.RowModel();
+
 		this.store = new Ext.data.JsonStore({
 			proxy: {
 				type: 'ajax',
-				url: __site_url+"backend/dao/loadlist",
+				url: __site_url+"backend/dao/LoadList",
 				reader: {
 					type: 'json',
 					root: 'rows',
@@ -24,29 +26,43 @@ Ext.define('TCMS.Order.Status.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'v_order_item'
+					type: 'v_order_status_history'
 				}
 			},
 			fields: [
 				{ name:'id', type:'int' },
-				{ name:'item_price', type:'float' },
-				{ name:'item_amount', type:'int' },
-
-				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				'create_by',
-				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				'update_by'
+				{ name:'status', type:'int' },
+				{ name:'status_name', type:'string' },
+				{ name:'status_date', type:'date', dateFormat: 'Y-m-d H:i:s' }
 			],
 			remoteSort: true,
-			sorters: [{property: 'id', direction: 'ASC'}],
+			sorters: [{property: 'id', direction: 'DESC'}],
 			pageSize: 25
 		});
 
 		this.columns = [
-			new Ext.grid.RowNumberer(),
-			{text: "Body fabric", width:100, dataIndex:'fabric_body_id', sortable:true, align:'left'},
-			{text: "Fabric type", width:130, dataIndex:'fabric_type_name', sortable:true, align:'left',
-				renderer: function(v){ return (!Ext.isEmpty(v))?v:'-'; }
+			{text: "Status", width:140, dataIndex:'status', sortable:false, align:'left',
+				renderer: function(v,p,r){
+					var setBg = function(img, color){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';
+					};
+					var getMsg = function(text){ return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+text; };
+					if(v==1){
+						setBg('hourglass.png', 'red');
+					} else if(v==2){
+						setBg('user-worker.png', 'orange');
+					} else if(v==3){
+						setBg('truck-box.png', '#cccc00');
+					} else if(v==4){
+						setBg('tick.gif', 'green');
+					} else if(v==5){
+						setBg('cross.gif', 'grey');
+					}
+					return !Ext.isEmpty(r.data.status_name)?getMsg(r.data.status_name):'-';
+				}
+			},
+			{text: "Date", width:120, dataIndex:'status_date', sortable:false, align:'left',
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			}
 		];
 

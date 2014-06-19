@@ -41,8 +41,15 @@ Ext.define('TCMS.Order.Main', {
 
 		var vActions = [
 			addAct, editAct, deleteAct, viewAct,
+			// payment status action
 			dialog.form.paymentStatusPanel.pendingAct,
-			dialog.form.paymentStatusPanel.paidAct
+			dialog.form.paymentStatusPanel.paidAct,
+			// order status action
+			dialog.form.orderStatusPanel.pendingFabricAct,
+			dialog.form.orderStatusPanel.pendingTailorAct,
+			dialog.form.orderStatusPanel.deliveryAct,
+			dialog.form.orderStatusPanel.completeAct,
+			dialog.form.orderStatusPanel.cancelAct
 		];
 
 		var grid = Ext.create('TCMS.Order.Grid', {
@@ -73,7 +80,6 @@ Ext.define('TCMS.Order.Main', {
 
 		viewAct.setHandler(function(){
 			window.open(__site_url+'backend/order_report/report/'+grid.getSelectedId());
-
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
@@ -140,8 +146,22 @@ Ext.define('TCMS.Order.Main', {
 
 		// payment status event
 		dialog.form.paymentStatusPanel.form.on('afterChangeStatus', function(form, act){
-			dialog.form.paymentStatusPanel.grid.load();
-			grid.load();
+			//dialog.form.paymentStatusPanel.grid.load();
+			dialog.hide();
+			grid.load(null, function(g, ids){
+				if(!editAct.isDisabled())
+					editAct.execute();
+			});
+		});
+
+		// status event
+		dialog.form.orderStatusPanel.form.on('afterChangeStatus', function(form, act){
+			//dialog.form.paymentStatusPanel.grid.load();
+			dialog.hide();
+			grid.load(null, function(g, ids){
+				if(!editAct.isDisabled())
+					editAct.execute();
+			});
 		});
 
 		return this.callParent(arguments);

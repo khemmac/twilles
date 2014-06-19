@@ -122,6 +122,8 @@ Ext.define('TCMS.Order.Grid', {
 						setBg('truck-box.png', '#cccc00');
 					} else if(v==4){
 						setBg('tick.gif', 'green');
+					} else if(v==5){
+						setBg('cross.gif', 'grey');
 					}
 					return !Ext.isEmpty(r.data.status_name)?getMsg(r.data.status_name):'-';
 				}

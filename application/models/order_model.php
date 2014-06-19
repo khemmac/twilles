@@ -73,10 +73,17 @@ CONCAT(
 		$res = $this->update($id, array(
 			'payment_status'=>$status
 		));
-
 		// add history
 		$this->order_payment_status_history->InsertHistory($id, $status);
+		return $res;
+	}
 
+	public function ChangeOrderStatus($id, $status){
+		$res = $this->update($id, array(
+			'status'=>$status
+		));
+		// add history
+		$this->order_status_history->InsertHistory($id, $status);
 		return $res;
 	}
 
