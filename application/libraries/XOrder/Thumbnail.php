@@ -18,22 +18,6 @@ class Thumbnail {
 		$this->sizeDetail = new SizeDetail();
 	}
 
-	private function dtl_shoulder($o, $mtype){
-		$rtn = number_format($o->collar);
-		if($mtype==1)
-			$rtn .= ' x '.number_format($o->shoulder_center).' x '.number_format($o->shoulder_side);
-		return $rtn;
-	}
-	private function dtl_chest($o, $mtype){
-		//(($measure_type==1)?' x '.number_format($item->chest_frontpiece):number_format($item->chest))
-		//.(($measure_type==1)?' x '.number_format($item->chest_backpiece)
-		//	:' + '.number_format($item->chest_buffer))
-		$rtn = number_format($o->collar);
-		if($mtype==1)
-			$rtn .= ' x '.number_format($o->shoulder_center).' x '.number_format($o->shoulder_side);
-		return $rtn;
-	}
-
 	public function GenerateHTML($item){
 		$measure_type = $this->sizeDetail->get_measure_type($item);//$this->dtl_measure_type($item);
 
@@ -124,7 +108,7 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>รอบคอ</td>
-		<td>'.number_format($item->collar).'</td>
+		<td>'.myNumberFormat($item->collar).'</td>
     </tr>
 	<tr>
 		<td>ไหล่</td>
@@ -136,11 +120,11 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>บ่าหน้า</td>
-		<td>'.number_format($item->chest_front).'</td>
+		<td>'.myNumberFormat($item->chest_front).'</td>
     </tr>
 	<tr>
 		<td>บ่าหลัง</td>
-		<td>'.number_format($item->chest_back).'</td>
+		<td>'.myNumberFormat($item->chest_back).'</td>
     </tr>
 	<tr>
 		<td>เอว</td>
@@ -156,11 +140,11 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>ยาวแขนซ้าย</td>
-		<td>'.number_format($item->sleeve_left).'</td>
+		<td>'.myNumberFormat($item->sleeve_left).'</td>
     </tr>
 	<tr>
 		<td>ยาวแขนขวา</td>
-		<td>'.number_format($item->sleeve_right).'</td>
+		<td>'.myNumberFormat($item->sleeve_right).'</td>
     </tr>
 	<tr>
 		<td>กล้ามแขน</td>
@@ -172,7 +156,7 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>ข้อมือ</td>
-		<td>'.number_format($item->wrist).'</td>
+		<td>'.myNumberFormat($item->wrist).'</td>
     </tr>
 	<tr>
 		<td>วงแขน</td>
@@ -180,11 +164,11 @@ class Thumbnail {
     </tr>
 	<tr>
 		<td>อกสูง</td>
-		<td>'.number_format($item->chest_height).'</td>
+		<td>'.myNumberFormat($item->chest_height).'</td>
     </tr>
 	<tr>
 		<td>อกห่าง</td>
-		<td>'.number_format($item->chest_distance).'</td>
+		<td>'.myNumberFormat($item->chest_distance).'</td>
     </tr>
 	<tr>
 		<td>ระดับไหล่</td>
@@ -378,7 +362,7 @@ class Thumbnail {
 		if(!empty($o->part_collar_thickness))
 			array_push($str_arr, $o->part_collar_thickness);
 		if(!empty($o->part_collar_width) && floatval($o->part_collar_width)>0)
-			array_push($str_arr, number_format($o->part_collar_width, 2).' นิ้ว');
+			array_push($str_arr, myNumberFormat($o->part_collar_width, 2).' นิ้ว');
 		array_push($str_arr, (($o->part_collar_stay==0)?'ไม่':'').'มีคอเสียบ');
 		return implode('<br />', $str_arr);
 	}
@@ -393,7 +377,7 @@ class Thumbnail {
 		if(!empty($o->part_cuff_thickness))
 			array_push($str_arr, $o->part_cuff_thickness);
 		if(!empty($o->part_cuff_width) && floatval($o->part_cuff_width)>0)
-			array_push($str_arr, number_format($o->part_cuff_width, 2).' นิ้ว');
+			array_push($str_arr, myNumberFormat($o->part_cuff_width, 2).' นิ้ว');
 		return implode('<br />', $str_arr);
 	}
 	private function getBodyDetail($o){
@@ -403,7 +387,7 @@ class Thumbnail {
 
 		array_push($str_arr, '<strong>'.$o->part_placket_id.'</strong>');
 		if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
-			array_push($str_arr, number_format($o->part_placket_width, 2).' นิ้ว');
+			array_push($str_arr, myNumberFormat($o->part_placket_width, 2).' นิ้ว');
 		if(!empty($o->part_pocket_code))
 			array_push($str_arr, $o->part_pocket_id);
 		return implode('<br />', $str_arr);

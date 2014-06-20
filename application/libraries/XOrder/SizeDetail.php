@@ -14,7 +14,7 @@ class SizeDetail {
 
 	public function shoulder($o){
 		$mtype = $this->get_measure_type($o);
-		$rtn = myNumberFormat($o->collar);
+		$rtn = myNumberFormat($o->shoulder);
 		if($mtype==1)
 			$rtn .= ' x '.myNumberFormat($o->shoulder_center).' x '.myNumberFormat($o->shoulder_side);
 		return $rtn;

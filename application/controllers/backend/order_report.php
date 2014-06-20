@@ -142,9 +142,9 @@ $tbl = '
 			foreach($data as $row) {
 				$_pdf->Cell($w[0], 6, $row[0], 'LRTB', 0, 'C', $fill);
 				$_pdf->Cell($w[1], 6, $row[1], 'LRTB', 0, 'L', $fill);
-				$_pdf->Cell($w[2], 6, number_format($row[2]), 'LRTB', 0, 'R', $fill);
-				$_pdf->Cell($w[3], 6, number_format($row[3]), 'LRTB', 0, 'R', $fill);
-				$_pdf->Cell($w[4], 6, number_format($row[4]), 'LRTB', 0, 'R', $fill);
+				$_pdf->Cell($w[2], 6, myNumberFormat($row[2]), 'LRTB', 0, 'R', $fill);
+				$_pdf->Cell($w[3], 6, myNumberFormat($row[3]), 'LRTB', 0, 'R', $fill);
+				$_pdf->Cell($w[4], 6, myNumberFormat($row[4]), 'LRTB', 0, 'R', $fill);
 				$_pdf->Ln();
 				$fill=!$fill;
 			}
@@ -153,17 +153,17 @@ $tbl = '
 			$all_width = array_sum(array($w[0],$w[1],$w[2],$w[3]));
 			// SUM
 			$_pdf->Cell($all_width, 6, 'ราคารวม', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, number_format($order->net), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[4], 6, myNumberFormat($order->net), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			// DELIVERY
 			$_pdf->Cell($all_width, 6, 'ค่าจัดส่ง', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, number_format($order->delivery_cost), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[4], 6, myNumberFormat($order->delivery_cost), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			// total
 			$_pdf->Cell($all_width, 6, 'ราคาสุทธิ', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, number_format($order->total), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[4], 6, myNumberFormat($order->total), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			//$_pdf->Cell(array_sum($w), 0, '', 'T');
