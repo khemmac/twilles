@@ -10,6 +10,8 @@ Class Order_item_model extends Base_model
     {
         parent::__construct();
 
+		array_push($this->after_get, 'after_get_setDefault');
+
 		array_push($this->before_create, 'before_get_price');
 		array_push($this->before_update, 'before_get_price');
 
@@ -17,6 +19,28 @@ Class Order_item_model extends Base_model
 		array_push($this->after_create, 'after_create_calculate');
 		array_push($this->after_update, 'after_update_calculate');
     }
+
+	public function after_get_setDefault($o){
+		if(is_null($o->stitching_type))
+			$o->stitching_type = 2;
+
+		if(is_null($o->part_collar_type))
+			$o->part_collar_type = 1;
+		if(is_null($o->part_collar_thickness))
+			$o->part_collar_thickness = 'หนานุ่มแข็ง 2 ชั้น';
+		if(is_null($o->part_collar_stay))
+			$o->part_collar_stay = 1;
+
+		if(is_null($o->part_cuff_type))
+			$o->part_cuff_type = 1;
+		if(is_null($o->part_cuff_thickness))
+			$o->part_cuff_thickness = 'หนานุ่มแข็ง 3 ชั้น';
+
+		if(is_null($o->inventory_package_id))
+			$o->inventory_package_id = 'P1';
+
+		return $o;
+	}
 
 	public function before_get_price($o){
 		if(!empty($o['fabric_body_id'])){

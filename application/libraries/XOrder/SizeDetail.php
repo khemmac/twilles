@@ -12,6 +12,10 @@ class SizeDetail {
 		return 0;
 	}
 
+	public function collarTitle($o){
+		return 'รอบคอ (รังถึงรัง)';
+	}
+
 	public function shoulder($o){
 		$mtype = $this->get_measure_type($o);
 		$rtn = myNumberFormat($o->shoulder);
@@ -20,6 +24,10 @@ class SizeDetail {
 		return $rtn;
 	}
 
+	public function chestTitle($o){
+		$mtype = $this->get_measure_type($o);
+		return 'อก' . (($mtype==1)?' (ริมถึงริม)':'');
+	}
 	public function chest($o){
 		$mtype = $this->get_measure_type($o);
 		if($mtype==1)
@@ -29,6 +37,10 @@ class SizeDetail {
 		return '';
 	}
 
+	public function waistTitle($o){
+		$mtype = $this->get_measure_type($o);
+		return 'เอว' . (($mtype==1)?' (ริมถึงริม)':'');
+	}
 	public function waist($o){
 		$mtype = $this->get_measure_type($o);
 		if($mtype==1)
@@ -38,6 +50,10 @@ class SizeDetail {
 		return '';
 	}
 
+	public function hipsTitle($o){
+		$mtype = $this->get_measure_type($o);
+		return 'สะโพก' . (($mtype==1)?' (ริมถึงริม)':'');
+	}
 	public function hips($o){
 		$mtype = $this->get_measure_type($o);
 		if($mtype==1)
@@ -72,6 +88,11 @@ class SizeDetail {
 		else if($mtype==2)
 			return myNumberFormat($o->elbow).' + '.myNumberFormat($o->elbow_buffer);;
 		return '';
+	}
+
+	public function wristTitle($o){
+		$mtype = $this->get_measure_type($o);
+		return 'ข้อมือ (รังถึงรัง)';
 	}
 
 	public function armhole($o){

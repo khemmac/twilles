@@ -24,8 +24,8 @@ class Thumbnail {
 		$html =
 '<table cellspacing="0" cellpadding="1" border="1">
 	<tr>
-		<td width="80" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
-		<td width="140" style="background-color:#CCCCCC;">
+		<td width="90" style="background-color:#CCCCCC;"><b>สัดส่วน</b></td>
+		<td width="130" style="background-color:#CCCCCC;">
 			<b>Slim Fit</b>
 			'.(($measure_type==1)?' - งานวัดจากเสื้อ'
 				:(($measure_type==2)?' - งานวัดจากตัว':'')).'
@@ -107,7 +107,7 @@ class Thumbnail {
 		</td>
     </tr>
 	<tr>
-		<td>รอบคอ</td>
+		<td>'.$this->sizeDetail->collarTitle($item).'</td>
 		<td>'.myNumberFormat($item->collar).'</td>
     </tr>
 	<tr>
@@ -115,7 +115,7 @@ class Thumbnail {
 		<td>'.$this->sizeDetail->shoulder($item).'</td>
     </tr>
 	<tr>
-		<td>อก</td>
+		<td>'.$this->sizeDetail->chestTitle($item).'</td>
 		<td>'.$this->sizeDetail->chest($item).'</td>
     </tr>
 	<tr>
@@ -127,11 +127,11 @@ class Thumbnail {
 		<td>'.myNumberFormat($item->chest_back).'</td>
     </tr>
 	<tr>
-		<td>เอว</td>
+		<td>'.$this->sizeDetail->waistTitle($item).'</td>
 		<td>'.$this->sizeDetail->waist($item).'</td>
     </tr>
 	<tr>
-		<td>สะโพก</td>
+		<td>'.$this->sizeDetail->hipsTitle($item).'</td>
 		<td>'.$this->sizeDetail->hips($item).'</td>
     </tr>
 	<tr>
@@ -155,7 +155,7 @@ class Thumbnail {
 		<td>'.$this->sizeDetail->elbow($item).'</td>
     </tr>
 	<tr>
-		<td>ข้อมือ</td>
+		<td>'.$this->sizeDetail->wristTitle($item).'</td>
 		<td>'.myNumberFormat($item->wrist).'</td>
     </tr>
 	<tr>
