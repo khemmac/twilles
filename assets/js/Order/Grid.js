@@ -45,6 +45,7 @@ Ext.define('TCMS.Order.Grid', {
  */
 				{ name:'id', type:'string' },
 				{ name:'member_id', type:'int' },
+				{ name:'member_fullname', type:'string' },
 				{ name:'order_code', type:'string' },
 				{ name:'order_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'order_completed_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -75,10 +76,11 @@ Ext.define('TCMS.Order.Grid', {
 		this.columns = [
 			new Ext.grid.RowNumberer(),
 			{text: "Order code", width:120, dataIndex:'order_code', sortable:true, align:'left' },
+			{text: "Order code", width:180, dataIndex:'member_fullname', sortable:true, align:'left' },
 			{text: "Order date", width:80, dataIndex:'order_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y'):'-'; }
 			},
-			{text: "Net", width:90, dataIndex:'net', sortable:true, align:'left',
+			{text: "Net", width:70, dataIndex:'net', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
 			},
 			/*{text: "Vat", width:60, dataIndex:'vat', sortable:true, align:'left',
@@ -87,7 +89,7 @@ Ext.define('TCMS.Order.Grid', {
 			{text: "Delivery cost", width:90, dataIndex:'delivery_cost', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
 			},
-			{text: "Total", width:90, dataIndex:'total', sortable:true, align:'left',
+			{text: "Total", width:70, dataIndex:'total', sortable:true, align:'left',
 				renderer: function(v,p,r){
 					p.style = 'font-weight:bold;';
 					return Ext.util.Format.number(v, '0,000.##');
