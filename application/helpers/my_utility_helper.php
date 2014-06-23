@@ -6,9 +6,12 @@
 		$this->ci->load->database();
 	}
 
-	function myNumberFormat($number){
+	function myNumberFormat($number, $showDecimal = FALSE){
 		$s = number_format($number, 2);
-		return preg_replace('/(\.00)$/' ,'',$s);
+		if($showDecimal)
+			return $s;
+		else
+			return preg_replace('/(\.00)$/' ,'',$s);
 	}
 
 	function myDateFormat($dt_str, $format = 'd/m/Y'){

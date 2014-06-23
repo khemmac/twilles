@@ -200,7 +200,7 @@ class InvoicePDF extends TCPDF {
 		$this->Cell($w[0], 8, '', '');
 		$this->Cell($w[1], 8, 'Sub Total', 'B', 0, 'L');
 		$this->SetFont('', '');
-		$this->Cell($w[2], 8, myNumberFormat($data['sub_total']), 'B', 0, 'R');
+		$this->Cell($w[2], 8, myNumberFormat($data['sub_total'], TRUE), 'B', 0, 'R');
 		$this->Ln();
 
 		$this->SetLineStyle(array('width' => 1.5, 'cap' => 'butt', 'join' => 'miter',
@@ -210,13 +210,13 @@ class InvoicePDF extends TCPDF {
 		$this->Cell($w[0], 8, '', '');
 		$this->Cell($w[1], 8, 'Vat '.myNumberFormat($data['vat_percent']).'%', 'B', 0, 'L');
 		$this->SetFont('', '');
-		$this->Cell($w[2], 8, myNumberFormat($data['vat_amount']), 'B', 0, 'R');
+		$this->Cell($w[2], 8, myNumberFormat($data['vat_amount'], TRUE), 'B', 0, 'R');
 		$this->Ln();
 		$this->SetFont('', 'B', '16');
 		$this->Cell($w[0], 8, '', '');
 		$this->Cell($w[1], 8, 'Total', '', 0, 'L');
 		$this->SetFont('', '');
-		$this->Cell($w[2], 8, myNumberFormat($data['total']), '', 0, 'R');
+		$this->Cell($w[2], 8, myNumberFormat($data['total'], TRUE), '', 0, 'R');
 	}
 
 	// Page footer
