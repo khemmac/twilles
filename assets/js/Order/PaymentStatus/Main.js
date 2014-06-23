@@ -23,7 +23,6 @@ Ext.define('TCMS.Order.PaymentStatus.Main', {
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject(),
 					status = o.get('payment_status');
-				console.log('VALIDATE PENDING:', status);
 				if(status>=1)
 					this.setDisabled(true);
 			}
@@ -38,7 +37,6 @@ Ext.define('TCMS.Order.PaymentStatus.Main', {
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject(),
 					status = o.get('payment_status');
-				console.log('VALIDATE PAID:', status);
 				if(status!=1)
 					this.setDisabled(true);
 			}

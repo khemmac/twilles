@@ -50,12 +50,10 @@ Ext.define('TCMS.Order.Status.Grid', {
 					if(v==1){
 						setBg('hourglass.png', 'red');
 					} else if(v==2){
-						setBg('user-worker.png', 'orange');
-					} else if(v==3){
 						setBg('truck-box.png', '#cccc00');
-					} else if(v==4){
+					} else if(v==3){
 						setBg('tick.gif', 'green');
-					} else if(v==5){
+					} else if(v==4){
 						setBg('cross.gif', 'grey');
 					}
 					return !Ext.isEmpty(r.data.status_name)?getMsg(r.data.status_name):'-';

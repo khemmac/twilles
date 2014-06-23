@@ -33,20 +33,33 @@ Ext.define('TCMS.Order.Main', {
 			iconCls: 'b-small-magnifier'
 		});
 
+		var invoiceAct = Ext.create('BASE.ActionSingle', {
+			text: 'Invoice',
+			iconCls: 'b-clipboard-invoice'
+		});
+		invoiceAct.validate = function(source) {
+			this.validateSingle(source);
+			if(!this.isDisabled()){
+				var o = source.getSelectedObject(),
+					status = o.get('payment_status');
+				if(status!=2)
+					this.setDisabled(true);
+			}
+		};
+
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, deleteAct, viewAct]
+			items: [addAct, editAct, deleteAct, viewAct, invoiceAct]
 		});
 
 		var dialog = Ext.create('TCMS.Order.Window');
 
 		var vActions = [
-			addAct, editAct, deleteAct, viewAct,
+			addAct, editAct, deleteAct, viewAct, invoiceAct,
 			// payment status action
 			dialog.form.paymentStatusPanel.pendingAct,
 			dialog.form.paymentStatusPanel.paidAct,
 			// order status action
 			dialog.form.orderStatusPanel.pendingFabricAct,
-			dialog.form.orderStatusPanel.pendingTailorAct,
 			dialog.form.orderStatusPanel.deliveryAct,
 			dialog.form.orderStatusPanel.completeAct,
 			dialog.form.orderStatusPanel.cancelAct
@@ -55,7 +68,7 @@ Ext.define('TCMS.Order.Main', {
 		var grid = Ext.create('TCMS.Order.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, deleteAct, viewAct],
+			tbar: [addAct, editAct, deleteAct, viewAct, invoiceAct],
 			validateActions : vActions
 		});
 
@@ -80,6 +93,10 @@ Ext.define('TCMS.Order.Main', {
 
 		viewAct.setHandler(function(){
 			window.open(__site_url+'backend/order_report/report/'+grid.getSelectedId());
+		});
+
+		invoiceAct.setHandler(function(){
+			window.open(__site_url+'backend/invoice_report/report/'+grid.getSelectedId());
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
