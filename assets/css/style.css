@@ -16,6 +16,8 @@
 .b-application_edit { background-image: url('../images/icons/application_edit.gif') !important; }
 .b-application_delete { background-image: url('../images/icons/application_delete.gif') !important; }
 
+.b-clipboard-invoice { background-image: url('../images/icons/clipboard-invoice.png') !important; }
+
 .b-import { background-image: url('../images/icons/table_import.png') !important; }
 .b-export_excel { background-image: url('../images/icons/export_excel.png') !important; }
 

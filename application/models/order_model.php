@@ -12,10 +12,9 @@ Class Order_model extends Base_model
 	public $PAYMENT_STATUS_PAID = 2;
 
 	public $STATUS_PENDING_FABRIC = 1;
-	public $STATUS_PENDING_TAILOR = 2;
-	public $STATUS_DELIVERY = 3;
-	public $STATUS_COMPLETE = 4;
-	public $STATUS_CANCEL = 5;
+	public $STATUS_DELIVERY = 2;
+	public $STATUS_COMPLETE = 3;
+	public $STATUS_CANCEL = 4;
 
 	public function __construct()
     {
