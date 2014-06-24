@@ -116,6 +116,7 @@ class Member extends CI_Controller {
 			'first_name'=>$this->input->post('first_name'),
 			'last_name'=>$this->input->post('last_name'),
 			//'active'=>$active,
+			'account_status'=>1,
 
 			'mobile_number_country'=>X::Request('mobile_number_country'),
 			'mobile_number'=>X::Request('mobile_number'),
