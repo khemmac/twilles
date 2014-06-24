@@ -1,8 +1,27 @@
 Ext.define('TCMS.StyleGroup.Fabric.Grid', {
 	extend	: 'BASE.Grid',
+	requires: ['BASE.Grid', 'Ext.ux.grid.FiltersFeature'],
 	constructor:function(config) {
 
+		var featureFilters = Ext.create('Ext.ux.grid.FiltersFeature', {
+			// encode and local configuration options defined previously for easier reuse
+			encode: false, // json encode the filter query
+			local: false,   // defaults to false (remote filtering)
+			filters: [{
+				type: 'string',
+				dataIndex: 'id'
+			}, {
+				type: 'string',
+				dataIndex: 'primary_color_name'
+			}, {
+				type: 'list',
+				dataIndex: 'pattern_name',
+				options: ['small', 'medium', 'large', 'extra large']
+			}]
+		});
+
 		Ext.apply(this, {
+			features: [featureFilters],
 			disablePaging: true
 		});
 
@@ -11,6 +30,24 @@ Ext.define('TCMS.StyleGroup.Fabric.Grid', {
 
 	initComponent : function() {
 		var _this=this;
+
+		var colorStore = new Ext.data.JsonStore({
+			proxy: {
+				type: 'ajax',
+				url: __site_url+'backend/dao/loadlist',
+				reader: {
+					type: 'json',
+					root: 'rows',
+					idProperty: 'id'
+				},
+				simpleSortMode: true,
+				extraParams: { type:'color' }
+			},
+			fields: [ 'id', 'name' ],
+			remoteSort: true,
+			sorters: [{property: 'name', direction: 'ASC'}],
+			pageSize: 1000
+		});
 
 		this.store = new Ext.data.JsonStore({
 			proxy: {
@@ -73,14 +110,22 @@ Ext.define('TCMS.StyleGroup.Fabric.Grid', {
 		});
 
 		this.columns = [
-			new Ext.grid.RowNumberer(),
+			new Ext.grid.RowNumberer({width: 30}),
 
-			{text: "Code", width:80, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Code", width:80, dataIndex:'id', sortable:true, align:'left',
+				filterable: true
+			},
 			{text: "Fabric Type", width:80, dataIndex:'fabric_type_name', sortable:true, align:'left'},
-			{text: "Supplier", width:100, dataIndex:'supplier_name', sortable:true, align:'left'},
-			{text: "Stock Type", width:80, dataIndex:'stock_type_name', sortable:true, align:'left'},
+			{text: "Supplier", width:70, dataIndex:'supplier_name', sortable:true, align:'left'},
+			{text: "Stock Type", width:80, dataIndex:'stock_type_name', sortable:true, align:'left', hidden: true},
 
-			{text: "Primary color", width:80, dataIndex:'primary_color_name', sortable:true, align:'left'},
+			{text: "Primary color", width:80, dataIndex:'primary_color_name', sortable:true, align:'left',
+				filter: {
+					type: 'string'
+					// specify disabled to disable the filter menu
+					//, disabled: true
+				}
+			},
 			{text: "Secondary color", width:80, dataIndex:'secondary_color_name', sortable:true, align:'left'},
 			{text: "Tertiary color", width:80, dataIndex:'tertiary_color_name', sortable:true, align:'left'},
 			{text: "True color", width:80, dataIndex:'true_color_name', sortable:true, align:'left'},
@@ -90,34 +135,42 @@ Ext.define('TCMS.StyleGroup.Fabric.Grid', {
 			{text: "Thread count", width:80, dataIndex:'thread_count_name', sortable:true, align:'left'},
 			{text: "Length(yard)", width:80, dataIndex:'length_yards', sortable:true, align:'left'},
 			{text: "Price", width:60, dataIndex:'price', sortable:true, align:'left'},
-			{text: "cost", width:60, dataIndex:'cost', sortable:true, align:'left'},
+			{text: "Cost", width:60, dataIndex:'cost', sortable:true, align:'left'},
 
-			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
+			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left', hidden: true,
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			},
-			{text: "Create by", width:100, dataIndex:'create_by', sortable:true, align:'left'},
-			{text: "Update date", width:120, dataIndex:'update_date', sortable:true, align:'left',
+			{text: "Create by", width:100, dataIndex:'create_by', sortable:true, align:'left', hidden: true},
+			{text: "Update date", width:120, dataIndex:'update_date', sortable:true, align:'left', hidden: true,
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			},
-			{text: "Update by", width:100, dataIndex:'update_by', sortable:true, align:'left'}
+			{text: "Update by", width:100, dataIndex:'update_by', sortable:true, align:'left', hidden: true}
 		];
+
+		console.log('$$$$$$', this.filters, this.features);
 
 		// event
 		this.store.on("beforeload", function (store, opts) {
 			opts.params = opts.params || {};
 			if(opts.params){
 			}
-	    });
+		});
 
-	    this.on('afterLoad', function(grid, ids){
-	    	grid.selModel.deselectAll();
-	    	var rs = [];
-	    	grid.store.each(function(r){
-	    		if(r.get('checked')===true)
-	    			rs.push(r);
-	    	});
-	    	grid.selModel.select(rs);
-	    });
+		this.on('afterLoad', function(grid, ids){
+			setTimeout(function(){
+				var sm = _this.selModel;
+				sm.deselectAll();
+				var rs = [];
+				_this.store.each(function(r){
+
+					if(r.get('checked')===true)
+						rs.push(r);
+				});
+				rs.reverse();
+
+				sm.select(rs, true);
+			}, 200);
+		});
 
 		return this.callParent(arguments);
 	}

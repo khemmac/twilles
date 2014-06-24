@@ -24,20 +24,60 @@ function gzDocOut($contents, $level=6){
 }
 
 function min_to_file($source_path, $out_file){
-	$ite = new RecursiveDirectoryIterator($source_path);
-	foreach(new RecursiveIteratorIterator($ite) as $file => $fileInfo) {
-	    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-	    if ($extension == 'js') {
-	        $f = $fileInfo->openFile('r');
-	        $fdata = "";
-	        while ( ! $f->eof()) {
-	            $fdata .= $f->fgets();
-	        }
+	if(preg_match('/assets\/ext\/ux/', $source_path)){
+		$files = array(
+			"$source_path/SWFUpload.js",
+
+			"$source_path/ajax/Simlet.js",
+			"$source_path/ajax/DataSimlet.js",
+			"$source_path/ajax/JsonSimlet.js",
+			"$source_path/ajax/SimXhr.js",
+			"$source_path/ajax/SimManager.js",
+
+			"$source_path/grid/filter/Filter.js",
+			"$source_path/grid/filter/BooleanFilter.js",
+			"$source_path/grid/filter/ListFilter.js",
+			"$source_path/grid/filter/NumericFilter.js",
+			"$source_path/grid/filter/DateFilter.js",
+			"$source_path/grid/filter/DateTimeFilter.js",
+			"$source_path/grid/filter/StringFilter.js",
+
+			"$source_path/grid/FiltersFeature.js",
+
+			"$source_path/grid/menu/ListMenu.js",
+			"$source_path/grid/menu/RangeMenu.js",
+
+			"$source_path/form/NumericField.js"
+		);
+		foreach($files as $file) {
+			echo $file.'<br />';
+			$fh = fopen($file, "r");
+			$fdata = "";
+			while (($b = fgets($fh)) !== false) {
+			    $fdata .= $b;
+			}
 	        $buffer[] = $fdata;
-	    }
+			fclose($fh);
+		}
+	}else{
+		$ite = new RecursiveDirectoryIterator($source_path);
+		foreach(new RecursiveIteratorIterator($ite) as $file => $fileInfo) {
+			echo $file.'<br />';
+		    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+		    if ($extension == 'js') {
+		        $f = $fileInfo->openFile('r');
+		        $fdata = "";
+				while ( ! $f->eof()) {
+					$fdata .= $f->fgets();
+		        }
+		        $buffer[] = $fdata;
+		    }
+		}
 	}
 
+
 	$output = JSMin::minify(implode(";\n", $buffer));
+	//$output = implode(";\n", $buffer);
 
 	//echo "OUTPUT FILE: \"$out_file\"<br />";
 

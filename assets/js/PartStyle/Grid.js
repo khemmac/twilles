@@ -28,6 +28,7 @@ Ext.define('TCMS.PartStyle.Grid', {
 				{ name:'part_type', type:'string' },
 				{ name:'code', type:'string' },
 				{ name:'name', type:'string' },
+				{ name:'name_tailor', type:'string' },
 				{ name:'remark', type:'string' },
 				{ name:'is_active', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -44,6 +45,7 @@ Ext.define('TCMS.PartStyle.Grid', {
 			new Ext.grid.RowNumberer(),
 			{text: "Code", width:120, dataIndex:'code', sortable:true, align:'left'},
 			{text: "Name", width:150, dataIndex:'name', sortable:true, align:'left'},
+			{text: "Name tailor", width:200, dataIndex:'name_tailor', sortable:true, align:'left'},
 			{text: "Type", width:70, dataIndex:'part_type', sortable:true, align:'left',
 				renderer: function(v){
 					var types = {

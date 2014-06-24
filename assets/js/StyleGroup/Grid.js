@@ -40,7 +40,7 @@ Ext.define('TCMS.StyleGroup.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
+			{text: "Name", width:150, dataIndex:'name', sortable:true, align:'left'},
 			{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left'},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){
@@ -71,7 +71,7 @@ Ext.define('TCMS.StyleGroup.Grid', {
 				//var formValues = _this.getSearchFormValues();
 				//Ext.apply(opts.params, formValues);
 			}
-	    });
+		});
 
 		return this.callParent(arguments);
 	}

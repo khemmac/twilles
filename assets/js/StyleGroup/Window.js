@@ -6,7 +6,7 @@ Ext.define('TCMS.StyleGroup.Window', {
 		Ext.apply(this, {
 			title: 'Login',
 			height: 550,
-			width: 850,
+			width: 950,
 			resizable: false,
 			modal: true,
 			layout:'border',

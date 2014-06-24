@@ -10,6 +10,11 @@ class cms extends CI_Controller {
 		}
 	}
 
+	public function test(){
+		$this->phxview->RenderView('test');
+        $this->phxview->RenderLayout('empty');
+	}
+
 	public function index()
 	{
 		redirect('backend/auth/login', 'refresh');
