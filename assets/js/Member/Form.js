@@ -121,7 +121,7 @@ Ext.define('TCMS.Member.Form', {
 			xtype: 'textfield',
 			fieldLabel: 'Last name',
 			allowBlank: false
-		}, {
+		}/*, {
 			xtype: 'fieldcontainer',
 			fieldLabel: 'Mobile',
 			layout: 'hbox',
@@ -153,7 +153,7 @@ Ext.define('TCMS.Member.Form', {
 			fieldLabel: 'Phone',
 			allowBlank: true,
 			maxLength: 20
-		}, {
+		}*/, {
 			name: 'last_login',
 			xtype: 'displayfield',
 			fieldLabel: 'Last login',
