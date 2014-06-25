@@ -78,15 +78,18 @@ class Thumbnail {
 								.$this->mergeTmbnl('back', 'getTmbnlImgsBack', $item)
 								.'<br />'
 								.$item->part_pleat_id
+								.' ('.$item->part_pleat_name_tailor.')'
 							.'</td><td align="center">'
 								.$this->mergeTmbnl('yoke', 'getTmbnlImgsYoke', $item)
 								.'<br />'
 								.$item->part_yoke_id
+								.' ('.$item->part_yoke_name_tailor.')'
 							.'</td></tr>
 							<tr><td align="center">'
 								.$this->mergeTmbnl('bottom', 'getTmbnlImgsBottom', $item)
 								.'<br />'
 								.$item->part_bottom_id
+								.' ('.$item->part_bottom_name_tailor.')'
 							.'</td><td>'
 							.'</td></tr>
 						</table>
@@ -356,7 +359,7 @@ class Thumbnail {
 		if(empty($o->part_collar_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_collar_id.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_collar_id.' ('.$o->part_collar_name_tailor.')</strong>');
 		if(!empty($o->part_collar_type))
 			array_push($str_arr, $o->part_collar_type_name);
 		if(!empty($o->part_collar_thickness))
@@ -371,7 +374,7 @@ class Thumbnail {
 		if(empty($o->part_cuff_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_cuff_id.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_cuff_id.' ('.$o->part_cuff_name_tailor.')</strong>');
 		if(!empty($o->part_cuff_type))
 			array_push($str_arr, $o->part_cuff_type_name);
 		if(!empty($o->part_cuff_thickness))
@@ -385,7 +388,7 @@ class Thumbnail {
 		if(empty($o->part_cuff_id))
 			return '-';
 
-		array_push($str_arr, '<strong>'.$o->part_placket_id.'</strong>');
+		array_push($str_arr, '<strong>'.$o->part_placket_id.' ('.$o->part_placket_name_tailor.')</strong>');
 		if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
 			array_push($str_arr, myNumberFormat($o->part_placket_width, 2).' นิ้ว');
 		if(!empty($o->part_pocket_code))

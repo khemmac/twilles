@@ -45,22 +45,12 @@ Ext.define('TCMS.MemberSize.Member.Grid', {
 		});
 
 		this.columns = [
-			{text: "Username", width:90, dataIndex:'username', sortable:true, align:'left' },
 			{text: "Email", width:150, dataIndex:'email', sortable:true, align:'left'},
-			{text: "Phone", width:90, dataIndex:'phone', sortable:true, align:'left'},
-			{text: "Active", width:50, dataIndex:'active', sortable:true, align:'center',
-				renderer: function(v,p,r){
-					var icns = (v)?'tick':'cross';
-					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
-				}
-			},
-			{text: "IP Address", width:90, dataIndex:'ip_address', sortable:true, align:'left'},
 			{text: "Name", width:110, dataIndex:'ip_address', sortable:true, align:'left',
 				renderer: function(v,p,r){
 					return r.data['first_name']+' '+r.data['last_name'];
 				}
 			},
-
 			{text: "Last login", width:120, dataIndex:'last_login', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			}
