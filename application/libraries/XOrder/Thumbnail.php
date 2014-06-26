@@ -391,8 +391,8 @@ class Thumbnail {
 		array_push($str_arr, '<strong>'.$o->part_placket_id.' ('.$o->part_placket_name_tailor.')</strong>');
 		if(!empty($o->part_placket_width) && floatval($o->part_placket_width)>0)
 			array_push($str_arr, myNumberFormat($o->part_placket_width, 2).' นิ้ว');
-		if(!empty($o->part_pocket_code))
-			array_push($str_arr, $o->part_pocket_id);
+		if(!empty($o->part_pocket_id))
+			array_push($str_arr, '<strong>'.$o->part_pocket_id.' ('.$o->part_pocket_name_tailor.')</strong>');
 		return implode('<br />', $str_arr);
 	}
 
