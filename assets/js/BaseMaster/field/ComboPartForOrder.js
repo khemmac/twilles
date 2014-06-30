@@ -1,26 +1,16 @@
-Ext.define('TCMS.BaseMaster.field.ComboPart', {
-	extend	: 'BASE.ComboAjax',
+Ext.define('TCMS.BaseMaster.field.ComboPartForOrder', {
+	extend	: 'TCMS.BaseMaster.field.ComboPart',
 
 	proxyUrl: __site_url+'backend/dao/LoadList',
 	proxyFields:[ 'id', 'code' ],
 	proxyIdProperty: 'id',
 	displayField: 'code',
-	valueField: 'id',
-
-	// utility params
-	partType: null,
+	valueField: 'code',
 
 
 	constructor:function(config) {
 
-		Ext.apply(this, {
-			proxyExtraParams:{
-				type: 'part_style',
-				filter: Ext.encode({
-					part_type: config.partType
-				})
-			}
-		});
+		Ext.apply(this, {});
 
 		return this.callParent(arguments);
 	},

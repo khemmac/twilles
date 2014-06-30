@@ -247,7 +247,7 @@ Ext.define('TCMS.Order.Item.Form', {
 		// **************** STYLE ****************
 
 		// ** COLLAR **
-		this.comboPartCollar = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartCollar = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Collar',
 			name : 'part_collar_id',
 			partType: 'COLLAR',
@@ -281,7 +281,7 @@ Ext.define('TCMS.Order.Item.Form', {
 		// ** END COLLAR **
 
 		// ** CUFF **
-		this.comboPartCuff = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartCuff = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Cuff',
 			name : 'part_cuff_id',
 			partType: 'CUFF',
@@ -311,7 +311,7 @@ Ext.define('TCMS.Order.Item.Form', {
 		// ** END CUFF **
 
 		// ** PLACKET **
-		this.comboPartPlacket = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartPlacket = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Placket',
 			name : 'part_placket_id',
 			partType: 'PLACKET',
@@ -326,25 +326,25 @@ Ext.define('TCMS.Order.Item.Form', {
 		});
 		// ** END PLACKET **
 
-		this.comboPartPocket = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartPocket = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Pocket',
 			name : 'part_pocket_id',
 			partType: 'POCKET',
 			allowBlank: true
 		});
-		this.comboPartYoke = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartYoke = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Yoke',
 			name : 'part_yoke_id',
 			partType: 'YOKE',
 			allowBlank: true
 		});
-		this.comboPartPleat = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartPleat = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Pleat',
 			name : 'part_pleat_id',
 			partType: 'PLEAT',
 			allowBlank: true
 		});
-		this.comboPartBottom = _createField('TCMS.BaseMaster.field.ComboPart', {
+		this.comboPartBottom = _createField('TCMS.BaseMaster.field.ComboPartForOrder', {
 			fieldLabel: 'Bottom',
 			name : 'part_bottom_id',
 			partType: 'BOTTOM',
