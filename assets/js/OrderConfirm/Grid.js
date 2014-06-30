@@ -3,7 +3,7 @@ Ext.define('TCMS.OrderConfirm.Grid', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			modelType: 'order_confirm'
+			modelType: 'v_order_confirm'
 		});
 
 		return this.callParent(arguments);
@@ -36,6 +36,9 @@ Ext.define('TCMS.OrderConfirm.Grid', {
 				{ name:'date_of_transfer', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'bank_transferred_to', type:'string' },
 				{ name:'phone', type:'string' },
+				{ name:'payment_status', type:'int' },
+				{ name:'payment_status_name', type:'string' },
+				{ name:'phone', type:'string' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' }
 			],
 			remoteSort: true,
@@ -56,6 +59,21 @@ Ext.define('TCMS.OrderConfirm.Grid', {
 			},
 			{text: "Bank", width:90, dataIndex:'bank_transferred_to', sortable:true, align:'left'},
 			{text: "Phone", width:110, dataIndex:'phone', sortable:true, align:'left'},
+
+			{text: "Payment status", width:120, dataIndex:'payment_status', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					var setBg = function(img, color){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/'+img+'\') 5px center no-repeat; color:'+color+';';
+					};
+					var getMsg = function(text){ return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+text; };
+					if(v==1){
+						setBg('hourglass.png', 'red');
+					} else if(v==2){
+						setBg('tick.gif', 'green');
+					}
+					return !Ext.isEmpty(r.data.payment_status_name)?getMsg(r.data.payment_status_name):'-';
+				}
+			},
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			}
