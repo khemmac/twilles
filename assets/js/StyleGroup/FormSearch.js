@@ -1,4 +1,4 @@
-Ext.define('TCMS.StyleGroup.Grid', {
+Ext.define('TCMS.StyleGroup.FormSearch', {
 	extend	: 'BASE.Form',
 	requires : ['BASE.Form'],
 	constructor:function(config) {

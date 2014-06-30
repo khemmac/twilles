@@ -91,9 +91,9 @@
  *     // a filters property is added to the GridPanel
  *     grid.filters
  */
-Ext.define('Ext.ux.grid.FiltersFeature', {
-    extend: 'Ext.grid.feature.Feature',
-    alias: 'feature.filters',
+Ext.define('Ext.ux.grid.FiltersFeatureKeepSelection', {
+    extend: 'Ext.ux.grid.FiltersFeature',
+    alias: 'feature.filtersKeepSelection',
     uses: [
         'Ext.ux.grid.menu.ListMenu',
         'Ext.ux.grid.menu.RangeMenu',
@@ -575,13 +575,13 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
             store.clearFilter(true);
             store.filterBy(me.getRecordFilter());
             store.sort();
-        } else {
+        }/* else {
             me.deferredUpdate.cancel();
             if (store.buffered) {
                 store.data.clear();
             }
             store.loadPage(1);
-        }
+        }*/
     },
 
     /**
@@ -595,6 +595,7 @@ Ext.define('Ext.ux.grid.FiltersFeature', {
 
         this.filters.each(function (filter) {
             if (filter.active) {
+            	console.log('FFF', filter);
                 f.push(filter);
             }
         });

@@ -13,6 +13,8 @@ class Style_group_fabric extends dao {//CI_Controller {
 	}
 
 	public function LoadList(){
+		$filter = X::Request('filter');
+
 		$style_group_id = X::Request('style_group_id');
 
 		$this->load->model('style_group_fabric_model','style_group_fabric');
@@ -22,7 +24,20 @@ class Style_group_fabric extends dao {//CI_Controller {
 		$style_group_fabric_list = $this->style_group_fabric->get_many_by($where);
 
 		$this->load->model('v_fabric_model','fabric');
-		$fabric_all = $this->fabric->get_all();
+
+		// find by filter
+		if(!empty($filter)){
+			$filterList = X::parseJSON($filter);
+			if(!empty($filterList)){
+				foreach($filterList AS $f){
+					if($f->field=='primary_color_name'){
+						$this->fabric->_database->where_in('primary_color_id', $f->value);
+					}
+				}
+			}
+		}
+
+		$fabric_all = $this->fabric->get_many_by();
 
 		foreach($fabric_all AS $fabric){
 			$fabric->checked = FALSE;

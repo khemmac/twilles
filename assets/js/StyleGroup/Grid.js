@@ -41,7 +41,7 @@ Ext.define('TCMS.StyleGroup.Grid', {
 		this.columns = [
 			new Ext.grid.RowNumberer(),
 			{text: "Name", width:150, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left'},
+			{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left', hidden: true},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){
 					var icns = (v)?'tick':'cross';

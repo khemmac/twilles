@@ -1,27 +1,9 @@
-Ext.define('TCMS.StyleGroup.Fabric.Grid', {
+Ext.define('TCMS.StyleGroup.Fabric.SelectedGrid', {
 	extend	: 'BASE.Grid',
-	requires: ['BASE.Grid', 'Ext.ux.grid.FiltersFeature'],
+	requires: ['BASE.Grid'],
 	constructor:function(config) {
 
-		var featureFilters = Ext.create('Ext.ux.grid.FiltersFeature', {
-			// encode and local configuration options defined previously for easier reuse
-			encode: true, // json encode the filter query
-			local: true,   // defaults to false (remote filtering)
-			filters: [{
-				type: 'string',
-				dataIndex: 'id'
-			}, {
-				type: 'string',
-				dataIndex: 'primary_color_name'
-			}, {
-				type: 'list',
-				dataIndex: 'pattern_name',
-				options: ['small', 'medium', 'large', 'extra large']
-			}]
-		});
-
 		Ext.apply(this, {
-			features: [featureFilters],
 			disablePaging: true
 		});
 

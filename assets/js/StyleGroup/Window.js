@@ -6,7 +6,7 @@ Ext.define('TCMS.StyleGroup.Window', {
 		Ext.apply(this, {
 			title: 'Login',
 			height: 550,
-			width: 950,
+			width: 1000,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -25,15 +25,23 @@ Ext.define('TCMS.StyleGroup.Window', {
 		});
 
 		this.fabricGrid = Ext.create('TCMS.StyleGroup.Fabric.Grid', {
-			title: 'Fabric selection',
+			title: 'Availble fabric',
+			region: 'west',
+			width: 700,
+			split: true,
+			border: true
+		});
+
+		this.selectedGrid = Ext.create('TCMS.StyleGroup.Fabric.SelectedGrid', {
+			title: 'Selected fabric',
 			region: 'center',
 			border: true
 		});
 
 		this.form = Ext.create('BASE.Form', {
-			region: 'west',
+			region: 'north',
 			split: true,
-			width: 250,
+			height: 45,
 			border: true,
 			defaults: {
 				labelWidth: 60,
@@ -45,20 +53,10 @@ Ext.define('TCMS.StyleGroup.Window', {
 				xtype: 'textfield',
 				fieldLabel: 'Name',
 				allowBlank: false
-			}, {
-				name: 'alias',
-				xtype: 'textfield',
-				fieldLabel: 'Alias',
-				allowBlank: false
-			}, {
-				name: 'is_active',
-				xtype: 'checkboxfield',
-				fieldLabel: 'Active',
-				checked: !0
 			}],
 			plugins: [uxFormStatus],
 			mapping: function(o){
-				o.is_active = (o.is_active && o.is_active=='on')?1:0;
+				//o.is_active = (o.is_active && o.is_active=='on')?1:0;
 
 				// prepare json data
 				var selectionsId = _this.fabricGrid.getSelectionsId();
@@ -93,7 +91,14 @@ Ext.define('TCMS.StyleGroup.Window', {
 
 		//this.progress.show();
 
-		this.items = [this.form, this.fabricGrid];
+		var selectPanel = Ext.create('Ext.panel.Panel', {
+			region: 'center',
+			layout: 'border',
+			border: false,
+			items: [this.fabricGrid, this.selectedGrid]
+		});
+
+		this.items = [this.form, selectPanel];
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();

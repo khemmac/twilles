@@ -43,6 +43,7 @@ function min_to_file($source_path, $out_file){
 			"$source_path/grid/filter/StringFilter.js",
 
 			"$source_path/grid/FiltersFeature.js",
+			"$source_path/grid/FiltersFeatureKeepSelection.js",
 
 			"$source_path/grid/menu/ListMenu.js",
 			"$source_path/grid/menu/RangeMenu.js",
