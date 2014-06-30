@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('x','EnumConflictType','ion_auth','PHXView','database');
+$autoload['libraries'] = array('x','EnumConflictType','ion_auth','PHXView','database','session');
 
 
 /*
