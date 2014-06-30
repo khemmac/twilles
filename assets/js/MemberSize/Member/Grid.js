@@ -46,7 +46,7 @@ Ext.define('TCMS.MemberSize.Member.Grid', {
 
 		this.columns = [
 			{text: "Email", width:150, dataIndex:'email', sortable:true, align:'left'},
-			{text: "Name", width:110, dataIndex:'ip_address', sortable:true, align:'left',
+			{text: "Name", width:250, dataIndex:'ip_address', sortable:true, align:'left',
 				renderer: function(v,p,r){
 					return r.data['first_name']+' '+r.data['last_name'];
 				}

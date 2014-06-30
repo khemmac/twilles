@@ -66,18 +66,18 @@ class Member extends CI_Controller {
 		$dir = X::Request('dir');
 
 		// get TotalCount
-		$totalCount = $this->ion_auth->db->count_all_results();
-		//$this->ion_auth->num_rows();
+		$totalCount = $this->user->count_by();// = $this->ion_auth->db->count_all_results();
 
 		if(!empty($limit)){
-			$this->ion_auth->limit($limit);
-			$this->ion_auth->offset($start);
+			$this->user->limit($limit, $start);
+			//$this->user->limit($limit);
+			//$this->user->offset($start);
 		}
 		if(!empty($sort)){
-			$this->ion_auth->order_by($sort, $dir);
+			$this->user->order_by($sort, $dir);
 		}
 
-		$this->ion_auth->select(array(
+		$this->user->_database->select(array(
 'id',
 'INET_NTOA(ip_address) as ip_address',
 'username',
@@ -98,7 +98,8 @@ class Member extends CI_Controller {
 		));
 
 		//$this->{$type}->excecute_filter($filter);
-		$list = $this->ion_auth->users()->result();
+		//$list = $this->ion_auth->users()->result();
+		$list = $this->user->get_many_by();
 
 		X::renderJSON(array(
 			'success'=>true,
