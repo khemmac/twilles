@@ -85,11 +85,10 @@ Ext.define('TCMS.Order.Form', {
 			name : 'delivery_address_type',
 			allowBlank: true,
 			store:[
-				['0', 'Custom'],
+				//['0', 'Custom'],
 				['1', 'Primary'],
 				['2', 'Secondary']
-			],
-			value: '0'
+			]
 		});
 
 		this.triggerMember = _createField('Ext.form.field.Trigger', {
