@@ -371,7 +371,7 @@ Ext.define('TCMS.Order.Item.Form', {
 		this.comboInventoryLabel = _createField('TCMS.BaseMaster.field.ComboInventory', {
 			fieldLabel: 'Label',
 			name : 'inventory_label_id',
-			inventoryType: '2',
+			inventoryType: '3',
 			allowBlank: true
 		});
 		this.comboInventoryPackage = _createField('TCMS.BaseMaster.field.ComboInventory', {
