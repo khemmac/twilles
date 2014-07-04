@@ -5,7 +5,7 @@ Ext.define('TCMS.TrendStyleCollection.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 520,
+			height: 540,
 			width: 900,
 			resizable: false,
 			modal: true,
