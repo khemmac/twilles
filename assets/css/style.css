@@ -2,12 +2,20 @@
 .b-small-magnifier { background-image: url('../images/icons/magnifier.gif') !important; }
 .b-small-tick { background-image: url('../images/icons/tick.gif') !important; }
 .b-small-cross { background-image: url('../images/icons/cross.gif') !important; }
+.b-small-tick-circle-frame { background-image: url('../images/icons/tick-circle-frame.png') !important; }
+.b-small-cross-circle-frame { background-image: url('../images/icons/cross-circle-frame.png') !important; }
 
 .b-small-tick-white { background-image: url('../images/icons/tick-white.png') !important; }
 .b-small-hourglass { background-image: url('../images/icons/hourglass.png') !important; }
 .b-small-truck-box { background-image: url('../images/icons/truck-box.png') !important; }
 .b-small-user-black { background-image: url('../images/icons/user-black.png') !important; }
 .b-small-user-worker { background-image: url('../images/icons/user-worker.png') !important; }
+
+.b-small-record_top { background-image: url('../images/icons/record_top.gif') !important; }
+.b-small-record_up { background-image: url('../images/icons/record_up.gif') !important; }
+.b-small-record_down { background-image: url('../images/icons/record_down.gif') !important; }
+.b-small-record_bottom { background-image: url('../images/icons/record_bottom.gif') !important; }
+.b-small-record_move { background-image: url('../images/icons/record_move.gif') !important; }
 
 .b-flag-green { background-image: url('../images/icons/flag_green.gif') !important; }
 .b-flag-red { background-image: url('../images/icons/flag_red.gif') !important; }
