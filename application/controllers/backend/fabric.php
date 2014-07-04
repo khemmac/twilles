@@ -340,4 +340,24 @@ class Fabric extends CI_Controller {
 
 	}
 
+	public function SetDisplay(){
+		$type = 'fabric';
+		$ids = X::Request('ids');
+		$display = X::Request('display');
+		$display = ($display=='1')?1:0;
+
+		if(!empty($ids)){
+			$this->load->model($type.'_model',$type);
+
+			$skipValidation = TRUE;
+			$this->{$type}->update_many(explode(',', $ids), array(
+				'customize_display'=>$display
+			), $skipValidation);
+		}
+		X::renderJSON(array(
+			'success'=>true,
+			'data'=>$ids
+		));
+	}
+
 }

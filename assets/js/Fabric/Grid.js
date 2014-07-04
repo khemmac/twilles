@@ -54,6 +54,7 @@ Ext.define('TCMS.Fabric.Grid', {
 				{ name:'cost', type:'float' },
 
 				{ name:'is_active', type:'boolean' },
+				{ name:'customize_display', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
 				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -84,6 +85,12 @@ Ext.define('TCMS.Fabric.Grid', {
 			{text: "Length(yard)", width:80, dataIndex:'length_yards', sortable:true, align:'left'},
 			{text: "Price", width:60, dataIndex:'price', sortable:true, align:'left'},
 			{text: "cost", width:60, dataIndex:'cost', sortable:true, align:'left'},
+			{text: "Display", width:50, dataIndex:'customize_display', sortable:true, align:'center',
+				renderer: function(v,p,r){
+					var icns = (v)?'tick-circle-frame':'cross-circle-frame';
+					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".png') no-repeat center center";
+				}
+			},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){
 					var icns = (v)?'tick':'cross';

@@ -6,7 +6,7 @@ Ext.define('BASE.ux.FormStatus', {
 	init: function (form) {
 		var me = this;
 
-		me.moduleType.length;
+		//me.moduleType.length;
 
 		form = Ext.apply(form, {
 			getSetStatusParams : function() {

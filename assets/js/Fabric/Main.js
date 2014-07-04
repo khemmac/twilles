@@ -39,13 +39,28 @@ Ext.define('TCMS.Fabric.Main', {
 			iconCls: 'b-small-cross'
 		});
 
+		var displayAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Display',
+			iconCls: 'b-small-tick-circle-frame'
+		});
+
+		var hideAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Hide',
+			iconCls: 'b-small-cross-circle-frame'
+		});
+
 		var importAct = Ext.create('BASE.Action', {
 			text: 'Import',
 			iconCls: 'b-import'
 		});
 
+		var changePriorityAct = Ext.create('BASE.Action', {
+			text: 'Change priority',
+			iconCls: 'b-small-record_move'
+		});
+
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, deleteAct, '-', importAct]
+			items: [addAct, editAct, deleteAct, '-', displayAct, hideAct, '-', importAct, '-', changePriorityAct]
 		});
 
 		var window = Ext.create('TCMS.Fabric.Window');
@@ -53,8 +68,8 @@ Ext.define('TCMS.Fabric.Main', {
 		var grid = Ext.create('TCMS.Fabric.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, deleteAct, '-', importAct],
-			validateActions : [addAct, editAct, deleteAct, importAct]
+			tbar: [addAct, editAct, deleteAct, '-', displayAct, hideAct, '-', importAct, '-', changePriorityAct],
+			validateActions : [addAct, editAct, deleteAct, displayAct, hideAct, importAct, changePriorityAct]
 		});
 
 		// ** IMPORT
@@ -110,8 +125,27 @@ Ext.define('TCMS.Fabric.Main', {
 			});
 		});
 
+		displayAct.setHandler(function(){
+			window.openDialog('Display', 'setDisplay', grid, {
+				ids: grid.getSelectionsId().join(','),
+				display:1
+			});
+		});
+
+		hideAct.setHandler(function(){
+			window.openDialog('Hide', 'setDisplay', grid, {
+				ids: grid.getSelectionsId().join(','),
+				display:0
+			});
+		});
+
 		importAct.setHandler(function(){
 			importWindow.openDialog('Import fabric', 'add');
+		});
+
+		var priorityWindow = Ext.create('TCMS.Fabric.Priority.Window');
+		changePriorityAct.setHandler(function(){
+			priorityWindow.openDialog('Change fabric priority', 'add');
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
@@ -130,6 +164,11 @@ Ext.define('TCMS.Fabric.Main', {
 		});
 
 		window.form.on('afterSetStatus', function() {
+			window.hide();
+			grid.load();
+		});
+
+		window.form.on('afterSetDisplay', function() {
 			window.hide();
 			grid.load();
 		});

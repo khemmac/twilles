@@ -190,7 +190,23 @@ Ext.define('TCMS.Fabric.Window', {
 					type: 'fabric'
 				}, this.formParams);
 			},
-			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
+			getLoadUrl: function(){ return __site_url+'backend/dao/load'; },
+			setDisplay : function() {
+				var _this = this,
+					url = __site_url+'backend/fabric/SetDisplay',
+					_params = Ext.apply({}, _this.formParams);
+				_this.form.load({
+					url : url,
+					clientValidation : true,
+					success : function(form, act) {
+						_this.fireEvent('afterSetDisplay', _this, act);
+					},
+					failure : _this.failureAlert,
+					waitMsg : 'Changing display status...',
+					waitTitle : 'Please wait...',
+					params : _params
+				});
+			}
 		});
 
 		this.submitAct = Ext.create('BASE.Action', {
@@ -283,6 +299,12 @@ Ext.define('TCMS.Fabric.Window', {
 			var _this = this;
 			this.hide(null, function() {
 				_this.form.setStatus();
+			});
+		},
+		"setDisplay" : function() {
+			var _this = this;
+			this.hide(null, function() {
+				_this.form.setDisplay();
 			});
 		}
 	}
