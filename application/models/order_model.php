@@ -30,7 +30,7 @@ Class Order_model extends Base_model
     }
 
 	public function before_create_generate_code($o){
-
+/*
 		$sql = "
 SELECT
 CONCAT(
@@ -45,6 +45,23 @@ CONCAT(
 
 		$q = $this->_database->query($sql, array(
 			$o['member_id'], $o['order_date'],
+			$o['member_id'], $o['order_date']
+		));
+		$r = $q->first_row();
+*/
+		$sql = "
+SELECT
+CONCAT(
+	DATE_FORMAT(?, '%y%m'), -- Year and Year
+	LPAD(?, 5, '0'), -- MEMBER ID
+	(SELECT COUNT(id)+1 FROM tbl_order WHERE member_id=?
+		AND DATE_FORMAT(order_date, '%y%m')=DATE_FORMAT(?, '%y%m')
+	) -- Running number (use id of tbl_order + 1)
+) AS order_code
+		";
+
+		$q = $this->_database->query($sql, array(
+			$o['order_date'], $o['member_id'],
 			$o['member_id'], $o['order_date']
 		));
 		$r = $q->first_row();

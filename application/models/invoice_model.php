@@ -19,7 +19,7 @@ Class Invoice_model extends Base_model
     }
 
     public function before_create_generate_code($o){
-
+/*
 		$sql = "
 SELECT
 CONCAT(
@@ -28,6 +28,17 @@ CONCAT(
 	LPAD((SELECT COUNT(vi.id)+1 FROM v_invoice vi WHERE member_id=(SELECT member_id FROM tbl_order WHERE id=?)
 		AND DATE_FORMAT(invoice_date, '%y%m%d')=DATE_FORMAT(?, '%y%m%d')
 	), 3, '0') -- Running number (use id of v_invoice + 1)
+) AS invoice_code
+		";
+*/
+		$sql = "
+		SELECT
+CONCAT(
+	DATE_FORMAT(?, '%y%m%d'), -- Month and Year
+	LPAD((SELECT member_id FROM tbl_order WHERE id=?), 5, '0'), -- MEMBER ID
+	(SELECT COUNT(vi.id)+1 FROM v_invoice vi WHERE member_id=(SELECT member_id FROM tbl_order WHERE id=?)
+		AND DATE_FORMAT(invoice_date, '%y%m%d')=DATE_FORMAT(?, '%y%m%d')
+	) -- Running number (use id of v_invoice + 1)
 ) AS invoice_code
 		";
 
