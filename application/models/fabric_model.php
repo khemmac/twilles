@@ -51,4 +51,13 @@ Class Fabric_model extends Base_model
 		)
 	);
 
+	// FOR PRIORITY
+	public $tree_fields = 'id,name';
+	public function populate_tree($list){
+		foreach($list AS $o){
+			$o->text = $o->id.' - '.$o->name;
+		}
+		return $list;
+	}
+
 }
