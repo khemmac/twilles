@@ -17,4 +17,12 @@ Class Style_collection_model extends Base_model
 			$this->_database->where('style_type', $o->style_type);
 	}
 
+	protected $validate = array(
+		array(
+			'field'		=> 'code',
+			'label'		=> 'Code',
+			'rules'		=> 'trim|required|callback_check_duplicate_code'
+		)
+	);
+
 }
