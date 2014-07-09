@@ -6,6 +6,7 @@ class Invoice_report extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('invoice_model','invoice');
+		$this->load->model('v_invoice_model','v_invoice');
 		$this->load->model('invoice_item_model','invoice_item');
 		$this->load->model('v_invoice_item_model','v_invoice_item');
 		//$this->load->model('v_order_model','v_order');
@@ -21,13 +22,17 @@ class Invoice_report extends CI_Controller {
 
 		// prepare data
 		$order_id = $this->uri->segment(4);
-		$inv = $this->invoice->LoadByOrderId($order_id);
+		$inv = $this->v_invoice->LoadByOrderId($order_id);
+
+		$subTotal = $inv->total * (1.0 / (1.0 + ($inv->vat_percent / 100.0)));
+		$vatAmount = $inv->total - $subTotal;
 
 		$invSum = array(
+			'discount'=> 0.0,
 			'total' => $inv->total,
 			'vat_percent'=> $inv->vat_percent,
-			'vat_amount'=>($inv->total * ($inv->vat_percent)/100.0),
-			'sub_total'=>($inv->total * (100.0 - $inv->vat_percent)/100.0)
+			'vat_amount'=>$vatAmount,
+			'sub_total'=>$subTotal
 		);
 
 		$invItemList = $this->v_invoice_item->get_many_by(array(
@@ -128,18 +133,26 @@ class InvoicePDF extends TCPDF {
 		$this->SetLineStyle(array('width' => 0.3, 'cap' => 'butt', 'join' => 'miter',
 			'dash' => '1,2', 'color' => array(142, 102, 66)));
 
-		$this->Cell(179, 10, 'Billed to:', 'LT', 0, 'L', 1, '', 0, 0, 'T', 'B');
-		$this->Cell(50, 10, 'Invoice #', 'LT', 0, 'L', 1, '', 0, 0, 'T', 'B');
+		$this->Cell(179, 8, 'Billed to:', 'LT', 0, 'L', 1, '', 0, 0, 'T', 'B');
+		$this->Cell(50, 8, 'Invoice #', 'LT', 0, 'L', 1, '', 0, 0, 'T', 'B');
 		$this->SetFont('', '');
-		$this->Cell(60, 10, $data->invoice_code, 'RT', 0, 'R', 1, '', 0, 0, 'T', 'B');
+		$this->Cell(60, 8, $data->invoice_code, 'RT', 0, 'R', 1, '', 0, 0, 'T', 'B');
 		$this->Ln();
-		$this->SetFont('', 'B');
-		$this->Cell(179, 10, $data->bill_fullname, 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
-		$this->Cell(50, 10, 'Invoice Date', 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
-		$this->SetFont('', '');
-		$this->Cell(60, 10, $data->invoice_date, 'RB', 0, 'R', 1, '', 0, 0, 'T', 'T');
 
+		$this->SetFont('', 'B');
+		$this->Cell(179, 6, $data->bill_fullname, 'L', 0, 'L', 1, '', 0, 0, 'T', 'C');
+		$this->Cell(50, 6, 'Invoice Date', 'L', 0, 'L', 1, '', 0, 0, 'T', 'C');
+		$this->SetFont('', '');
+		$this->Cell(60, 6, $data->invoice_date, 'R', 0, 'R', 1, '', 0, 0, 'T', 'C');
 		$this->Ln();
+
+		$this->SetFont('', 'B');
+		$this->Cell(179, 8, $data->invoice_address, 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
+		$this->Cell(50, 8, '', 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
+		$this->SetFont('', '');
+		$this->Cell(60, 8, '', 'RB', 0, 'R', 1, '', 0, 0, 'T', 'T');
+		$this->Ln();
+
 		$this->Cell('', 1, '', '');
 	}
 
@@ -196,6 +209,11 @@ class InvoicePDF extends TCPDF {
 		$this->SetLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter',
 			'dash' => '1,2', 'color' => array(142, 102, 66)));
 
+		$this->Ln();
+		$this->Cell($w[0], 8, '', '');
+		$this->Cell($w[1], 8, 'Discount', 'B', 0, 'L');
+		$this->SetFont('', '');
+		$this->Cell($w[2], 8, myNumberFormat($data['discount'], TRUE), 'B', 0, 'R');
 		$this->Ln();
 		$this->Cell($w[0], 8, '', '');
 		$this->Cell($w[1], 8, 'Sub Total', 'B', 0, 'L');
