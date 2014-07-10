@@ -5,7 +5,7 @@ Ext.define('TCMS.SendShirt.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 390,
+			height: 290,
 			width: 600,
 			resizable: false,
 			modal: true,
@@ -21,6 +21,20 @@ Ext.define('TCMS.SendShirt.Window', {
 	initComponent : function() {
 		var _this=this;
 
+
+		this.returnAct = Ext.create('BASE.ActionSingle', {
+			text: 'Returned',
+			iconCls: 'b-small-arrow-return-180'
+		});
+		this.returnAct.validate = function(source) {
+			this.validateSingle(source);
+			if(!this.isDisabled()){
+				var o = source.getSelectedObject();
+				if(o.get('status')!=1)
+					this.setDisabled(true);
+			}
+		};
+
 		this.completeAct = Ext.create('BASE.ActionSingle', {
 			text: 'Completed',
 			iconCls: 'b-small-tick'
@@ -29,7 +43,7 @@ Ext.define('TCMS.SendShirt.Window', {
 			this.validateSingle(source);
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject();
-				if(o.get('status')>=2)
+				if(o.get('status')!=2)
 					this.setDisabled(true);
 			}
 		};
@@ -39,7 +53,7 @@ Ext.define('TCMS.SendShirt.Window', {
 			width: 240,
 			split: true,
 			border:true,
-			tbar: [this.completeAct]
+			tbar: [this.returnAct, this.completeAct]
 		});
 
 		var _fieldDefaults = {
@@ -58,10 +72,6 @@ Ext.define('TCMS.SendShirt.Window', {
 			defaults: _fieldDefaults,
 			items: [{
 				xtype:'displayfield',
-				name: 'appointment_type_name',
-				fieldLabel: 'Type'
-			},{
-				xtype:'displayfield',
 				name: 'first_name',
 				fieldLabel: 'First name'
 			},{
@@ -71,39 +81,21 @@ Ext.define('TCMS.SendShirt.Window', {
 			},
 			_createField('BASE.field.FormattableDisplayField', {
 				xtype:'displayfield',
-				name: 'appointment_date',
-				fieldLabel: 'Date',
+				name: 'create_date',
+				fieldLabel: 'Submit date',
 				displayFormat: 'd/m/Y H:i'
 			}),{
 				xtype:'displayfield',
-				name: 'address_line_1',
-				fieldLabel: 'Address 1',
-				renderer: function(v){
-					if(v) return v.replace(/\n/g, '<br />');
-				}
+				name: 'shirt_brand',
+				fieldLabel: 'Brand'
 			},{
 				xtype:'displayfield',
-				name: 'address_line_2',
-				fieldLabel: 'Address 2',
-				renderer: function(v){
-					if(v) return v.replace(/\n/g, '<br />');
-				}
+				name: 'shirt_color',
+				fieldLabel: 'Color'
 			},{
 				xtype:'displayfield',
-				name: 'address_city',
-				fieldLabel: 'City'
-			},{
-				xtype:'displayfield',
-				name: 'address_state_province',
-				fieldLabel: 'State/Province'
-			},{
-				xtype:'displayfield',
-				name: 'address_zip',
-				fieldLabel: 'Zip'
-			},{
-				xtype:'displayfield',
-				name: 'address_country_name',
-				fieldLabel: 'Country'
+				name: 'shirt_size',
+				fieldLabel: 'Size'
 			}],
 			getLoadUrl: function(){ return __site_url+'backend/dao/load'; },
 			getDeleteUrl: function(){ return __site_url+'backend/dao/delete'; },
@@ -111,7 +103,7 @@ Ext.define('TCMS.SendShirt.Window', {
 				return Ext.apply({}, this.formParams);
 			},
 			getSetCompleteUrl : function() {
-				return __site_url+'backend/appointment/SetComplete';
+				return __site_url+'backend/send_shirt/SetComplete';
 			},
 			setComplete : function() {
 				var _this = this;
@@ -126,6 +118,21 @@ Ext.define('TCMS.SendShirt.Window', {
 					waitMsg : 'Changing status...',
 					waitTitle : 'Please wait...',
 					params : _this.getSetCompleteParams()
+				});
+			},
+			setReturn : function() {
+				var _this = this;
+				var url = __site_url+'backend/send_shirt/SetReturn';
+				_this.form.load({
+					url : url,
+					clientValidation : true,
+					success : function(form, act) {
+						_this.fireEvent('afterChangeStatus', _this, act);
+					},
+					failure : _this.failureAlert,
+					waitMsg : 'Changing status...',
+					waitTitle : 'Please wait...',
+					params : Ext.apply({}, _this.formParams)
 				});
 			}
 		});
@@ -186,6 +193,12 @@ Ext.define('TCMS.SendShirt.Window', {
 			var _this = this;
 			this.hide(null, function() {
 				_this.form.deleteData();
+			});
+		},
+		"setReturn" : function() {
+			var _this = this;
+			this.hide(null, function() {
+				_this.form.setReturn();
 			});
 		},
 		"setComplete" : function() {

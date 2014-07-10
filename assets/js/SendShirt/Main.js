@@ -6,7 +6,7 @@ Ext.define('TCMS.SendShirt.Main', {
 		Ext.apply(this, {
 			layout: 'border',
 			modelType: 'appointment',
-			modelVType: 'v_appointment'
+			modelVType: 'v_send_shirt'
 		});
 
 		return this.callParent(arguments);
@@ -27,14 +27,14 @@ Ext.define('TCMS.SendShirt.Main', {
 		var window = Ext.create('TCMS.SendShirt.Window');
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [viewAct, deleteAct, window.completeAct]
+			items: [viewAct, deleteAct, window.returnAct, window.completeAct]
 		});
 
 		var grid = Ext.create('TCMS.SendShirt.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [viewAct, deleteAct, ,'-', window.completeAct],
-			validateActions : [viewAct, deleteAct, window.completeAct]
+			tbar: [viewAct, deleteAct, ,'-', window.returnAct, window.completeAct],
+			validateActions : [viewAct, deleteAct, window.returnAct, window.completeAct]
 		});
 
 		this.items = [grid];
@@ -55,6 +55,12 @@ Ext.define('TCMS.SendShirt.Main', {
 		});
 
 
+		window.returnAct.setHandler(function(){
+			window.form.formParams = {
+				id: grid.getSelectedId()
+			};
+			window.form.setReturn();
+		});
 		window.completeAct.setHandler(function(){
 			window.form.formParams = {
 				id: grid.getSelectedId()

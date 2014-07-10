@@ -3,7 +3,7 @@ Ext.define('TCMS.SendShirt.Grid', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			modelType: 'v_appointment'
+			modelType: 'v_send_shirt'
 		});
 
 		return this.callParent(arguments);
@@ -31,19 +31,16 @@ Ext.define('TCMS.SendShirt.Grid', {
 				{ name:'id', type:'int' },
 				{ name:'user_id', type:'id' },
 				{ name:'user_full_name', type:'string' },
-				{ name:'appointment_type', type:'string' },
-				{ name:'appointment_type_name', type:'string' },
 				{ name:'full_name', type:'string' },
 
-				{ name:'appointment_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				{ name:'address_city', type:'string' },
-				{ name:'address_state_province', type:'string' },
-				{ name:'address_zip', type:'string' },
-				{ name:'address_country', type:'int' },
-				{ name:'address_country_name', type:'string' },
+				{ name:'shirt_brand', type:'string' },
+				{ name:'shirt_color', type:'string' },
+				{ name:'shirt_size', type:'string' },
+
 				{ name:'status', type:'int' },
 				{ name:'status_name', type:'string' },
-				{ name:'completed_date', type:'string' },
+				{ name:'returned_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
+				{ name:'completed_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'create_by', type:'string' },
@@ -57,31 +54,36 @@ Ext.define('TCMS.SendShirt.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Type", width:130, dataIndex:'appointment_type', sortable:true, align:'left',
+			{text: "Full name", width:150, dataIndex:'full_name', sortable:true, align:'left',
 				renderer: function(v,p,r){
-					if(v=='PICKUP'){
-						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/block-share.png\') 5px center no-repeat;';
-						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pick up your shirt';
-					}else if(v=='STYLIST'){
-						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/user-black.png\') 5px center no-repeat;';
-						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Request stylist';
-					}
+					if(Ext.isEmpty(v.trim())){
+						return r.get('user_full_name');
+					}else
+						return v;
 				}
 			},
-			{text: "Full name", width:150, dataIndex:'full_name', sortable:true, align:'left'},
-			{text: "Appointment date", width:100, dataIndex:'appointment_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i'):'-'; }
-			},
+			{text: "Brand", width:100, dataIndex:'shirt_brand', sortable:true, align:'left'},
+			{text: "Color", width:100, dataIndex:'shirt_color', sortable:true, align:'left'},
+			{text: "Size", width:100, dataIndex:'shirt_size', sortable:true, align:'left'},
 			{text: "Status", width:100, dataIndex:'status', sortable:false, align:'left',
 				renderer: function(v,p,r){
 					if(v==1){
 						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/exclamation.gif\') 5px center no-repeat; color:red;';
 						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
 					}else if(v==2){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/arrow-return-180.png\') 5px center no-repeat; color:#cccc00;';
+						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
+					}else if(v==3){
 						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/tick.gif\') 5px center no-repeat; color:green;';
 						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
 					}
 				}
+			},
+			{text: "Returned date", width:100, dataIndex:'returned_date', sortable:true, align:'left',
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i'):'-'; }
+			},
+			{text: "Complete date", width:100, dataIndex:'completed_date', sortable:true, align:'left',
+				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i'):'-'; }
 			},
 			{text: "Submit date", width:120, dataIndex:'create_date', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }

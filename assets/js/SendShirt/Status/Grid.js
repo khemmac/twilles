@@ -17,7 +17,7 @@ Ext.define('TCMS.SendShirt.Status.Grid', {
 		this.store = new Ext.data.JsonStore({
 			proxy: {
 				type: 'ajax',
-				url: __site_url+"backend/appointment/LoadStatusList",
+				url: __site_url+"backend/send_shirt/LoadStatusList",
 				reader: {
 					type: 'json',
 					root: 'rows',
@@ -45,6 +45,9 @@ Ext.define('TCMS.SendShirt.Status.Grid', {
 						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/exclamation.gif\') 5px center no-repeat; color:red;';
 						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
 					}else if(v==2){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/arrow-return-180.png\') 5px center no-repeat; color:#cccc00;';
+						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
+					}else if(v==3){
 						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/tick.gif\') 5px center no-repeat; color:green;';
 						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+r.get('status_name');
 					}

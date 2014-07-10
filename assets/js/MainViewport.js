@@ -143,7 +143,7 @@ Ext.define('TCMS.MainViewport', {
 				}]
 			},{
 				xtype: 'buttongroup',
-				columns: 1,
+				columns: 2,
 				title: 'Appointments',
 				padding:'6 0 5 0',
 				items: [{
@@ -154,6 +154,14 @@ Ext.define('TCMS.MainViewport', {
 					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
 					href: __site_url+'cms/appointment'
+				}, {
+					text: 'Send shirt',
+					scale: 'large',
+					rowspan: 1, iconCls: 'menu-large-send-user',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/send_shirt'
 				}]
 			}/*,{
 				xtype: 'buttongroup',

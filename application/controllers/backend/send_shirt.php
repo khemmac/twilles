@@ -19,11 +19,18 @@ class Send_shirt extends CI_Controller {
 		$o = $this->v_send_shirt->get($appointment_id);
 		$r = array();
 
-		if($o->status==2)
+		if($o->status==3)
 			array_push($r, array(
-				'status'=>2,
+				'status'=>3,
 				'status_name'=>'Completed',
 				'status_date'=>$o->completed_date
+			));
+
+		if($o->status>=2)
+			array_push($r, array(
+				'status'=>2,
+				'status_name'=>'Returned',
+				'status_date'=>$o->returned_date
 			));
 
 		array_push($r, array(

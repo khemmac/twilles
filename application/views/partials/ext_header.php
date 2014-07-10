@@ -8,7 +8,7 @@ function endsWith($haystack, $needle)
 	return (substr($haystack, -$length) === $needle);
 }
 
-$SV = '?v=2.4';
+$SV = '?v=2.5';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +64,6 @@ $SV = '?v=2.4';
 			}
 		});
 	</script>
-	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css') ?>" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css').$SV ?>" />
 </head>
 <body>
