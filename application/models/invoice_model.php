@@ -78,7 +78,6 @@ CONCAT(
 					'invoice_id'=>$inv->id
 				));
 
-				$curDate = date('Y-m-d H:i:s');
 				// update invoice header
 				$res = $this->update($inv->id, array(
 					'bill_fullname' => $odr->member_fullname,
@@ -98,8 +97,8 @@ CONCAT(
 		}else{
 			$mustCreate = TRUE;
 
-			$curDate = date('Y-m-d H:i:s');
-			// insert invoice
+			//$curDate = date('Y-m-d H:i:s');
+			$curDate = $odr->order_date;
 			$res = $this->insert(array(
 				'order_id' => $odr->id,
 				'invoice_date' => $curDate,
