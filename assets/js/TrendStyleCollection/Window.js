@@ -37,8 +37,26 @@ Ext.define('TCMS.TrendStyleCollection.Window', {
 		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
+			var uploadStats = _this.form.uploader.getStats();
+			if(uploadStats.files_queued>0){
+				var progressBox = Ext.MessageBox.show({
+					title: 'Please wait',
+					progressText: 'Uploading...',
+					width:300,
+					progress:true,
+					closable:false,
+					closeAction: 'destroy'
+				});
+
+				_this.form.uploader.progressBar = progressBox;
+				_this.form.uploader.startUpload();
+				return;
+			}else
+				_this.form.saveData();
+		});
+
+		this.form.uploader.on('allUploadsComplete', function(){
 			_this.form.saveData();
-			//_this.fireEvent('login_success');
 		});
 
 		this.cancelAct.setHandler(function(){

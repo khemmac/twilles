@@ -317,6 +317,11 @@ Ext.define('TCMS.StyleCollection.Form', {
 					xtype: 'textarea',
 					fieldLabel: 'Remark',
 					rows: 3
+				}, {
+					name: 'is_active',
+					xtype: 'checkboxfield',
+					fieldLabel: 'Active',
+					checked: !0
 				}]
 			},{
 				// right column
@@ -335,101 +340,10 @@ Ext.define('TCMS.StyleCollection.Form', {
 						this.comboFabricCuffInner,
 						this.comboFabricCuffOuter
 					]
-				}, {
-					name: 'is_active',
-					xtype: 'checkboxfield',
-					fieldLabel: 'Active',
-					checked: !0
 				}]
 			}]
 		}];
-/*
-		this.items = [{
-			// column layout with 2 columns
-			layout:'column',
-			border:false,
-			// defaults for columns
-			defaults:{
-				columnWidth:0.5,
-				layout:'form',
-				border:false,
-				xtype:'panel',
-				bodyStyle:'padding:0 22px 0 0'
-			},
-			items:[{
-				// left column
-				// defaults for fields
-				defaults:_fieldDefaults,
-				items:[{
-					name: 'code',
-					xtype: 'textfield',
-					fieldLabel: 'Code',
-					allowBlank: false
-				},
-				//this.comboStyleType,
-				this.comboStyleGroup, {
-					xtype: 'fieldset',
-					title: 'Collar',
-					defaults: _fieldDefaults,
-					items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, {
-						xtype:'textfield',
-						name: 'part_collar_thickness',
-						fieldLabel: 'Thickness'
-					}, this.comboPartCollarStay]
-				}, {
-					xtype: 'fieldset',
-					title: 'Placket',
-					defaults: _fieldDefaults,
-					items: [this.comboPartPlacket, this.numberPlacketWidth]
-				},
-				this.comboStitchingType, {
-					xtype: 'fieldset',
-					title: 'Inventory',
-					defaults: _fieldDefaults,
-					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
-				}]
-			},{
-				// right column
-				// defaults for fields
-				defaults:_fieldDefaults,
-				items:[{
-					name: 'description',
-					xtype: 'textarea',
-					fieldLabel: 'Detail',
-					rows: 3
-				}, {
-					xtype: 'fieldset',
-					title: 'Cuff',
-					defaults: _fieldDefaults,
-					items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, {
-						xtype:'textfield',
-						name: 'part_cuff_thickness',
-						fieldLabel: 'Thickness'
-					}]
-				}, {
-					xtype: 'fieldset',
-					title: 'Other parts',
-					defaults: _fieldDefaults,
-					items: [
-						this.comboPartPocket,
-						this.comboPartYoke,
-						this.comboPartPleat,
-						this.comboPartBottom
-					]
-				}, {
-					name: 'remark',
-					xtype: 'textarea',
-					fieldLabel: 'Remark',
-					rows: 3
-				}, {
-					name: 'is_active',
-					xtype: 'checkboxfield',
-					fieldLabel: 'Active',
-					checked: !0
-				}]
-			}]
-		}];
-*/
+
 		return this.callParent(arguments);
 	}
 });

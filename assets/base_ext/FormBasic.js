@@ -1,5 +1,8 @@
 Ext.define('BASE.FormBasic', {
 	extend	: 'Ext.form.Basic',
+
+	uploadFields: [],
+
 	constructor:function(config) {
 
 		return this.callParent(arguments);
@@ -19,6 +22,7 @@ Ext.define('BASE.FormBasic', {
 			isArray = Ext.isArray,
 			field, data, val, bucket, name;
 
+		var u=[];
 		for (f = 0; f < fLen; f++) {
 			field = fields[f];
 
@@ -53,7 +57,11 @@ Ext.define('BASE.FormBasic', {
 					}
 				}
 			}
+			//console.log('CHECK instance of swfupload', (f instanceof Ext.ux.SWFUpload));
+			if(typeof(Ext.ux.SWFUpload)=="function" && f instanceof Ext.ux.SWFUpload)
+				u.push(field);
 		}
+		this.uploadFields=u;
 
         if(typeof(this.mapping)=="function")
             values = this.mapping(values);
@@ -63,6 +71,9 @@ Ext.define('BASE.FormBasic', {
 		}
 
 		return values;
+	},
+	hasFileUpload : function() {
+		return (this.uploadFields && this.uploadFields.length > 0);
 	},
 	getInvalidFields: function() {
 		var invalidFields = [];

@@ -6,6 +6,7 @@ class Style_collection extends dao {//CI_Controller {
     {
         parent::__construct();
 
+		$this->load->model('style_collection_model','style_collection');
     }
 
 	public function index()
@@ -17,7 +18,6 @@ class Style_collection extends dao {//CI_Controller {
 		$id = X::Request('id');
 		$style_type = X::Request('style_type');
 
-		$this->load->model('style_collection_model','style_collection');
 		$pk = $this->style_collection->primary_key;
 
 		$w = array(
@@ -36,6 +36,50 @@ class Style_collection extends dao {//CI_Controller {
 			return FALSE;
 		}else
 			return TRUE;
+	}
+
+	public function upload()
+	{
+		$uid = X::Request('uploadUid');
+
+		$ulPath = $this->style_collection->photo_order_path;
+		//echo $ulPath.PHP_EOL;
+
+		$config['upload_path'] = $ulPath;
+		$config['file_name'] = $uid;
+		$config['allowed_types'] = 'png';
+		$size_mb = 5; //Max file size allowed in MB
+ 		$config['max_size'] = $size_mb * 1024; //
+ 		//$config['remove_spaces'] = TRUE;
+    	//$config['encrypt_name'] = TRUE;
+
+
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+		print_r($_POST);
+		print_r($_FILES);
+		$ulResult = $this->upload->do_upload();
+
+		echo '$$$$$$$$$$$$$$$$$$$$$$$$$'.PHP_EOL;
+		print_r($config);
+		echo '$$$$$$$$$$$$$$$$$$$$$$$$$'.PHP_EOL;
+		print_r($ulResult);
+		echo '$$$$$$$$$$$$$$$$$$$$$$$$$'.PHP_EOL;
+
+		if (!$ulResult)
+		{
+			echo 'FAILURE';
+			$ulError = $this->upload->display_errors();
+			echo PHP_EOL;
+			print_r($ulError);
+		}
+		else
+		{
+			$ulData = $this->upload->data();
+			$excel_file = $ulData['full_path'];
+
+			echo $excel_file;
+		}
 	}
 
 }

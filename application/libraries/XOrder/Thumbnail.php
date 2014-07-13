@@ -21,6 +21,14 @@ class Thumbnail {
 	public function GenerateHTML($item){
 		$measure_type = $this->sizeDetail->get_measure_type($item);//$this->dtl_measure_type($item);
 
+		$CI =& get_instance();
+		$html = $CI->load->view('report/Order', array(
+			'measure_type'=>$measure_type,
+			'item'=>$item,
+			'inst'=>$this,
+			'CI'=>$CI
+		), true);
+/*
 		$html =
 '<table cellspacing="0" cellpadding="1" border="1">
 	<tr>
@@ -197,11 +205,12 @@ class Thumbnail {
 		<td colspan="2">'.nl2br($item->detail).'</td>
     </tr>
 </table>';
+*/
 		return $html;
 
 	}
 
-	private function mergeTmbnl($partPrefix, $getImgsFunc, $item){
+	public function mergeTmbnl($partPrefix, $getImgsFunc, $item){
 
 		$destPath = $this->path->getThumbnailsOutputPath(array(
 			$item->id, $partPrefix, $this->util->getDateStr($item).'.jpg'
@@ -222,7 +231,7 @@ class Thumbnail {
 		return $imgTag;
 	}
 
-	private function getTmbnlImgsCollar($item){
+	public function getTmbnlImgsCollar($item){
 		$imgs = array();
 		// base img
 		array_push($imgs, $this->path->getThumbnailsPath(array(
@@ -238,7 +247,7 @@ class Thumbnail {
 		return $imgs;
 	}
 
-	private function getTmbnlImgsCuff($item){
+	public function getTmbnlImgsCuff($item){
 		$imgs = array();
 
 		$code = $item->part_cuff_id;
@@ -263,7 +272,7 @@ class Thumbnail {
 		return $imgs;
 	}
 
-	private function getTmbnlImgsBody($item){
+	public function getTmbnlImgsBody($item){
 		$imgs = array();
 
 		$code = $item->part_placket_id;
@@ -290,7 +299,7 @@ class Thumbnail {
 		return array_merge($imgs, $imgsCollar);
 	}
 
-	private function getTmbnlImgsBack($item){
+	public function getTmbnlImgsBack($item){
 		$imgs = array();
 
 		$code = $item->part_pleat_id;
@@ -299,7 +308,7 @@ class Thumbnail {
 		return $imgs;
 	}
 
-	private function getTmbnlImgsYoke($item){
+	public function getTmbnlImgsYoke($item){
 		$imgs = array();
 
 		$code = $item->part_yoke_id;
@@ -308,7 +317,7 @@ class Thumbnail {
 		return $imgs;
 	}
 
-	private function getTmbnlImgsBottom($item){
+	public function getTmbnlImgsBottom($item){
 		$imgs = array();
 		$code = $item->part_bottom_id;
 
@@ -319,7 +328,7 @@ class Thumbnail {
 		return $imgs;
 	}
 
-	private function getFabricHtmlDetail($item, $fabric_name_property){
+	public function getFabricHtmlDetail($item, $fabric_name_property){
 		$_CI =& get_instance();
 		$fabric_ext = '.jpg';
 
@@ -354,7 +363,7 @@ class Thumbnail {
 	}
 
 	// Detail func
-	private function getCollarDetail($o){
+	public function getCollarDetail($o){
 		$str_arr = array();
 		if(empty($o->part_collar_id))
 			return '-';
@@ -369,7 +378,7 @@ class Thumbnail {
 		array_push($str_arr, (($o->part_collar_stay==0)?'ไม่':'').'มีคอเสียบ');
 		return implode('<br />', $str_arr);
 	}
-	private function getCuffDetail($o){
+	public function getCuffDetail($o){
 		$str_arr = array();
 		if(empty($o->part_cuff_id))
 			return '-';
@@ -383,7 +392,7 @@ class Thumbnail {
 			array_push($str_arr, myNumberFormat($o->part_cuff_width, 2).' นิ้ว');
 		return implode('<br />', $str_arr);
 	}
-	private function getBodyDetail($o){
+	public function getBodyDetail($o){
 		$str_arr = array();
 		if(empty($o->part_cuff_id))
 			return '-';
@@ -396,7 +405,7 @@ class Thumbnail {
 		return implode('<br />', $str_arr);
 	}
 
-	private function getInventoryDetail($o){
+	public function getInventoryDetail($o){
 		$str_arr = array();
 		if(!empty($o->inventory_package_name))
 			array_push($str_arr, 'Package : '.$o->inventory_package_name);

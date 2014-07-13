@@ -123,6 +123,10 @@ Ext.define('TCMS.Order.Item.Grid', {
 				{ name:'fabric_cuff_outer_id', type:'string' },
 				{ name:'fabric_cuff_outer_name', type:'string' },
 
+				{ name:'style_collection_id', type:'int' },
+				{ name:'style_collection_type', type:'int' },
+				{ name:'style_collection_code', type:'string' },
+
 				{ name:'fabric_type_id', type:'int' },
 				{ name:'fabric_type_name', type:'string' },
 				{ name:'fabric_type_cost', type:'float' },
@@ -141,12 +145,27 @@ Ext.define('TCMS.Order.Item.Grid', {
 		this.columns = [
 			new Ext.grid.RowNumberer(),
 			{text: "Body fabric", width:100, dataIndex:'fabric_body_id', sortable:true, align:'left'},
-			{text: "Fabric type", width:130, dataIndex:'fabric_type_name', sortable:true, align:'left',
+			{text: "Fabric type", width:90, dataIndex:'fabric_type_name', sortable:true, align:'left',
 				renderer: function(v){ return (!Ext.isEmpty(v))?v:'-'; }
 			},
 			{text: "Amount", width:60, dataIndex:'item_amount', sortable:true, align:'left' },
 			{text: "Fabric price", width:90, dataIndex:'item_price', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Style collection", width:130, dataIndex:'style_collection_type', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					if(v){
+						var code = r.get('style_collection_code');
+						if(v==1)
+							return 'Base style ('+code+')';
+						else if(v==2)
+							return 'Trend style ('+code+')';
+						else
+							return '-';
+					}else{
+						return '-';
+					}
+				}
 			},
 			{text: "Total", width:90, dataIndex:'Amount', sortable:false, align:'left', renderer: function(v,p,r){
 				var total = r.data.item_amount * r.data.item_price;

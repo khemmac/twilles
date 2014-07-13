@@ -38,7 +38,6 @@ Ext.define('TCMS.StyleCollection.Window', {
 
 		this.submitAct.setHandler(function(){
 			_this.form.saveData();
-			//_this.fireEvent('login_success');
 		});
 
 		this.cancelAct.setHandler(function(){

@@ -127,7 +127,7 @@ $tbl = '
 			$_pdf->SetLineWidth(0.3);
 			$_pdf->SetFont('', 'B');
 			// Header
-			$w = array(20, 87, 25, 30, 40);
+			$w = array(20, 80, 80, 25, 30, 40);
 			$num_headers = count($header);
 			for($i = 0; $i < $num_headers; ++$i) {
 				$_pdf->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
@@ -142,28 +142,29 @@ $tbl = '
 			foreach($data as $row) {
 				$_pdf->Cell($w[0], 6, $row[0], 'LRTB', 0, 'C', $fill);
 				$_pdf->Cell($w[1], 6, $row[1], 'LRTB', 0, 'L', $fill);
-				$_pdf->Cell($w[2], 6, myNumberFormat($row[2]), 'LRTB', 0, 'R', $fill);
+				$_pdf->Cell($w[2], 6, $row[2], 'LRTB', 0, 'L', $fill);
 				$_pdf->Cell($w[3], 6, myNumberFormat($row[3]), 'LRTB', 0, 'R', $fill);
 				$_pdf->Cell($w[4], 6, myNumberFormat($row[4]), 'LRTB', 0, 'R', $fill);
+				$_pdf->Cell($w[5], 6, myNumberFormat($row[5]), 'LRTB', 0, 'R', $fill);
 				$_pdf->Ln();
 				$fill=!$fill;
 			}
 			$_pdf->SetFillColor(220, 220, 220);
 
-			$all_width = array_sum(array($w[0],$w[1],$w[2],$w[3]));
+			$all_width = array_sum(array($w[0],$w[1],$w[2],$w[3],$w[4]));
 			// SUM
 			$_pdf->Cell($all_width, 6, 'ราคารวม', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, myNumberFormat($order->net), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[5], 6, myNumberFormat($order->net), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			// DELIVERY
 			$_pdf->Cell($all_width, 6, 'ค่าจัดส่ง', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, myNumberFormat($order->delivery_cost), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[5], 6, myNumberFormat($order->delivery_cost), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			// total
 			$_pdf->Cell($all_width, 6, 'ราคาสุทธิ', 'LRTB', 0, 'R', 1);
-			$_pdf->Cell($w[4], 6, myNumberFormat($order->total), 'LRTB', 0, 'R', 1);
+			$_pdf->Cell($w[5], 6, myNumberFormat($order->total), 'LRTB', 0, 'R', 1);
 			$_pdf->Ln();
 
 			//$_pdf->Cell(array_sum($w), 0, '', 'T');
@@ -175,16 +176,30 @@ $tbl = '
 		$item_data = array();
 		for($i=0;$i<count($order_item);$i++){
 			$item = $order_item[$i];
+
+			$styleCollection = '';
+			if(!empty($item->style_collection_type)){
+				$code = $item->style_collection_code;
+				if($item->style_collection_type==1)
+					$styleCollection = "Base style ($code)";
+				else if($item->style_collection_type==2)
+					$styleCollection = "Trend style ($code)";
+				else
+					$styleCollection = '-';
+			}else
+				$styleCollection = '-';
+
 			array_push($item_data, array(
 				$i+1,
 				$item->fabric_body_id,
+				$styleCollection,
 				$item->item_amount,
 				$item->item_price,
 				$item->item_price * $item->item_amount
 			));
 		}
 
-		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','จำนวน','ราคา','รวม'), $order, $item_data);
+		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','Style collection','จำนวน','ราคา','รวม'), $order, $item_data);
 
 		// ****** LOOP ITEMS EACH PAGE
 		$pdf->resetHeaderTemplate();

@@ -238,6 +238,37 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 		});
 		// ** END FABRIC **
 
+		// ** UPLOADER **
+		this.uploader = Ext.create('TCMS.BaseMaster.field.UploadField', {
+			targetUrl: __site_url+'backend/style_collection/upload',
+			swfUploadCfg: {
+				post_params: {"UID" : ''},
+				file_upload_limit : "0",
+				file_queue_limit : "0",
+				button_action : SWFUpload.BUTTON_ACTION.SELECT_FILE,
+				button_cursor : SWFUpload.CURSOR.HAND,
+				button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
+				file_dialog_start_handler : function(){
+					// clear queue
+					var stats = this.getStats();
+					// while the queue is not empty ...
+					while (stats.files_queued > 0) {
+						this.cancelUpload(null, false);
+						stats = this.getStats();
+					}
+					// set guid
+					var guid = _this.uploader.guid();
+					this.setPostParams({"uploadUid" : guid});
+					_this.form.findField('uploadUid').setValue(guid);
+				}
+			},
+			listeners: {
+				fileQueued: function(f){
+					_this.form.findField('UPLOAD_FILENAME').setValue(f.name);
+				}
+			}
+		});
+		// ** END UPLOADER **
 
 		this.items = [{
 			// column layout with 2 columns
@@ -318,6 +349,11 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					xtype: 'textarea',
 					fieldLabel: 'Remark',
 					rows: 3
+				}, {
+					name: 'is_active',
+					xtype: 'checkboxfield',
+					fieldLabel: 'Active',
+					checked: !0
 				}]
 			},{
 				// right column
@@ -337,10 +373,37 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 						this.comboFabricCuffOuter
 					]
 				}, {
-					name: 'is_active',
-					xtype: 'checkboxfield',
-					fieldLabel: 'Active',
-					checked: !0
+					xtype: 'fieldcontainer',
+					layout: 'hbox',
+					fieldLabel: 'Photo',
+					combineErrors: false,
+					anchor: '100%',
+					defaults: {
+						hideLabel: true
+					},
+					items: [{
+						xtype: 'textfield',
+						emptyText: 'Select an png file',
+						fieldLabel: 'Photo',
+						name: 'UPLOAD_FILENAME',
+						width: 120,
+						readOnly: true,
+						submitValue: false
+					}, this.uploader, {
+						xtype: 'hidden',
+						name: 'uploadUid'
+					}
+					]
+				}, {
+					xtype: 'displayfield',
+					name: 'photo_order',
+					hideLabel: true,
+					renderer: function(v){
+						if(v)
+							return '<img src="'+__base_url+'upload_temp/style_collection/'+v+'" style="border:1px solid #99bce8; width:250px; height:250px;" />';
+						else
+							return '<div style="border:1px solid #99bce8; width:250px; height:250px; background:transparent url(\''+__base_url+'images/image-missing.png\') no-repeat center center;"></div>';
+					}
 				}]
 			}]
 		}];
