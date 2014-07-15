@@ -13,6 +13,9 @@ Class Order_item_model extends Base_model
 		array_push($this->before_create, 'before_get_price');
 		array_push($this->before_update, 'before_get_price');
 
+		// after delete
+		//array_push($this->after_delete, 'afterDeleteRemoveFabricTransaction');
+
 		// calculate price
 		array_push($this->after_create, 'after_create_calculate');
 		array_push($this->after_update, 'after_update_calculate');
@@ -77,6 +80,10 @@ WHERE order_id=";
 		$this->calculate_total($order_item_id);
 
 		return $o;
+	}
+
+	public function afterDeleteRemoveFabricTransaction($deleteResult){
+		echo $deleteResult;
 	}
 
     /**

@@ -27,6 +27,9 @@ Class Order_model extends Base_model
 
 		array_push($this->before_create, 'before_save_calculate_total');
 		array_push($this->before_update, 'before_save_calculate_total');
+
+		// after delete
+		//array_push($this->after_delete, 'afterDeleteRemoveItem');
     }
 
 	public function before_create_generate_code($o){
@@ -83,6 +86,13 @@ CONCAT(
 			$o['total'] = $net + $delivery_cost;
 		}
 		return $o;
+	}
+
+	public function afterDeleteRemoveItem($deleteResult){
+		//echo $deleteResult;
+		$affecteds = $this->db->affected_rows();
+		echo '$$$$$$$$$$$$'.PHP_EOL;
+		print_r($affecteds);
 	}
 
 	public function ChangePaymentStatus($id, $status){
