@@ -8,83 +8,29 @@
 			?>
 		</td>
 		<td width="600" rowspan="22">
-			<table cellspacing="0" cellpadding="2" border="1">
-				<tr>
-					<td align="center"><?= $inst->mergeTmbnl('collar', 'getTmbnlImgsCollar', $item) ?></td>
-					<td><?= $inst->getCollarDetail($item) ?></td>
-					<td align="center"><?= $inst->mergeTmbnl('cuff', 'getTmbnlImgsCuff', $item) ?></td>
-					<td><?= $inst->getCuffDetail($item) ?></td>
-				</tr>
-				<tr>
-					<td align="center">
-						<strong>ผ้าคอนอก</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_collar_outer_id') ?>
-					</td>
-					<td align="center">
-						<strong>ผ้าคอใน</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_collar_inner_id') ?>
-					</td>
-					<td align="center">
-						<strong>ผ้าข้อมือนอก</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_cuff_outer_id') ?>
-					</td>
-					<td align="center">
-						<strong>ผ้าข้อมือใน</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_cuff_inner_id') ?>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="color:red;" align="center">
-						<strong><?= ($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา') ?></strong></td>
-					<td colspan="2" style="color:red;" align="center">
-						<strong><?= ($item->stitching_type==1?'เย็บริม':'เย็บธรรมดา') ?></strong></td>
-				</tr>
-				<tr>
-					<td align="center"><?= $inst->mergeTmbnl('teb', 'getTmbnlImgsBody', $item) ?></td>
-					<td><?= $inst->getBodyDetail($item) ?>
-						<br />
-						<font color="red">
-						รังดุมเม็ดสุดท้าย
-						เย็บขวาง
-						</font>
-					</td>
-					<td colspan="2" rowspan="2" align="center" valign="middle">
-					<?php
-						if(!empty($item->style_collection_type)){
-							$code = $item->style_collection_code;
-							if($item->style_collection_type==2)
-								$CI->load->view('report/OrderStyleCollection', array(
-									'measure_type'=>$measure_type,
-									'item'=>$item,
-									'inst'=>$inst
-								));
-							else
-								$CI->load->view('report/OrderNormal', array(
-									'measure_type'=>$measure_type,
-									'item'=>$item,
-									'inst'=>$inst
-								));
-						}else
-							$CI->load->view('report/OrderNormal', array(
-								'measure_type'=>$measure_type,
-								'item'=>$item,
-								'inst'=>$inst
-							));
+			<?php
+				if(!empty($item->style_collection_type)){
+					$code = $item->style_collection_code;
+					if($item->style_collection_type==2)
+						$CI->load->view('report/OrderStyleCollection', array(
+							'measure_type'=>$measure_type,
+							'item'=>$item,
+							'inst'=>$inst
+						));
+					else
+						$CI->load->view('report/OrderNormal', array(
+							'measure_type'=>$measure_type,
+							'item'=>$item,
+							'inst'=>$inst
+						));
+				}else
+					$CI->load->view('report/OrderNormal', array(
+						'measure_type'=>$measure_type,
+						'item'=>$item,
+						'inst'=>$inst
+					));
 
-					?>
-					</td>
-				</tr>
-				<tr>
-					<td align="center">
-						<strong>ผ้าตัว</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_body_id') ?>
-					</td>
-					<td align="center">
-						<strong>ผ้าสาบใน</strong>
-						<?= $inst->getFabricHtmlDetail($item, 'fabric_placket_id') ?>
-					</td>
-				</tr>
-			</table>
+			?>
 			<?= $inst->getInventoryDetail($item) ?>
 		</td>
     </tr>

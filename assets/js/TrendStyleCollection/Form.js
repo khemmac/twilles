@@ -400,9 +400,9 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 					hideLabel: true,
 					renderer: function(v){
 						if(v)
-							return '<img src="'+__base_url+'upload_temp/style_collection/'+v+'" style="border:1px solid #99bce8; width:250px; height:250px;" />';
+							return '<img src="'+__base_url+'upload_temp/style_collection/'+v+'" style="border:1px solid #99bce8; width:166px; height:250px; margin-left:50px;" />';
 						else
-							return '<div style="border:1px solid #99bce8; width:250px; height:250px; background:transparent url(\''+__base_url+'images/image-missing.png\') no-repeat center center;"></div>';
+							return '<div style="border:1px solid #99bce8; width:166px; height:250px; background:transparent url(\''+__base_url+'images/image-missing.png\') no-repeat center center; margin-left:50px;"></div>';
 					}
 				}]
 			}]
