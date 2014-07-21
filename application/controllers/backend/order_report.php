@@ -9,6 +9,17 @@ class Order_report extends CI_Controller {
 		$this->load->library('XOrder');
 	}
 
+	private function formatDeliveryPhone($s){
+		if(!empty($s)){
+			$sArr = explode('|:|', $s);
+			if(count($sArr)>2)
+				return '+'.implode(' ', $sArr);
+			else
+				return $s;
+		}
+		return '';
+	}
+
 	public function report(){
 
 		// prepare data
@@ -34,7 +45,7 @@ class Order_report extends CI_Controller {
 		$pdf->setHeaderFont(Array('angsanaupc', '', 15));
 
 		// set default header data
-		$pdf->SetHeaderData('twilles_logo.png', 25, 'ใบสั่งตัดเสื้อ บริษัท ทวิลส์ คลับ จำกัด', '8/61 หมู่บ้านพิบูล');
+		$pdf->SetHeaderData('twilles_logo.png', 25, 'ใบส่งสินค้า บริษัท ทวิลส์ คลับ จำกัด', '8/22 The Heritage ชอยสุขุมวิท 8 แขวงคลองเตย เขตคลองเตย กรงเทพมหานคร 10110');
 		//$pdf->SetHeaderData(PDF_HEADER_LOGO, 20, PDF_HEADER_TITLE.' PRINT', PDF_HEADER_STRING);
 		// remove default header/footer
 		//$pdf->setPrintHeader(false);
@@ -66,13 +77,14 @@ class Order_report extends CI_Controller {
 		// ---- START PDF CONTENT
 		// ***** USER INFO *****
 		$pdf->SetFont('angsanaupc', 'B', 17);
+
+		//วันกำหนดเสร็จ  '.myDateFormat($order->order_completed_date, 'j F Y').'<br />
 $tbl = '
 <table cellspacing="0" cellpadding="0" border="0" width="1150">
 	<tr>
 		<td width="20"></td>
 		<td width="350">
-			วันสั่งสินค้า  '.myDateFormat($order->order_date, 'j F Y').'<br />
-			วันกำหนดเสร็จ  '.myDateFormat($order->order_completed_date, 'j F Y').'<br />
+			วันที่ส่ง  <br /><br />
 			<table cellspacing="0" cellpadding="3" border="1">
 			    <tr><td align="center" style="background-color:#eeeeee;">ที่อยู่จัดส่ง</td></tr>
 			    <tr>
@@ -83,6 +95,8 @@ $tbl = '
 						'.$order->delivery_address_line_2.'
 						<br />
 						'.$order->delivery_country_name.' '.$order->delivery_zip.'
+						<br />
+						'.$this->formatDeliveryPhone($order->delivery_phone).'
 			        </td>
 				</tr>
 			</table>
@@ -199,15 +213,16 @@ $tbl = '
 			));
 		}
 
-		ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','Style collection','จำนวน','ราคา','รวม'), $order, $item_data);
+		//ColoredTable($pdf, array('รายการที่', 'ผ้าตัว','Style collection','จำนวน','ราคา','รวม'), $order, $item_data);
 
 		// ****** LOOP ITEMS EACH PAGE
 		$pdf->resetHeaderTemplate();
 		$pdf->SetHeaderData('twilles_logo.png', 22
-			, 'ใบสั่งตัดเสื้อ บริษัท ทวิลส์ คลับ จำกัด'
+			, 'ใบส่งสินค้า บริษัท ทวิลส์ คลับ จำกัด'
 			  .'                                                '.$order->order_code
 			  .'                                                             '.$order->delivery_name
-			, '8/61 หมู่บ้านพิบูล');
+			, '8/22 The Heritage ชอยสุขุมวิท 8 แขวงคลองเตย เขตคลองเตย กรงเทพมหานคร 10110');
+
 		foreach($order_item AS $item){
 			// add a page
 			$pdf->SetMargins(4, 18, 4, 0);
