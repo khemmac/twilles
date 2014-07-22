@@ -3,11 +3,19 @@
 class SizeDetail {
 
 	public function get_measure_type($o){
+		/*
 		// งานวัดจากตัว
 		if($o->member_size_type==1 || $o->member_size_type==2 || $o->member_size_type==3 || $o->member_size_type==4)
 			return 2;
 		// งานวัดจากเสื้อ
 		else if($o->member_size_type==5 || $o->member_size_type==6)
+			return 1;
+		*/
+		// งานวัดจากตัว
+		if($o->member_size_type==1 || $o->member_size_type==2)
+			return 2;
+		// งานวัดจากเสื้อ
+		else if($o->member_size_type==3 || $o->member_size_type==4 || $o->member_size_type==5 || $o->member_size_type==6)
 			return 1;
 		return 0;
 	}
