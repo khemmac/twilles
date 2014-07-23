@@ -119,12 +119,12 @@ Ext.define('TCMS.TrendStyleCollection.Grid', {
 			{text: "Inventory", width:100, dataIndex:'inventory_button_id', sortable:true, align:'left',
 				renderer: function(v,p,r){
 					var s = [];
-					if(!Ext.isEmpty(r.get('inventory_button_name')))
-						s.push(r.get('inventory_button_name'));
-					if(!Ext.isEmpty(r.get('inventory_label_name')))
-						s.push(r.get('inventory_label_name'));
-					if(!Ext.isEmpty(r.get('inventory_packaging_name')))
-						s.push(r.get('inventory_packaging_name'));
+					if(!Ext.isEmpty(r.get('inventory_button_name_tailor')))
+						s.push(r.get('inventory_button_name_tailor'));
+					if(!Ext.isEmpty(r.get('inventory_label_name_tailor')))
+						s.push(r.get('inventory_label_name_tailor'));
+					if(!Ext.isEmpty(r.get('inventory_packaging_name_tailor')))
+						s.push(r.get('inventory_packaging_name_tailor'));
 					return s.join('<br />');
 				}
 			},

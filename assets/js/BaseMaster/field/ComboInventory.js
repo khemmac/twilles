@@ -4,7 +4,7 @@ Ext.define('TCMS.BaseMaster.field.ComboInventory', {
 	proxyUrl: __site_url+'backend/dao/LoadList',
 	proxyFields:[ 'id', 'name' ],
 	proxyIdProperty: 'id',
-	displayField: 'name',
+	displayField: 'name_tailor',
 	valueField: 'id',
 
 	// utility params

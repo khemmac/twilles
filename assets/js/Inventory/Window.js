@@ -5,7 +5,7 @@ Ext.define('TCMS.Inventory.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 220,
+			height: 240,
 			width: 400,
 			resizable: false,
 			modal: true,
@@ -48,6 +48,11 @@ Ext.define('TCMS.Inventory.Window', {
 				xtype: 'textfield',
 				fieldLabel: 'Name',
 				allowBlank: false
+			}, {
+				name: 'name_tailor',
+				xtype: 'textfield',
+				fieldLabel: 'Tailor name',
+				allowBlank: true
 			}, {
 				name: 'inventory_count',
 				xtype: 'numberfield',

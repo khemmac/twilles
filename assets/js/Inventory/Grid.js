@@ -126,6 +126,7 @@ Ext.define('TCMS.Inventory.Grid', {
 				{ name:'id', type:'string' },
 				{ name:'inventory_type', type:'int' },
 				'name',
+				'name_tailor',
 				{ name:'inventory_count', type:'float' },
 				{ name:'is_active', type:'boolean' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -152,7 +153,8 @@ Ext.define('TCMS.Inventory.Grid', {
 					return types[v];
 				}
 			},
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
+			{text: "Name", width:140, dataIndex:'name', sortable:true, align:'left'},
+			{text: "Name tailor", width:140, dataIndex:'name_tailor', sortable:true, align:'left'},
 			{text: "Count", width:80, dataIndex:'inventory_count', sortable:true, align:'left'},
 			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
 				renderer: function(v,p,r){

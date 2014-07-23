@@ -108,7 +108,7 @@
     </tr>
 	<tr>
 		<td colspan="2">
-			<strong><?= $item->inventory_button_name ?></strong>
+			<strong><?= $item->inventory_button_name_tailor ?></strong>
 			<br />เย็บเม็ดบนห่างจากกระดุมปก 2.5 นิ้ว
 			<br />เย็บมือ
 		</td>
