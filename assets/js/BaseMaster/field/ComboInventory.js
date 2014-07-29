@@ -2,7 +2,7 @@ Ext.define('TCMS.BaseMaster.field.ComboInventory', {
 	extend	: 'BASE.ComboAjax',
 
 	proxyUrl: __site_url+'backend/dao/LoadList',
-	proxyFields:[ 'id', 'name' ],
+	proxyFields:[ 'id', 'name_tailor' ],
 	proxyIdProperty: 'id',
 	displayField: 'name_tailor',
 	valueField: 'id',
