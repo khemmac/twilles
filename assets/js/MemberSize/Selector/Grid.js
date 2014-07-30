@@ -77,6 +77,7 @@ is_active
 			fields: [
 				{ name:'id', type:'string' },
 				{ name:'member_email', type:'string' },
+				{ name:'member_fullname', type:'string' },
 				{ name:'size_type', type: 'int' },
 				{ name:'size_type_name', type: 'string' },
 				{ name:'name', type: 'string' },
@@ -138,7 +139,8 @@ is_active
 		});
 
 		this.columns = [
-			{text: "Member", width:140, dataIndex:'member_email', sortable:true, align:'left' },
+			{text: "Full name", width:160, dataIndex:'member_fullname', sortable:true, align:'left' },
+			{text: "Email", width:140, dataIndex:'member_email', sortable:true, align:'left' },
 			{text: "Size type", width:130, dataIndex:'size_type', sortable:true, align:'left', renderer:function(v,p,r){
 				return r.data.size_type_name;
 			} },
