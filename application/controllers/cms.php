@@ -127,6 +127,12 @@ class cms extends CI_Controller {
         $this->phxview->RenderLayout('ext_default');
 	}
 
+	public function promotion()
+	{
+		$this->phxview->RenderView('cms/promotion');
+        $this->phxview->RenderLayout('ext_default');
+	}
+
 	public function appointment()
 	{
 		$this->phxview->RenderView('cms/appointment');

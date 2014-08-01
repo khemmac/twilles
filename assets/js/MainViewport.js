@@ -121,7 +121,7 @@ Ext.define('TCMS.MainViewport', {
 				}]
 			},{
 				xtype: 'buttongroup',
-				columns: 2,
+				columns: 3,
 				title: 'Order',
 				padding:'6 0 5 0',
 				items: [{
@@ -140,6 +140,14 @@ Ext.define('TCMS.MainViewport', {
 					cls: 'x-btn-as-arrow',
 					hrefTarget: '_self',
 					href: __site_url+'cms/order_confirm'
+				},{
+					text: 'Promotion',
+					scale: 'large',
+					rowspan: 3, iconCls: 'menu-voucher',
+					iconAlign: 'top',
+					cls: 'x-btn-as-arrow',
+					hrefTarget: '_self',
+					href: __site_url+'cms/promotion'
 				}]
 			},{
 				xtype: 'buttongroup',
