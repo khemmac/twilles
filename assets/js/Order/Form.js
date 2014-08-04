@@ -30,7 +30,7 @@ Ext.define('TCMS.Order.Form', {
 					type: 'order'
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.formAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend/order/'+((_this.formAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
 					type: 'v_order'
@@ -53,11 +53,11 @@ Ext.define('TCMS.Order.Form', {
 		var _fieldDefaults = {
 			labelAlign: 'right',
 			anchor:'100%',
-			labelWidth: 90
+			labelWidth: 95
 		};
 
 		var _createField = function(ns, config){
-			return Ext.create(ns, Ext.apply(config, _fieldDefaults));
+			return Ext.create(ns, Ext.applyIf(config, _fieldDefaults));
 		};
 /*
 		this.comboStyleType = _createField('BASE.ComboStatic', {
@@ -207,6 +207,10 @@ Ext.define('TCMS.Order.Form', {
 				this.triggerMember, {
 					name: 'member_id',
 					xtype: 'hiddenfield'
+				}, {
+					name: 'promotion_code',
+					xtype: 'textfield',
+					fieldLabel: 'Promotion code'
 				}, {
 					name: 'payment_status_name',
 					xtype: 'displayfield',

@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Order extends CI_Controller {
+include_once('dao.php');
+class Order extends dao {//CI_Controller {
 
 
 	function __construct(){
@@ -71,6 +72,33 @@ class Order extends CI_Controller {
 			'success'=>true,
 			'data'=>$res
 		));
+	}
+
+	// call back method for validation
+	public function check_promotion_code($code){
+		if(empty($code))
+			return TRUE;
+
+		$id = X::Request('id');
+		$this->load->model('v_promotion_code_model', 'v_promotion_code');
+
+		$w = array();
+
+		$cnt = 0;
+
+		$w['id'] = $code;
+		$this->v_promotion_code->_database->where('order_id IS NULL', null, false);
+
+		$cnt = $this->v_promotion_code->count_by($w);
+
+		//echo $this->v_promotion_code->_database->last_query();
+
+		if($cnt==1){
+			return TRUE;
+		}else{
+			$this->form_validation->set_message('check_promotion_code', '%s "'.$code.'" is not a valid promotion code.');
+			return FALSE;
+		}
 	}
 
 }
