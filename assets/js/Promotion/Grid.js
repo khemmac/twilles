@@ -2,111 +2,16 @@ Ext.define('TCMS.Promotion.Grid', {
 	extend	: 'BASE.Grid',
 	constructor:function(config) {
 
+		Ext.apply(this, {
+			modelType: 'promotion_code'
+		});
+
 		return this.callParent(arguments);
 	},
 
 	initComponent : function() {
 		var _this=this;
-/*
-		this.searchAct = new Ext.Action({
-			text: 'Search',
-			iconCls: 'b-small-magnifier',
-			animate: true
-		});
 
-		this.resetAct = new Ext.Action({
-			text: 'Reset',
-			iconCls: 'b-small-cross',
-			animate: true
-		});
-
-		this.txtKeyword = Ext.create('Ext.form.TextField', {
-			xtype: 'textfield',
-			name: 'keyword',
-			emptyText: 'keywords',
-			hideLabel: true,
-			width: 200,
-			listeners : {
-				specialkey : function(o, e) {
-					if (e.getKey() == e.ENTER)
-						_this.searchAct.execute();
-				}
-			}
-		});
-
-		this.comboCustomerAccount = Ext.create('Ext.form.ComboBox', {
-			name: 'custacct',
-			emptyText: '-- Select Customer Account --',
-			forceSelection: true,
-			labelAlign:'right',
-			width: 200,
-			store: Ext.create('Ext.data.Store', {
-				fields: ['value', 'text'],
-				data : [
-					{"value":"", "text":"-- Select Customer Account --"},
-					{"value":"1", "text":"Cash"},
-					{"value":"6", "text":"Credit Balance"},
-					{"value":"H", "text":"Cash Balance"},
-					{"value":"5", "text":"TSFC"},
-					{"value":"I", "text":"Internet Settrade"},
-					{"value":"2", "text":"Cash Margin"},
-					{"value":"3", "text":"PN Margin"}
-				]
-			}),
-			queryMode: 'local',
-			displayField: 'text',
-			valueField: 'value',
-			listeners : {
-				specialkey : function(o, e) {
-					if (e.getKey() == e.ENTER)
-						_this.searchAct.execute();
-				}
-			}
-		});
-
-		this.comboCardType = Ext.create('Ext.form.ComboBox', {
-			name: 'cardidtype',
-			emptyText: '-- Select Card Type --',
-			forceSelection: true,
-			labelAlign:'right',
-			width: 200,
-			store: Ext.create('Ext.data.Store', {
-				fields: ['value', 'text'],
-				data : [
-					{"value":"", "text":"-- Select Card Type --"},
-					{"value":"0", "text":"เลขประจำตัวบัตรประชาชน (ใน)"},
-					{"value":"1", "text":"เลขประจำตัวบัตรประชาชน (นอก)"},
-					{"value":"2", "text":"เลขที่ต่างด้าว"},
-					{"value":"3", "text":"Passport"},
-					{"value":"4", "text":"เลขที่เสียภาษี (นอก)"},
-					{"value":"5", "text":"เลขที่บริษัทฯ"},
-					{"value":"6", "text":"มูลนิธิ"},
-					{"value":"7", "text":"สมาคม"},
-					{"value":"8", "text":"วัด"},
-					{"value":"9", "text":"บริษัทที่ไม่หวังผลกำไร"},
-					{"value":"A", "text":"ห้างหุ้นส่วนสามัญ"}
-				]
-			}),
-			queryMode: 'local',
-			displayField: 'text',
-			valueField: 'value',
-			listeners : {
-				specialkey : function(o, e) {
-					if (e.getKey() == e.ENTER)
-						_this.searchAct.execute();
-				}
-			}
-		});
-
-		this.tbar = [
-			'Search',
-			this.txtKeyword,
-			this.comboCustomerAccount,
-			this.comboCardType,
-			this.searchAct,
-			this.resetAct
-		];
-*/
 		this.store = new Ext.data.JsonStore({
 			proxy: {
 				type: 'ajax',
@@ -119,16 +24,18 @@ Ext.define('TCMS.Promotion.Grid', {
 				},
 				simpleSortMode: true,
 				extraParams: {
-					type: 'inventory'
+					type: this.modelType
 				}
 			},
 			fields: [
 				{ name:'id', type:'string' },
-				{ name:'inventory_type', type:'int' },
-				'name',
-				'name_tailor',
-				{ name:'inventory_count', type:'float' },
-				{ name:'is_active', type:'boolean' },
+				{ name:'promotion_type', type:'int' },
+				{ name:'bought_member_id', type:'int' },
+				{ name:'promotion_amount', type:'float' },
+				{ name:'never_expire', type:'boolean' },
+				{ name:'promotion_valid_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
+				{ name:'promotion_expire_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
+				{ name:'remark', type:'string' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
 				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
@@ -141,25 +48,32 @@ Ext.define('TCMS.Promotion.Grid', {
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Code", width:120, dataIndex:'id', sortable:true, align:'left'},
-			{text: "Type", width:70, dataIndex:'inventory_type', sortable:true, align:'left',
+			{text: "Code", width:100, dataIndex:'id', sortable:true, align:'left'},
+			{text: "Type", width:70, dataIndex:'promotion_type', sortable:true, align:'left',
 				renderer: function(v){
 					var types = {
-						1: 'Button',
-						2: 'Collar',
-						3: 'Label',
-						4: 'Package'
+						1: 'Bulk',
+						2: 'Percentage',
+						3: 'Voucher'
 					};
 					return types[v];
 				}
 			},
-			{text: "Name", width:140, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Name tailor", width:140, dataIndex:'name_tailor', sortable:true, align:'left'},
-			{text: "Count", width:80, dataIndex:'inventory_count', sortable:true, align:'left'},
-			{text: "Active", width:50, dataIndex:'is_active', sortable:true, align:'center',
+			{text: "Amount", width:90, dataIndex:'promotion_amount', sortable:true, align:'left',
+				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Never expire", width:170, dataIndex:'never_expire', sortable:true, align:'left',
 				renderer: function(v,p,r){
-					var icns = (v)?'tick':'cross';
-					p.style = "background:transparent url('"+__base_url+"assets/images/icons/"+icns+".gif') no-repeat center center";
+					if(v){
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/tick.gif\') 5px center no-repeat;';
+						return '';
+					}else{
+						p.style = 'background:transparent url(\''+__base_url+'/assets/images/icons/cross.gif\') 5px center no-repeat;';
+						return '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+							+Ext.Date.format(r.get('promotion_valid_date'), 'd/m/Y')
+							+' - '
+							+Ext.Date.format(r.get('promotion_expire_date'), 'd/m/Y');
+					}
 				}
 			},
 			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
@@ -172,15 +86,6 @@ Ext.define('TCMS.Promotion.Grid', {
 			{text: "Update by", width:100, dataIndex:'update_by', sortable:true, align:'left'}
 		];
 
-		this.bbar = {
-			xtype: 'pagingtoolbar',
-			store: this.store,
-			displayInfo: true
-		};
-/*
-		this.searchAct.setHandler(this.search, this);
-		this.resetAct.setHandler(this.reset, this);
-*/
 		// event
 		this.store.on("beforeload", function (store, opts) {
 			opts.params = opts.params || {};
@@ -191,21 +96,5 @@ Ext.define('TCMS.Promotion.Grid', {
 	    });
 
 		return this.callParent(arguments);
-	}/*,
-	getSearchFormValues: function(){
-		return {
-			keyword: this.txtKeyword.getValue(),
-			custacct: this.comboCustomerAccount.getValue(),
-			cardidtype: this.comboCardType.getValue()
-		};
-	},
-	search: function(){
-		this.load();
-	},
-	reset: function(){
-		this.txtKeyword.reset();
-		this.comboCustomerAccount.reset();
-		this.comboCardType.reset();
-		this.load();
-	}*/
+	}
 });

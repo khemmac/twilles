@@ -4,12 +4,14 @@ Ext.define('TCMS.Promotion.Main', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			layout: 'border'
+			layout: 'border',
+			modelType: 'promotion_code'
 		});
 
 		return this.callParent(arguments);
 	},
 	initComponent : function() {
+		var _this=this;
 
 		var addAct = Ext.create('BASE.Action', {
 			text: 'Add',
@@ -21,18 +23,13 @@ Ext.define('TCMS.Promotion.Main', {
 			iconCls: 'b-application_edit'
 		});
 
-		var activeAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Active',
-			iconCls: 'b-flag-green'
-		});
-
-		var inActiveAct = Ext.create('BASE.ActionMultiple', {
-			text: 'Inactive',
-			iconCls: 'b-flag-red'
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, deleteAct]
 		});
 
 		var window = Ext.create('TCMS.Promotion.Window');
@@ -40,36 +37,29 @@ Ext.define('TCMS.Promotion.Main', {
 		var grid = Ext.create('TCMS.Promotion.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, deleteAct],
+			validateActions : [addAct, editAct, deleteAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
 			window.openDialog('Add promotion', 'add', grid, {
-				type: 'inventory'
+				type: _this.modelType
 			});
 		});
 
 		editAct.setHandler(function(){
 			window.openDialog('Edit promotion', 'edit', grid, {
 				id: grid.getSelectedId(),
-				type: 'inventory'
+				type: _this.modelType
 			});
 		});
 
-		activeAct.setHandler(function(){
-			window.openDialog('Active', 'setStatus', grid, {
+		deleteAct.setHandler(function(){
+			window.openDialog('Delete promotion', 'delete', grid, {
 				ids: grid.getSelectionsId().join(','),
-				is_active:1
-			});
-		});
-
-		inActiveAct.setHandler(function(){
-			window.openDialog('Inactive', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:0
+				type: _this.modelType
 			});
 		});
 
@@ -90,6 +80,10 @@ Ext.define('TCMS.Promotion.Main', {
 
 		window.form.on('afterSetStatus', function() {
 			window.hide();
+			grid.load();
+		});
+
+		window.form.on('afterDelete', function(){
 			grid.load();
 		});
 
