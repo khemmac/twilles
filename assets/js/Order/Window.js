@@ -4,8 +4,7 @@ Ext.define('TCMS.Order.Window', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			title: 'Login',
-			height: 580,
+			height: 600,
 			width: 920,
 			resizable: false,
 			modal: true,

@@ -54,6 +54,8 @@ Ext.define('TCMS.Order.Grid', {
 				{ name:'delivery_cost', type:'float' },
 				{ name:'total', type:'float' },
 				{ name:'promotion_code', type:'string' },
+				{ name:'promotion_type', type:'int' },
+				{ name:'promotion_amount', type:'float' },
 				{ name:'promotion_event_id', type:'int' },
 
 				{ name:'payment_method', type:'int' },
@@ -82,6 +84,15 @@ Ext.define('TCMS.Order.Grid', {
 			},
 			{text: "Net", width:70, dataIndex:'net', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')
+			},
+			{text: "Discount", width:70, dataIndex:'promotion_amount', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					var pType = r.get('promotion_type');
+					if(pType==2)
+						return Ext.util.Format.number(v, '0,000.##')+' %';
+					else
+						return Ext.util.Format.number(v, '0,000.##');
+				}
 			},
 			/*{text: "Vat", width:60, dataIndex:'vat', sortable:true, align:'left',
 				renderer: Ext.util.Format.numberRenderer('0,000.##')

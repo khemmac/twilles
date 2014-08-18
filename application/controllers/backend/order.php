@@ -87,11 +87,20 @@ class Order extends dao {//CI_Controller {
 		$cnt = 0;
 
 		$w['id'] = $code;
-		$this->v_promotion_code->_database->where('order_id IS NULL', null, false);
+
+		$strWhere = "
+		IF(never_expire=0, (NOW() BETWEEN promotion_valid_date AND promotion_expire_date),TRUE)
+		AND (order_id IS NULL";
+		if(isset($id)){
+			$strWhere .= ' OR order_id ='.intval($id);
+		}
+		$strWhere .= ')';
+		$this->v_promotion_code->_database->where($strWhere, null, false);
 
 		$cnt = $this->v_promotion_code->count_by($w);
 
 		//echo $this->v_promotion_code->_database->last_query();
+		//echo $cnt;
 
 		if($cnt==1){
 			return TRUE;

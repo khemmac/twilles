@@ -22,7 +22,7 @@ Class Promotion_code_model extends Base_model
 	}
 
 	private function genCode(){
-		$len = 9;
+		$len = 10;
 		$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$res = "";
 		for ($i = 0; $i < $len; $i++) {

@@ -3,7 +3,7 @@ Ext.define('TCMS.Promotion.Grid', {
 	constructor:function(config) {
 
 		Ext.apply(this, {
-			modelType: 'promotion_code'
+			modelType: 'v_promotion_code'
 		});
 
 		return this.callParent(arguments);
@@ -36,13 +36,15 @@ Ext.define('TCMS.Promotion.Grid', {
 				{ name:'promotion_valid_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'promotion_expire_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				{ name:'remark', type:'string' },
+				{ name:'order_id', type:'int' },
+				{ name:'order_code', type:'string' },
 				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'create_by',
 				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
 				'update_by'
 			],
 			remoteSort: true,
-			sorters: [{property: 'id', direction: 'ASC'}],
+			sorters: [{property: 'create_date', direction: 'DESC'}],
 			pageSize: 25
 		});
 
@@ -73,6 +75,15 @@ Ext.define('TCMS.Promotion.Grid', {
 							+Ext.Date.format(r.get('promotion_valid_date'), 'd/m/Y')
 							+' - '
 							+Ext.Date.format(r.get('promotion_expire_date'), 'd/m/Y');
+					}
+				}
+			},
+			{text: "Used", width:110, dataIndex:'order_code', sortable:true, align:'left',
+				renderer: function(v,p,r){
+					if(v){
+						return 'Yes - '+v;
+					}else{
+						return '-';
 					}
 				}
 			},

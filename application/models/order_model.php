@@ -64,7 +64,23 @@ CONCAT(
 			$net = $order_result->net;
 			$delivery_cost = floatval($o['delivery_cost']);
 
-			$o['total'] = $net + $delivery_cost;
+			$discount = 0;
+
+			// load discount from db
+			if(!empty($order_result->promotion_code)){
+				$this->load->model('promotion_code_model','promotion_code');
+				$pcObj = $this->promotion_code->get($order_result->promotion_code);
+				if(!empty($pcObj)){
+					if($pcObj->promotion_type==2){
+						$discount = $net * floatval($pcObj->promotion_amount) / 100.0;
+					}else{
+						$discount = $pcObj->promotion_amount;
+					}
+				}
+			}
+
+			$o['discount'] = $discount;
+			$o['total'] = $net + $delivery_cost - $discount;
 		}
 		return $o;
 	}

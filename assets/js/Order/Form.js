@@ -289,6 +289,14 @@ Ext.define('TCMS.Order.Form', {
 			renderer: function(v, field){ return Ext.util.Format.number(v, '0,000.##'); }
 		});
 
+		this.dispDiscount = _createField('Ext.form.field.Display', {
+			fieldLabel:'Discount',
+			name : 'discount',
+			renderer: function(v, field){
+				return Ext.util.Format.number(v, '0,000.##');
+			}
+		});
+
 		this.calculateTotal = function(){
 			var bForm = _this.getForm(),
 				txtNet = _this.dispNet,
@@ -296,7 +304,8 @@ Ext.define('TCMS.Order.Form', {
 				txtTotal = _this.dispTotal;
 			var net = parseFloat(txtNet.getValue()),
 				deliveryCost = txtDeliveryCost.getValue(),
-				total = net + deliveryCost;
+				discount = parseFloat(_this.dispDiscount.getValue()),
+				total = net + deliveryCost - discount;
 			txtTotal.setValue(total);
 		};
 
@@ -304,7 +313,7 @@ Ext.define('TCMS.Order.Form', {
 			region: 'south',
 			split: true,
 			border: true,
-			height: 100,
+			height: 120,
 			bodyPadding: '5 0 0 0',
 			defaults:{
 				layout:'form',
@@ -325,6 +334,7 @@ Ext.define('TCMS.Order.Form', {
 						keyup: this.calculateTotal
 					}
 				}),
+				this.dispDiscount,
 				this.dispTotal
 			]
 		});

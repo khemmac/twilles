@@ -6,7 +6,7 @@ Ext.define('TCMS.Promotion.Window', {
 		Ext.apply(this, {
 			modelType: 'promotion_code',
 			title: 'Login',
-			height: 340,
+			height: 360,
 			width: 400,
 			resizable: false,
 			modal: true,
@@ -91,6 +91,16 @@ Ext.define('TCMS.Promotion.Window', {
 			editable: false
 		});
 
+		this.promotionQty = _createField('BASE.field.NumericField', {
+			fieldLabel:'Quantity',
+			allowBlank: false,
+			name : 'promotion_qty',
+			minValue: 1,
+			maxValue: 100,
+			width: 180,
+			value: 1
+		});
+
 		this.amount = _createField('BASE.field.NumericField', {
 			hideLabel:true,
 			allowBlank: false,
@@ -121,6 +131,7 @@ Ext.define('TCMS.Promotion.Window', {
 				fieldLabel: 'Code',
 				value: '-'
 			},
+			this.promotionQty,
 			this.comboType,
 			{
 				xtype: 'fieldcontainer',
@@ -149,7 +160,7 @@ Ext.define('TCMS.Promotion.Window', {
 					type: 'inventory'
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/icode/'+((_this.dialogAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+((_this.dialogAction == "add")?'backend/promotion/insert':'backend/promotion/update'); },
 			getLoadParams : function() {
 				return Ext.apply({
 					type: this.modelType

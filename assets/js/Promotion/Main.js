@@ -18,6 +18,11 @@ Ext.define('TCMS.Promotion.Main', {
 			iconCls: 'b-application_add'
 		});
 
+		var addMultipleAct = Ext.create('BASE.Action', {
+			text: 'Add multiple',
+			iconCls: 'b-application_add'
+		});
+
 		var editAct = Ext.create('BASE.ActionSingle', {
 			text: 'Edit',
 			iconCls: 'b-application_edit'
@@ -29,7 +34,7 @@ Ext.define('TCMS.Promotion.Main', {
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, deleteAct]
+			items: [addAct, addMultipleAct, editAct, deleteAct]
 		});
 
 		var window = Ext.create('TCMS.Promotion.Window');
@@ -37,8 +42,8 @@ Ext.define('TCMS.Promotion.Main', {
 		var grid = Ext.create('TCMS.Promotion.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, editAct, deleteAct],
-			validateActions : [addAct, editAct, deleteAct]
+			tbar: [addAct, addMultipleAct, editAct, deleteAct],
+			validateActions : [addAct, addMultipleAct, editAct, deleteAct]
 		});
 
 		this.items = [grid];
