@@ -28,7 +28,7 @@ class Invoice_report extends CI_Controller {
 		$vatAmount = $inv->total - $subTotal;
 
 		$invSum = array(
-			'discount'=> 0.0,
+			'discount'=> $inv->discount,
 			'total' => $inv->total,
 			'vat_percent'=> $inv->vat_percent,
 			'vat_amount'=>$vatAmount,

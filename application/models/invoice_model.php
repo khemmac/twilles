@@ -82,6 +82,7 @@ CONCAT(
 				$res = $this->update($inv->id, array(
 					'bill_fullname' => $odr->member_fullname,
 					'total' => $odr->total,
+					'discount' => (!empty($odr->discount))?$odr->discount:0,
 					'vat_percent' => 7,
 					'import_date' => $odrLastUpdate
 				));
@@ -104,6 +105,7 @@ CONCAT(
 				'invoice_date' => $curDate,
 				'bill_fullname' => $odr->member_fullname,
 				'total' => $odr->total,
+				'discount' => (!empty($odr->discount))?$odr->discount:0,
 				'vat_percent' => 7,
 				'import_date' => $odrLastUpdate
 			));
