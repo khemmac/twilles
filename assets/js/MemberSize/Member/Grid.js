@@ -31,6 +31,7 @@ Ext.define('TCMS.MemberSize.Member.Grid', {
 			fields: [
 				{ name:'id', type:'int' },
 				{ name:'username', type:'string' },
+				{ name:'source', type:'string' },
 				{ name:'email', type:'string' },
 				{ name:'last_login', type:'date', convert: function(v,r){ return v?new Date(v*1000):null; } },
 
@@ -46,11 +47,12 @@ Ext.define('TCMS.MemberSize.Member.Grid', {
 
 		this.columns = [
 			{text: "Email", width:150, dataIndex:'email', sortable:true, align:'left'},
-			{text: "Name", width:250, dataIndex:'ip_address', sortable:true, align:'left',
+			{text: "Name", width:210, dataIndex:'ip_address', sortable:true, align:'left',
 				renderer: function(v,p,r){
 					return r.data['first_name']+' '+r.data['last_name'];
 				}
 			},
+			{text: "Source", width:80, dataIndex:'source', sortable:true, align:'left'},
 			{text: "Last login", width:120, dataIndex:'last_login', sortable:true, align:'left',
 				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
 			}

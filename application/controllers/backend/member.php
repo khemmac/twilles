@@ -91,6 +91,7 @@ class Member extends CI_Controller {
 'phone',
 'fid',
 'account_status',
+'source',
 'create_date',
 'create_by',
 'update_date',

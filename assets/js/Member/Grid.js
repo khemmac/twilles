@@ -53,6 +53,7 @@ update_by
 				{ name:'id', type:'int' },
 				{ name:'username', type:'string' },
 				{ name:'email', type:'string' },
+				{ name:'source', type:'string' },
 				'ip_address',
 				{ name:'last_login', type:'date', convert: function(v,r){ return v?new Date(v*1000):null; } },
 
@@ -81,6 +82,7 @@ update_by
 				}
 			},
 			{text: "Phone", width:90, dataIndex:'phone', sortable:true, align:'left', hidden:true},
+			{text: "Source", width:90, dataIndex:'source', sortable:true, align:'left'},
 			{text: "IP Address", width:90, dataIndex:'ip_address', sortable:true, align:'left'},
 			{text: "Active", width:50, dataIndex:'active', sortable:true, align:'center',
 				renderer: function(v,p,r){
