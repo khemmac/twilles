@@ -23,7 +23,8 @@ Ext.define('TCMS.Order.Status.Main', {
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject(),
 					status = o.get('status');
-				if(status>=1)
+				//if(status>=1)
+				if(status==1)
 					this.setDisabled(true);
 			}
 		};
@@ -37,7 +38,8 @@ Ext.define('TCMS.Order.Status.Main', {
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject(),
 					status = o.get('status');
-				if(status!=1)
+				//if(status!=1)
+				if(status==2)
 					this.setDisabled(true);
 			}
 		};
@@ -51,7 +53,8 @@ Ext.define('TCMS.Order.Status.Main', {
 			if(!this.isDisabled()){
 				var o = source.getSelectedObject(),
 					status = o.get('status');
-				if(status!=2)
+				//if(status!=2)
+				if(status==3)
 					this.setDisabled(true);
 			}
 		};
