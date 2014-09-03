@@ -139,17 +139,24 @@ class InvoicePDF extends TCPDF {
 		$this->Cell(60, 8, $data->invoice_code, 'RT', 0, 'R', 1, '', 0, 0, 'T', 'B');
 		$this->Ln();
 
-		$this->SetFont('', 'B');
+		$this->SetFont('cordiaupcb', '', 18);
+		//$this->SetFont('', 'B');
 		$this->Cell(179, 6, $data->bill_fullname, 'L', 0, 'L', 1, '', 0, 0, 'T', 'C');
+		$this->SetFont('helvetica', 'B', 12);
 		$this->Cell(50, 6, 'Invoice Date', 'L', 0, 'L', 1, '', 0, 0, 'T', 'C');
-		$this->SetFont('', '');
+
+		$this->SetFont('helvetica', '', 12);
+		//$this->SetFont('', '');
 		$this->Cell(60, 6, $data->invoice_date, 'R', 0, 'R', 1, '', 0, 0, 'T', 'C');
 		$this->Ln();
 
-		$this->SetFont('', 'B');
+		$this->SetFont('cordiaupc', 'B', 16);
+		//$this->SetFont('', 'B');
 		$this->Cell(179, 8, $data->invoice_address, 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
 		$this->Cell(50, 8, '', 'LB', 0, 'L', 1, '', 0, 0, 'T', 'T');
-		$this->SetFont('', '');
+
+		$this->SetFont('helvetica', 'B', 12);
+		//$this->SetFont('', '');
 		$this->Cell(60, 8, '', 'RB', 0, 'R', 1, '', 0, 0, 'T', 'T');
 		$this->Ln();
 
