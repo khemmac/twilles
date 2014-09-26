@@ -29,13 +29,16 @@ Ext.define('TCMS.MemberSize.Form', {
 				return o;
 			},
 			getSaveParams : function() {
-				return Ext.apply({
+				var x = Ext.apply({
 					type: 'member_size'
 				}, this.formParams);
+				console.log('$$$$', x);
+				return x;
 			},
 			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.formAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
+					type: 'v_member_size'
 				}, this.formParams);
 			},
 			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
@@ -244,7 +247,12 @@ Ext.define('TCMS.MemberSize.Form', {
 						_createField('BASE.field.NumericField', { fieldLabel:'Armhole', name : 'armhole' }),
 						_createField('BASE.field.NumericField', { fieldLabel:'Buffer', name : 'armhole_buffer' })
 					]
-				}]
+				},
+				_createField('Ext.form.field.TextArea', {
+					name: 'remark',
+					fieldLabel: 'Remark',
+					rows: 4
+				})]
 			}]
 		}];
 

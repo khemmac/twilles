@@ -16,8 +16,8 @@ Ext.define('TCMS.MemberSize.Main', {
 			iconCls: 'b-application_add'
 		});
 
-		var viewAct = Ext.create('BASE.ActionSingle', {
-			text: 'View',
+		var editAct = Ext.create('BASE.ActionSingle', {
+			text: 'Edit',
 			iconCls: 'b-application_edit'
 		});
 
@@ -32,7 +32,7 @@ Ext.define('TCMS.MemberSize.Main', {
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, viewAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, '-', activeAct, inActiveAct]
 		});
 
 		var window = Ext.create('TCMS.MemberSize.Window');
@@ -40,8 +40,8 @@ Ext.define('TCMS.MemberSize.Main', {
 		var grid = Ext.create('TCMS.MemberSize.Grid', {
 			region: 'center',
 			border: false,
-			tbar: [addAct, viewAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, viewAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
+			validateActions : [addAct, editAct, activeAct, inActiveAct]
 		});
 
 		this.items = [grid];
@@ -52,10 +52,9 @@ Ext.define('TCMS.MemberSize.Main', {
 			});
 		});
 
-		viewAct.setHandler(function(){
+		editAct.setHandler(function(){
 			window.openDialog('Edit member size', 'edit', grid, {
-				id: grid.getSelectedId(),
-				type: 'v_member_size'
+				id: grid.getSelectedId()
 			});
 		});
 
@@ -74,8 +73,8 @@ Ext.define('TCMS.MemberSize.Main', {
 		});
 
 		grid.on('celldblclick', function(g, td, cellIndex, r) {
-			if(!viewAct.isDisabled())
-				viewAct.execute();
+			if(!editAct.isDisabled())
+				editAct.execute();
 		});
 
 		grid.on('cellcontextmenu', function(g, td, cellIndex, r, tr, rowIndex, e) {
