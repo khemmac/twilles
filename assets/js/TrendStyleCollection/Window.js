@@ -5,8 +5,9 @@ Ext.define('TCMS.TrendStyleCollection.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 540,
+			height: 550,
 			width: 900,
+			border: false,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -37,6 +38,7 @@ Ext.define('TCMS.TrendStyleCollection.Window', {
 		this.items = [this.form];
 
 		this.submitAct.setHandler(function(){
+			/*
 			var uploadStats = _this.form.uploader.getStats();
 			if(uploadStats.files_queued>0){
 				var progressBox = Ext.MessageBox.show({
@@ -52,6 +54,7 @@ Ext.define('TCMS.TrendStyleCollection.Window', {
 				_this.form.uploader.startUpload();
 				return;
 			}else
+			*/
 				_this.form.saveData();
 		});
 

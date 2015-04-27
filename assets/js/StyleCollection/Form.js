@@ -289,7 +289,6 @@ Ext.define('TCMS.StyleCollection.Form', {
 				bodyPadding: '5 0 0 10',
 				items: [{
 					// column layout with 2 columns
-					//region: 'center',
 					layout:'column',
 					border:false,
 					// defaults for columns

@@ -113,8 +113,37 @@ Class Style_collection_model extends Base_model
 	}
 
 	private function ProcessUploadPhoto($id){
+		$this->load->library('upload');
 		$ulBasePath = $this->photo_order_path;
 
+		// ** Collection photo
+		{
+			$config['upload_path'] = $ulBasePath;
+			$config['file_name'] = $id;
+			$config['allowed_types'] = 'png';
+			$size_mb = 5; //Max file size allowed in MB
+	 		$config['max_size'] = $size_mb * 1024;
+			$config['overwrite'] = TRUE;
+
+			$this->upload->initialize($config);
+			$ulResult = $this->upload->do_upload('photo_collection');
+			if (!$ulResult)
+			{
+				//echo 'FAILURE';
+				$ulError = $this->upload->display_errors();
+				//echo PHP_EOL;
+				//print_r($ulError);
+			}
+			else
+			{
+				$ulData = $this->upload->data();
+				$ulFile = $ulData['full_path'];
+
+				//echo $ulFile;
+			}
+		}
+
+		// ** Common photo
 		$ulArray = array('photo_main',
 						'photo_1_thumbnail', 'photo_1_full',
 						'photo_2_thumbnail', 'photo_2_full',
@@ -133,7 +162,6 @@ Class Style_collection_model extends Base_model
 			mkdir($ulIDPath);
 
 		$setData = array();
-		$this->load->library('upload');
 		foreach($ulArray AS $ulName){
 			$config['upload_path'] = $ulIDPath;
 			$config['file_name'] = $ulName;
