@@ -9,8 +9,10 @@ Ext.define('TCMS.StyleCollection.Form', {
 		});
 
 		Ext.apply(this, {
-			bodyStyle : 'padding:5px 0px 0px 0px;',
-			autoScroll: true,
+			border: false,
+			bodyPadding: '0 0 0 0',
+			layout: 'border',
+			autoScroll: false,
 			plugins: [uxFormStatus],
 			mapping: function(o){
 				var children = _this.items ? _this.items.items : [];
@@ -238,111 +240,187 @@ Ext.define('TCMS.StyleCollection.Form', {
 		});
 		// ** END FABRIC **
 
-		this.items = [{
-			// column layout with 2 columns
-			layout:'column',
-			border:false,
-			// defaults for columns
-			defaults:{
-				columnWidth:0.3,
-				layout:'form',
-				border:false,
-				xtype:'panel',
-				bodyStyle:'padding:0 22px 0 0'
-			},
-			items:[{
-				// left column
-				// defaults for fields
-				columnWidth:0.34,
-				defaults:_fieldDefaults,
-				items:[{
-					name: 'code',
-					xtype: 'textfield',
-					fieldLabel: 'Code',
-					allowBlank: false
+		// ** Upload file
+		var createUploadFile = function(options){
+			return _createField('Ext.form.FieldContainer', {
+				layout: 'hbox',
+				fieldLabel: options.fieldLabel,
+				combineErrors: false,
+				anchor: '100%',
+				defaults: {
+					hideLabel: true
 				},
-				//this.comboStyleType,
-				this.comboStyleGroup, {
-					xtype: 'fieldset',
-					title: 'Collar',
-					defaults: _fieldDefaults,
-					items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, {
-						xtype:'textfield',
-						name: 'part_collar_thickness',
-						fieldLabel: 'Thickness'
-					}, this.comboPartCollarStay]
-				}, {
-					xtype: 'fieldset',
-					title: 'Placket',
-					defaults: _fieldDefaults,
-					items: [this.comboPartPlacket, this.numberPlacketWidth]
-				},
-				this.comboStitchingType, {
-					xtype: 'fieldset',
-					title: 'Inventory',
-					defaults: _fieldDefaults,
-					items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
+				items: [{
+					xtype: 'filefield',
+					emptyText: 'Select a photo',
+					name: options.name,
+					buttonText: 'Select...',
+					width:250
+				},  {
+					xtype: 'displayfield',
+					value: '&nbsp;&nbsp;'+options.size+' pixel'
 				}]
-			},{
-				// center column
-				// defaults for fields
-				columnWidth:0.33,
-				defaults:_fieldDefaults,
-				items:[{
-					name: 'description',
-					xtype: 'textarea',
-					fieldLabel: 'Detail',
-					rows: 3
-				}, {
-					xtype: 'fieldset',
-					title: 'Cuff',
-					defaults: _fieldDefaults,
-					items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, {
-						xtype:'textfield',
-						name: 'part_cuff_thickness',
-						fieldLabel: 'Thickness'
+			});
+		};
+
+		var ulFront = createUploadFile({ name: 'photo_main', size: '880x200', fieldLabel: 'Main' });
+		var ulT1 = createUploadFile({ name: 'photo_1_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 1' });
+		var ulF1 = createUploadFile({ name: 'photo_1_full', size: '425x640', fieldLabel: 'Full 1' });
+		var ulT2 = createUploadFile({ name: 'photo_2_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 2' });
+		var ulF2 = createUploadFile({ name: 'photo_2_full', size: '425x640', fieldLabel: 'Full 2' });
+		var ulT3 = createUploadFile({ name: 'photo_3_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 3' });
+		var ulF3 = createUploadFile({ name: 'photo_3_full', size: '425x640', fieldLabel: 'Full 3' });
+		var ulT4 = createUploadFile({ name: 'photo_4_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 4' });
+		var ulF4 = createUploadFile({ name: 'photo_4_full', size: '425x640', fieldLabel: 'Full 4' });
+		var ulT5 = createUploadFile({ name: 'photo_5_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 5' });
+		var ulF5 = createUploadFile({ name: 'photo_5_full', size: '425x640', fieldLabel: 'Full 5' });
+		var ulT6 = createUploadFile({ name: 'photo_6_thumbnail', size: '126x190', fieldLabel: 'Thumbnail 6' });
+		var ulF6 = createUploadFile({ name: 'photo_6_full', size: '425x640', fieldLabel: 'Full 6' });
+		// ** End Upload file
+
+		this.tabForm = Ext.create('Ext.tab.Panel', {
+			region: 'center',
+			layout: 'border',
+			border: false,
+			items: [{
+				title: 'Common',
+				id: 'tab-common',
+				border: false,
+				bodyPadding: '5 0 0 10',
+				items: [{
+					// column layout with 2 columns
+					//region: 'center',
+					layout:'column',
+					border:false,
+					// defaults for columns
+					defaults:{
+						columnWidth:0.3,
+						layout:'form',
+						border:false,
+						xtype:'panel',
+						bodyStyle:'padding:0 22px 0 0'
+					},
+					items:[{
+						// left column
+						// defaults for fields
+						columnWidth:0.34,
+						defaults:_fieldDefaults,
+						items:[{
+							name: 'code',
+							xtype: 'textfield',
+							fieldLabel: 'Code',
+							allowBlank: false
+						},
+						//this.comboStyleType,
+						this.comboStyleGroup, {
+							xtype: 'fieldset',
+							title: 'Collar',
+							defaults: _fieldDefaults,
+							items: [this.comboPartCollar, this.comboPartCollarType, this.numberCollarWidth, {
+								xtype:'textfield',
+								name: 'part_collar_thickness',
+								fieldLabel: 'Thickness'
+							}, this.comboPartCollarStay]
+						}, {
+							xtype: 'fieldset',
+							title: 'Placket',
+							defaults: _fieldDefaults,
+							items: [this.comboPartPlacket, this.numberPlacketWidth]
+						},
+						this.comboStitchingType, {
+							xtype: 'fieldset',
+							title: 'Inventory',
+							defaults: _fieldDefaults,
+							items: [this.comboInventoryButton, this.comboInventoryLabel, this.comboInventoryPackage]
+						}]
+					},{
+						// center column
+						// defaults for fields
+						columnWidth:0.33,
+						defaults:_fieldDefaults,
+						items:[{
+							name: 'description',
+							xtype: 'textarea',
+							fieldLabel: 'Detail',
+							rows: 3
+						}, {
+							xtype: 'fieldset',
+							title: 'Cuff',
+							defaults: _fieldDefaults,
+							items: [this.comboPartCuff, this.comboPartCuffType, this.numberCuffWidth, {
+								xtype:'textfield',
+								name: 'part_cuff_thickness',
+								fieldLabel: 'Thickness'
+							}]
+						}, {
+							xtype: 'fieldset',
+							title: 'Other parts',
+							defaults: _fieldDefaults,
+							items: [
+								this.comboPartPocket,
+								this.comboPartYoke,
+								this.comboPartPleat,
+								this.comboPartBottom
+							]
+						}, {
+							name: 'remark',
+							xtype: 'textarea',
+							fieldLabel: 'Remark',
+							rows: 3
+						}, {
+							name: 'is_active',
+							xtype: 'checkboxfield',
+							fieldLabel: 'Active',
+							checked: !0
+						}]
+					},{
+						// right column
+						// defaults for fields
+						columnWidth:0.33,
+						defaults:_fieldDefaults,
+						items:[{
+							xtype: 'fieldset',
+							title: 'Fabric',
+							defaults: _fieldDefaults,
+							items: [
+								this.comboFabricCollarInner,
+								this.comboFabricCollarOuter,
+								//this.comboFabricPlacket,
+								this.comboFabricBody,
+								this.comboFabricCuffInner,
+								this.comboFabricCuffOuter
+							]
+						}]
 					}]
-				}, {
-					xtype: 'fieldset',
-					title: 'Other parts',
-					defaults: _fieldDefaults,
-					items: [
-						this.comboPartPocket,
-						this.comboPartYoke,
-						this.comboPartPleat,
-						this.comboPartBottom
-					]
-				}, {
-					name: 'remark',
-					xtype: 'textarea',
-					fieldLabel: 'Remark',
-					rows: 3
-				}, {
-					name: 'is_active',
-					xtype: 'checkboxfield',
-					fieldLabel: 'Active',
-					checked: !0
 				}]
-			},{
-				// right column
-				// defaults for fields
-				columnWidth:0.33,
-				defaults:_fieldDefaults,
-				items:[{
-					xtype: 'fieldset',
-					title: 'Fabric',
-					defaults: _fieldDefaults,
-					items: [
-						this.comboFabricCollarInner,
-						this.comboFabricCollarOuter,
-						//this.comboFabricPlacket,
-						this.comboFabricBody,
-						this.comboFabricCuffInner,
-						this.comboFabricCuffOuter
-					]
-				}]
+			}, {
+				title: 'Photos',
+				id: 'tab-1',
+				border: true,
+				bodyPadding: '5 0 0 10',
+				defaults: _fieldDefaults,
+				layout: 'form',
+				items: [
+					ulFront,
+					ulT1,
+					ulF1,
+					ulT2,
+					ulF2,
+					ulT3,
+					ulF3,
+					ulT4,
+					ulF4,
+					ulT5,
+					ulF5,
+					ulT6,
+					ulF6
+				]
 			}]
-		}];
+		});
+
+		this.items = [
+			this.tabForm
+		];
 
 		return this.callParent(arguments);
 	}

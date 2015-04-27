@@ -5,8 +5,9 @@ Ext.define('TCMS.StyleCollection.Window', {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 540,
+			height: 550,
 			width: 900,
+			border: false,
 			resizable: false,
 			modal: true,
 			layout:'border',

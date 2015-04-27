@@ -61,4 +61,28 @@ class Base_model extends MY_Model
         }
     }
 
+	/**
+     * Updated with no trigger.
+     */
+    public function update_skip_trigger($primary_value, $data, $skip_validation = FALSE)
+    {
+        if ($skip_validation === FALSE)
+        {
+            $data = $this->validate($data);
+        }
+
+        if ($data !== FALSE)
+        {
+            $result = $this->_database->where($this->primary_key, $primary_value)
+                               ->set($data)
+                               ->update($this->_table);
+
+            return $result;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
 }
