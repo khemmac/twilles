@@ -54,7 +54,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 		};
 
 		var _createField = function(ns, config){
-			return Ext.create(ns, Ext.apply(config, _fieldDefaults));
+			return Ext.create(ns, Ext.applyIf(config, _fieldDefaults));
 		};
 /*
 		this.comboStyleType = _createField('BASE.ComboStatic', {
@@ -245,6 +245,7 @@ Ext.define('TCMS.TrendStyleCollection.Form', {
 			return _createField('Ext.form.FieldContainer', {
 				layout: 'hbox',
 				fieldLabel: options.fieldLabel,
+				labelWidth: 120,
 				combineErrors: false,
 				anchor: '100%',
 				defaults: {
