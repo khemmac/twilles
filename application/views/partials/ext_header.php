@@ -18,7 +18,9 @@ $SV = '?v=3.1';
 
 	<script type="text/javascript">
 		var __base_url = '<?= base_url() ?>',
-			__site_url = '<?= endsWith(site_url(), '/')?site_url().'' : site_url().'/' ?>';
+			__site_url = '<?= endsWith(site_url(), '/')?site_url().'' : site_url().'/' ?>',
+			__cfg_fabric_url = '<?= $this->config->item('FABRIC_CMS_URL') ?>'
+			;
 	</script>
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/ext/resources/css/ext-all.css') ?>" />

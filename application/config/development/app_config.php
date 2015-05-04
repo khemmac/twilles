@@ -9,3 +9,5 @@ $config['THUMBNAIL_OUTPUT_URL']	= 'http://localhost/twilles/images/temp/thumbnai
 
 $config['FABRIC_OUTPUT_PATH']	= '/home/user/data/www/php_www/twilles/images/temp/fabric/';
 $config['FABRIC_OUTPUT_URL']	= 'http://localhost/twilles/images/temp/fabric/';
+$config['FABRIC_CMS_PATH']	= '/home/user/data/www/php_www/twilles/images/fabric/';
+$config['FABRIC_CMS_URL']	= 'http://localhost/twilles/images/fabric/';

@@ -5,7 +5,7 @@ Ext.define('TCMS.Fabric.Window', {
 
 		Ext.apply(this, {
 			height: 455,
-			width: 600,
+			width: 900,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -18,6 +18,12 @@ Ext.define('TCMS.Fabric.Window', {
 
 	initComponent : function() {
 		var _this=this;
+
+		var _fieldDefaults = {
+			labelAlign: 'right',
+			anchor:'100%',
+			labelWidth: 70
+		};
 
 		// transaction
 		this.transactionPanel = Ext.create('TCMS.Fabric.Transaction.Main', {
@@ -117,48 +123,108 @@ Ext.define('TCMS.Fabric.Window', {
 			allowBlank: true
 		});
 
+		var columns = [{
+			region: 'center',
+			// column layout with 2 columns
+			layout:'column',
+			border:false,
+			// defaults for columns
+			defaults:{
+				columnWidth:0.5,
+				layout:'form',
+				border:false,
+				xtype:'panel',
+				bodyStyle:'padding:0 12px 0 0'
+			},
+			items:[{
+				// left column
+				// defaults for fields
+				defaults:_fieldDefaults,
+				items:[{
+					name: 'code',
+					xtype: 'textfield',
+					fieldLabel: 'Code',
+					allowBlank: false
+				},{
+					name: 'name',
+					xtype: 'textfield',
+					fieldLabel: 'Name',
+					allowBlank: false
+				},
+				this.comboFabricType,
+				this.comboSupplier,
+				this.comboStockType,
+				this.comboFabricType,
+				this.comboPrimaryColor,
+				this.comboSecondaryColor,
+				this.comboSecondaryColor,
+				this.comboTertiaryColor,
+				this.comboTrueColor,
+				this.comboPattern,
+				this.comboTexture,
+				this.comboThreadCount,
+				{
+					name: 'length_yards',
+					xtype: 'displayfield',
+					fieldLabel: 'Length (yards)'
+				},{
+					name: 'is_active',
+					xtype: 'checkboxfield',
+					fieldLabel: 'Active',
+					checked: !0
+				}]
+			},{
+				// center column
+				// defaults for fields
+				defaults:_fieldDefaults,
+				items:[{
+					xtype: 'fieldcontainer',
+					layout: 'hbox',
+					border: false,
+					fieldLabel: 'Photo',
+					labelWidth: 50,
+					combineErrors: false,
+					anchor: '100%',
+					defaults: {
+						hideLabel: true
+					},
+					items: [{
+						xtype: 'filefield',
+						fieldLabel: 'Photo',
+						emptyText: 'Select a jpg file',
+						name: 'photo_fabric',
+						buttonText: 'Select...',
+						width: 160
+					},  {
+						xtype: 'displayfield',
+						value: '&nbsp;&nbsp;126x102 pixel'
+					}]
+				}, {
+					xtype: 'displayfield',
+					name: 'id',
+					hideLabel: true,
+					renderer: function(v){
+						if(v)
+							return '<img src="'+__cfg_fabric_url+v+'.jpg" style="border:1px solid #99bce8; width:126px; height:102px; margin-left:50px;" />';
+						else
+							return '<div style="border:1px solid #99bce8; width:126px; height:102px; background:transparent url(\''+__base_url+'images/image-missing.png\') no-repeat center center; margin-left:50px;"></div>';
+					}
+				}]
+			}]
+		}];
+
 
 		this.form = Ext.create('BASE.Form', {
+			layout: 'border',
 			region: 'center',
 			border: true,
+			bodyPadding: '0 0 0 0',
 			defaults: {
 				labelWidth: 100,
 				labelAlign: 'right',
 				width: 300
 			},
-			items: [{
-				name: 'code',
-				xtype: 'textfield',
-				fieldLabel: 'Code',
-				allowBlank: false
-			},{
-				name: 'name',
-				xtype: 'textfield',
-				fieldLabel: 'Name',
-				allowBlank: false
-			},
-			this.comboFabricType,
-			this.comboSupplier,
-			this.comboStockType,
-			this.comboFabricType,
-			this.comboPrimaryColor,
-			this.comboSecondaryColor,
-			this.comboSecondaryColor,
-			this.comboTertiaryColor,
-			this.comboTrueColor,
-			this.comboPattern,
-			this.comboTexture,
-			this.comboThreadCount,
-			{
-				name: 'length_yards',
-				xtype: 'displayfield',
-				fieldLabel: 'Length (yards)'
-			},{
-				name: 'is_active',
-				xtype: 'checkboxfield',
-				fieldLabel: 'Active',
-				checked: !0
-			}],
+			items: columns,
 			plugins: [uxFormStatus],
 			mapping: function(o){
 				var checkComboArr = [
