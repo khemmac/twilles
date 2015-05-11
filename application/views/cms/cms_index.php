@@ -1,9 +1,9 @@
 <script type="text/javascript">
 	Ext.onReady(function() {
 
-		var main = Ext.create('TCMS.Fabric.Main', {
+		var main = Ext.create('TCMS.CMS_Index.Main', {
 			region: 'center',
-			title: 'Fabric'
+			title: 'CMS Index'
 		});
 
 		////////////////////////////////////////////

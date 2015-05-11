@@ -1,4 +1,4 @@
-Ext.define('TCMS.CMS.Main', {
+Ext.define('TCMS.CMS_Index.Main', {
 	extend	: 'Ext.panel.Panel',
 
 	constructor:function(config) {
@@ -22,6 +22,11 @@ Ext.define('TCMS.CMS.Main', {
 			iconCls: 'b-application_edit'
 		});
 
+		var deleteAct = Ext.create('BASE.ActionMultiple', {
+			text: 'Delete',
+			iconCls: 'b-small-cross'
+		});
+
 		var activeAct = Ext.create('BASE.ActionMultiple', {
 			text: 'Active',
 			iconCls: 'b-flag-green'
@@ -33,43 +38,32 @@ Ext.define('TCMS.CMS.Main', {
 		});
 
 		var contextMenu = new Ext.menu.Menu({
-			items: [addAct, editAct, '-', activeAct, inActiveAct]
+			items: [addAct, editAct, deleteAct]
 		});
 
-		var window = Ext.create('TCMS.CMS.Window');
+		var window = Ext.create('TCMS.CMS_Index.Window');
 
-		var grid = Ext.create('TCMS.CMS.Grid', {
+		var grid = Ext.create('TCMS.CMS_Index.Grid', {
 			region: 'center',
-			tbar: [addAct, editAct, '-', activeAct, inActiveAct],
-			validateActions : [addAct, editAct, activeAct, inActiveAct]
+			tbar: [addAct, editAct, deleteAct],
+			validateActions : [addAct, editAct, deleteAct]
 		});
 
 		this.items = [grid];
 
 		addAct.setHandler(function(){
-			window.openDialog('Add color', 'add', grid, {
-				type: 'color'
-			});
+			window.openDialog('Add', 'add', grid, {});
 		});
 
 		editAct.setHandler(function(){
-			window.openDialog('Edit color', 'edit', grid, {
-				id: grid.getSelectedId(),
-				type: 'color'
+			window.openDialog('Edit', 'edit', grid, {
+				id: grid.getSelectedId()
 			});
 		});
 
-		activeAct.setHandler(function(){
-			window.openDialog('Active', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:1
-			});
-		});
-
-		inActiveAct.setHandler(function(){
-			window.openDialog('Inactive', 'setStatus', grid, {
-				ids: grid.getSelectionsId().join(','),
-				is_active:0
+		deleteAct.setHandler(function(){
+			window.openDialog(null, 'delete', grid, {
+				ids: grid.getSelectionsId().join(',')
 			});
 		});
 
@@ -88,8 +82,7 @@ Ext.define('TCMS.CMS.Main', {
 			grid.load();
 		});
 
-		window.form.on('afterSetStatus', function() {
-			window.hide();
+		window.form.on('afterDelete', function(){
 			grid.load();
 		});
 

@@ -1,12 +1,12 @@
-Ext.define('TCMS.CMS.Window', {
+Ext.define('TCMS.CMS_Index.Window', {
 	extend	: 'BASE.Window',
 	requires : ['BASE.Window'],
 	constructor:function(config) {
 
 		Ext.apply(this, {
 			title: 'Login',
-			height: 180,
-			width: 300,
+			height: 250,
+			width: 450,
 			resizable: false,
 			modal: true,
 			layout:'border',
@@ -19,10 +19,6 @@ Ext.define('TCMS.CMS.Window', {
 	initComponent : function() {
 		var _this=this;
 
-		var uxFormStatus = Ext.create('BASE.ux.FormStatus', {
-			moduleType: 'color'
-		});
-
 		this.form = Ext.create('BASE.Form', {
 			region: 'center',
 			defaults: {
@@ -31,38 +27,47 @@ Ext.define('TCMS.CMS.Window', {
 				width: 250
 			},
 			items: [{
-				name: 'name',
+				name: 'title',
 				xtype: 'textfield',
-				fieldLabel: 'Name',
+				fieldLabel: 'Title',
 				allowBlank: false
 			}, {
-				name: 'alias',
-				xtype: 'textfield',
-				fieldLabel: 'Alias',
-				allowBlank: false
+				name: 'detail',
+				xtype: 'textarea',
+				fieldLabel: 'Detail',
+				allowBlank: false,
+				width: 400
 			}, {
-				name: 'is_active',
-				xtype: 'checkboxfield',
-				fieldLabel: 'Active',
-				checked: !0
+				name: 'link',
+				xtype: 'textfield',
+				fieldLabel: 'Link',
+				vtype: 'url',
+				width: 350
+			}, {
+				name: 'photo',
+				xtype: 'textfield',
+				fieldLabel: 'Photo',
+				width: 350
 			}],
-			plugins: [uxFormStatus],
+			plugins: [],
 			mapping: function(o){
-				o.is_active = (o.is_active && o.is_active=='on')?1:0;
 				return o;
 			},
 			getSaveParams : function() {
 				return Ext.apply({
-					type: 'color'
 				}, this.formParams);
 			},
-			getSaveUrl: function(){ return __site_url+'backend/dao/'+((_this.dialogAction == "add")?'insert':'update'); },
+			getSaveUrl: function(){ return __site_url+'backend_cms/index/'+((_this.dialogAction == "add")?'insert':'update'); },
 			getLoadParams : function() {
 				return Ext.apply({
-					type: 'color'
 				}, this.formParams);
 			},
-			getLoadUrl: function(){ return __site_url+'backend/dao/load'; }
+			getLoadUrl: function(){ return __site_url+'backend_cms/index/load'; },
+			getDeleteParams : function() {
+				return Ext.apply({
+				}, this.formParams);
+			},
+			getDeleteUrl: function(){ return __site_url+'backend_cms/index/delete'; }
 		});
 
 		this.submitAct = Ext.create('BASE.Action', {

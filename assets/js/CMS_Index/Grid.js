@@ -1,4 +1,4 @@
-Ext.define('TCMS.CMS.Grid', {
+Ext.define('TCMS.CMS_Index.Grid', {
 	extend	: 'BASE.Grid',
 	constructor:function(config) {
 
@@ -110,52 +110,34 @@ Ext.define('TCMS.CMS.Grid', {
 		this.store = new Ext.data.JsonStore({
 			proxy: {
 				type: 'ajax',
-				url: __site_url+"backend/dao/loadlist",
+				url: __site_url+"backend_cms/index/loadlist",
 				reader: {
 					type: 'json',
 					root: 'rows',
 					totalProperty: 'totalCount',
 					idProperty: 'id'
 				},
-				simpleSortMode: true,
-				extraParams: {
-					type: 'color'
-				}
+				simpleSortMode: true
 			},
 			fields: [
-				{ name:'id', type:'int' },
-				'name',
-				'alias',
-				{ name:'is_active', type:'int' },
-				{ name:'create_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				'create_by',
-				{ name:'update_date', type:'date', dateFormat: 'Y-m-d H:i:s' },
-				'update_by'
+				{ name:'id' },
+				'title',
+				'detail',
+				'photo',
+				'link'
 			],
-			remoteSort: true,
+			remoteSort: false,
 			sorters: [{property: 'id', direction: 'ASC'}],
 			pageSize: 25
 		});
 
 		this.columns = [
 			new Ext.grid.RowNumberer(),
-			{text: "Name", width:120, dataIndex:'name', sortable:true, align:'left'},
-			{text: "Alias", width:80, dataIndex:'alias', sortable:true, align:'left'},
-			{text: "Create date", width:120, dataIndex:'create_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
-			},
-			{text: "Create by", width:100, dataIndex:'create_by', sortable:true, align:'left'},
-			{text: "Update date", width:120, dataIndex:'update_date', sortable:true, align:'left',
-				renderer: function(v){ return (v)?Ext.Date.format(v, 'd/m/Y H:i:s'):'-'; }
-			},
-			{text: "Update by", width:100, dataIndex:'update_by', sortable:true, align:'left'}
+			{text: "Title", width:120, dataIndex:'title', sortable:false, align:'left'},
+			{text: "Detail", width:250, dataIndex:'detail', sortable:false, align:'left'},
+			{text: "Photo", width:80, dataIndex:'photo', sortable:false, align:'left'},
+			{text: "Link", width:250, dataIndex:'link', sortable:false, align:'left'}
 		];
-
-		this.bbar = {
-			xtype: 'pagingtoolbar',
-			store: this.store,
-			displayInfo: true
-		};
 /*
 		this.searchAct.setHandler(this.search, this);
 		this.resetAct.setHandler(this.reset, this);
@@ -170,21 +152,5 @@ Ext.define('TCMS.CMS.Grid', {
 	    });
 
 		return this.callParent(arguments);
-	}/*,
-	getSearchFormValues: function(){
-		return {
-			keyword: this.txtKeyword.getValue(),
-			custacct: this.comboCustomerAccount.getValue(),
-			cardidtype: this.comboCardType.getValue()
-		};
-	},
-	search: function(){
-		this.load();
-	},
-	reset: function(){
-		this.txtKeyword.reset();
-		this.comboCustomerAccount.reset();
-		this.comboCardType.reset();
-		this.load();
-	}*/
+	}
 });
